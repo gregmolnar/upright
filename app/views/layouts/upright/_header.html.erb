@@ -1,0 +1,25 @@
+<header class="page-header">
+  <div class="header-left">
+    <%= link_to "Upright", main_app.root_url(subdomain: "app"), class: "logotype" %>
+    <% if Upright::Current.site.present? %>
+      <span class="site-name"><%= Upright::Current.site.city %></span>
+    <% end %>
+  </div>
+  <div class="header-nav">
+    <%= link_to main_app.prometheus_url, target: "_blank", class: "nav-link" do %>
+      Prometheus <%= content_tag :span, "↗", class: "external-icon" %>
+    <% end %>
+    <%= link_to main_app.alertmanager_url, target: "_blank", class: "nav-link" do %>
+      Alertmanager <%= content_tag :span, "↗", class: "external-icon" %>
+    <% end %>
+    <% if Upright::Current.site.present? %>
+      <%= link_to main_app.mission_control_jobs_path, target: "_blank", class: "nav-link" do %>
+        Jobs <%= content_tag :span, "↗", class: "external-icon" %>
+      <% end %>
+    <% end %>
+  </div>
+  <div class="user-info">
+    <span><%= Upright::Current.user.name %></span>
+    <%= button_to "Sign out", upright.session_path, method: :delete, data: { turbo: false }, class: "btn" %>
+  </div>
+</header>

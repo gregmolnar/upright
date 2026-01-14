@@ -13,3 +13,19 @@ if ActiveSupport::TestCase.respond_to?(:fixture_paths=)
   ActiveSupport::TestCase.file_fixture_path = File.expand_path("fixtures", __dir__) + "/files"
   ActiveSupport::TestCase.fixtures :all
 end
+
+module ActiveSupport
+  class TestCase
+    def with_env(env_vars)
+      original_values = env_vars.keys.to_h { |k| [ k, ENV[k] ] }
+      env_vars.each { |k, v| ENV[k] = v }
+      yield
+    ensure
+      original_values.each { |k, v| ENV[k] = v }
+    end
+
+    def stub_ip_api_batch(response_body = "[]")
+      stub_request(:post, "http://ip-api.com/batch").to_return(status: 200, body: response_body)
+    end
+  end
+end

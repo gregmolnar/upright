@@ -1,17 +1,23 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Upright</title>
-  <%= csrf_meta_tags %>
-  <%= csp_meta_tag %>
+  <head>
+    <title>Upright</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+    <%= stylesheet_link_tag "upright/application", media: "all" %>
+    <%= javascript_importmap_tags %>
+  </head>
 
-  <%= yield :head %>
-
-  <%= stylesheet_link_tag    "upright/application", media: "all" %>
-</head>
-<body>
-
-<%= yield %>
-
-</body>
+  <body>
+    <% if signed_in? %>
+      <%= render "layouts/upright/header" %>
+      <div class="page-content">
+        <%= yield %>
+      </div>
+    <% else %>
+      <%= yield %>
+    <% end %>
+  </body>
 </html>

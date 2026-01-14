@@ -1,0 +1,61 @@
+require "open3"
+
+module Upright
+  module Traceroute
+    class Result
+      PROBE_COUNT = 10
+      MAX_HOPS = 30
+
+      attr_reader :host, :hops, :raw_json
+
+      def self.for(host)
+        new(host).tap(&:run)
+      end
+
+      def initialize(host)
+        @host = host
+        @hops = []
+      end
+
+      def run
+        @raw_json = run_mtr
+        @hops = build_hops(MtrParser.new(@raw_json).parse)
+      end
+
+      def reached_destination?
+        hops.any? && hops.last.responded?
+      end
+
+      private
+        def run_mtr
+          stdout, _status = Open3.capture2(
+            "mtr",
+            "--json",
+            "--aslookup",
+            "--report-cycles", PROBE_COUNT.to_s,
+            "--max-ttl", MAX_HOPS.to_s,
+            host.to_s
+          )
+
+          Rails.logger.info stdout
+
+          stdout
+        end
+
+        def build_hops(parsed_hops)
+          ips = parsed_hops.map { |h| h[:ip] }.compact
+          metadata_by_ip = IpMetadataLookup.for_many(ips)
+
+          parsed_hops.map.with_index do |hop_data, index|
+            metadata = metadata_by_ip[hop_data[:ip]] || {}
+
+            Hop.new(
+              **hop_data,
+              **metadata,
+              geohash: index == 0 ? Upright.current_site.geohash : metadata[:geohash]
+            )
+          end
+        end
+    end
+  end
+end

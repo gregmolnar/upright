@@ -1,0 +1,9 @@
+<%= turbo_frame_tag dom_id(@artifact) do %>
+  <% if @artifact.video? %>
+    <video controls width="960" preload="none" autoplay muted>
+      <source src="<%= url_for(@artifact) %>" type="video/webm">
+    </video>
+  <% else %>
+    <pre><%= @artifact.download %></pre>
+  <% end %>
+<% end %>

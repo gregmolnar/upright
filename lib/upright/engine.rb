@@ -2,13 +2,31 @@ module Upright
   class Engine < ::Rails::Engine
     isolate_namespace Upright
 
+    # Add concerns to autoload paths
+    config.autoload_paths << root.join("app/models/concerns")
+
     config.generators do |g|
       g.test_framework :minitest
     end
 
+    # Add engine's JavaScript to asset paths
+    initializer "upright.assets" do |app|
+      app.config.assets.paths << root.join("app/javascript")
+    end
+
+    # Configure importmap pins for the engine
+    initializer "upright.importmap", before: "importmap" do |app|
+      if defined?(Importmap::Engine)
+        app.config.importmap.paths << root.join("config/importmap.rb")
+        app.config.importmap.cache_sweepers << root.join("app/javascript")
+      end
+    end
+
     # Configure FrozenRecord base path
     initializer "upright.frozen_record" do
-      FrozenRecord::Base.base_path = Upright.configuration.frozen_record_path
+      if defined?(FrozenRecord)
+        FrozenRecord::Base.base_path = Upright.configuration.frozen_record_path
+      end
     end
 
     # Configure Yabeda metrics

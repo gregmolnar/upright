@@ -1,3 +1,4 @@
+require "frozen_record"
 require "upright/version"
 require "upright/configuration"
 require "upright/metrics"
@@ -82,7 +83,7 @@ module Upright
 
   # Simple site data class
   class Site
-    attr_reader :code, :city, :country, :geohash, :provider, :host, :stagger_index
+    attr_reader :code, :city, :country, :geohash, :host, :stagger_index
 
     def initialize(code:, city: nil, country: nil, geohash: nil, provider: nil, host: nil, primary: false, stagger_index: 0)
       @code = code.to_sym
@@ -93,6 +94,10 @@ module Upright
       @host = host
       @primary = primary
       @stagger_index = stagger_index
+    end
+
+    def provider
+      @provider.to_s.inquiry
     end
 
     def primary?

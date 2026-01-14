@@ -2,7 +2,7 @@ module Upright
   module Playwright
     module Authenticator
       class Base
-        include Concerns::Playwright::Helpers
+        include Upright::Playwright::Helpers
 
         attr_reader :page
 
@@ -89,7 +89,7 @@ module Upright
 
         def user_agent
           Upright.configuration.user_agent.presence ||
-            Concerns::Playwright::Lifecycle::DEFAULT_USER_AGENT
+            Upright::Playwright::Lifecycle::DEFAULT_USER_AGENT
         end
 
         def create_context(state = nil)

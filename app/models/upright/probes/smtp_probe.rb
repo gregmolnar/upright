@@ -7,7 +7,6 @@ module Upright
 
       stagger_by_site 3.seconds
 
-      self.base_path = -> { Upright.configuration.frozen_record_path }
       self.backend = FrozenRecord::Backends::Yaml
 
       attr_accessor :smtp_log

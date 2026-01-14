@@ -7,7 +7,6 @@ module Upright
 
       DEFAULT_EXPECTED_STATUS = 200..399
 
-      self.base_path = -> { Upright.configuration.frozen_record_path }
       self.backend = FrozenRecord::Backends::Yaml
 
       attr_accessor :last_response
