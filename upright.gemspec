@@ -3,8 +3,8 @@ require_relative "lib/upright/version"
 Gem::Specification.new do |spec|
   spec.name        = "upright"
   spec.version     = Upright::VERSION
-  spec.authors     = ["Lewis Buckley"]
-  spec.email       = ["lewis@37signals.com"]
+  spec.authors     = [ "Lewis Buckley" ]
+  spec.email       = [ "lewis@37signals.com" ]
   spec.homepage    = "https://github.com/basecamp/upright"
   spec.summary     = "Synthetic monitoring engine with Playwright and Prometheus metrics"
   spec.description = "A Rails engine for browser-based health probes and uptime monitoring via Prometheus metrics"

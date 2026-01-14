@@ -49,7 +49,7 @@ module Upright
         config_path = configuration.sites_config_path
 
         if config_path && File.exist?(config_path)
-          yaml = YAML.load_file(config_path, permitted_classes: [Symbol])
+          yaml = YAML.load_file(config_path, permitted_classes: [ Symbol ])
           site_data = yaml["sites"] || yaml[:sites] || []
 
           site_data.map.with_index do |data, index|

@@ -20,9 +20,9 @@ ActiveRecord::Schema[8.1].define(version: 2025_01_14_000001) do
     t.string "probe_type"
     t.integer "status"
     t.datetime "updated_at", null: false
-    t.index ["created_at"], name: "index_upright_probe_results_on_created_at"
-    t.index ["probe_name"], name: "index_upright_probe_results_on_probe_name"
-    t.index ["probe_type"], name: "index_upright_probe_results_on_probe_type"
-    t.index ["status"], name: "index_upright_probe_results_on_status"
+    t.index [ "created_at" ], name: "index_upright_probe_results_on_created_at"
+    t.index [ "probe_name" ], name: "index_upright_probe_results_on_probe_name"
+    t.index [ "probe_type" ], name: "index_upright_probe_results_on_probe_type"
+    t.index [ "status" ], name: "index_upright_probe_results_on_status"
   end
 end
