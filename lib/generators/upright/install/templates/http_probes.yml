@@ -1,0 +1,14 @@
+# HTTP Probe Definitions
+# Add your HTTP health check probes here
+#
+# Required fields:
+#   - name: Unique identifier for the probe
+#   - url: The URL to check
+#
+# Optional fields:
+#   - expected_status: HTTP status code to expect (default: 200-399)
+#   - basic_auth_credentials: Key in Rails credentials for basic auth
+#   - proxy: Key in Rails credentials for proxy settings
+
+- name: Example Health Check
+  url: https://example.com

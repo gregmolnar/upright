@@ -1,0 +1,17 @@
+class Playwright::Authenticator::<%= class_name %> < Upright::Playwright::Authenticator::Base
+  def authenticate
+    # Your authentication logic here
+    # page.goto("https://example.com/login")
+    # page.fill('[name="email"]', credentials[:email])
+    # page.fill('[name="password"]', credentials[:password])
+    # page.click('button[type="submit"]')
+    # page.wait_for_url("**/dashboard**")
+    raise NotImplementedError, "Implement the authenticate method for <%= class_name %>"
+  end
+
+  private
+
+  def credentials
+    Rails.application.credentials.<%= file_name %>
+  end
+end

@@ -1,0 +1,14 @@
+class Probes::Playwright::<%= probe_class_name %> < Upright::Probes::Playwright::Base
+<% if options[:with_authenticator] -%>
+  authenticate_with_form :<%= authenticator_name %>
+
+<% end -%>
+  def check
+    # Your probe logic here
+    # page.goto("https://example.com")
+    # page.fill('[name="email"]', "user@example.com")
+    # page.click('button[type="submit"]')
+    # page.wait_for_selector(".success")
+    raise NotImplementedError, "Implement the check method for <%= probe_class_name %>"
+  end
+end
