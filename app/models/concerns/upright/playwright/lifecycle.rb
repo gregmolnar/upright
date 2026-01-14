@@ -1,7 +1,6 @@
 module Upright
-  module Concerns
-    module Playwright
-      module Lifecycle
+  module Playwright
+    module Lifecycle
         extend ActiveSupport::Concern
 
         DEFAULT_USER_AGENT = "Upright/1.0 Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
@@ -44,7 +43,6 @@ module Upright
           def create_context(browser, **options)
             authenticated_context(browser, options) || browser.new_context(userAgent: user_agent, **options)
           end
-      end
     end
   end
 end

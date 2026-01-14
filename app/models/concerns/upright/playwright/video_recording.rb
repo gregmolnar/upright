@@ -1,7 +1,6 @@
 module Upright
-  module Concerns
-    module Playwright
-      module VideoRecording
+  module Playwright
+    module VideoRecording
         extend ActiveSupport::Concern
 
         VIDEO_SIZE = { width: 1280, height: 720 }
@@ -60,7 +59,6 @@ module Upright
               self.video_path = nil
             end
           end
-      end
     end
   end
 end

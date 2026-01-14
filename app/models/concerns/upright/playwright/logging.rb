@@ -1,7 +1,6 @@
 module Upright
-  module Concerns
-    module Playwright
-      module Logging
+  module Playwright
+    module Logging
         extend ActiveSupport::Concern
 
         included do
@@ -87,7 +86,6 @@ module Upright
           def skip_logging?(response)
             SKIP_URL_PATTERNS.any? { |skip_pattern| response.url.include?(skip_pattern) }
           end
-      end
     end
   end
 end

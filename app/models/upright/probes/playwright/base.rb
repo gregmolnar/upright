@@ -9,12 +9,12 @@ module Upright
 
         define_callbacks :perform_check
 
-        include Concerns::Playwright::Lifecycle
-        include Concerns::Playwright::FormAuthentication
-        include Concerns::Playwright::Logging
-        include Concerns::Playwright::OtelTracing
-        include Concerns::Playwright::VideoRecording
-        include Concerns::Playwright::Helpers
+        include Upright::Playwright::Lifecycle
+        include Upright::Playwright::FormAuthentication
+        include Upright::Playwright::Logging
+        include Upright::Playwright::OtelTracing
+        include Upright::Playwright::VideoRecording
+        include Upright::Playwright::Helpers
 
         set_callback :perform_check, :after, :wait_for_network_idle
 

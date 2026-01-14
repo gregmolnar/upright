@@ -1,7 +1,6 @@
 module Upright
-  module Concerns
-    module Playwright
-      module FormAuthentication
+  module Playwright
+    module FormAuthentication
         extend ActiveSupport::Concern
 
         included do
@@ -27,7 +26,6 @@ module Upright
           rescue NameError
             "Upright::Playwright::Authenticator::#{service.to_s.camelize}".constantize
           end
-      end
     end
   end
 end

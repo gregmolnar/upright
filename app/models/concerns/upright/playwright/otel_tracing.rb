@@ -1,7 +1,6 @@
 module Upright
-  module Concerns
-    module Playwright
-      module OtelTracing
+  module Playwright
+    module OtelTracing
         extend ActiveSupport::Concern
 
         included do
@@ -137,7 +136,6 @@ module Upright
               Upright::Engine.root.join("lib", "upright", "playwright", "collect_performance_metrics.js")
             )
           end
-      end
     end
   end
 end
