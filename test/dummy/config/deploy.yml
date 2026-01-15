@@ -1,0 +1,30 @@
+service: upright
+image: upright/upright
+
+servers:
+  web:
+    hosts:
+      - ams.37upright.com: [amsterdam]
+      - nyc.37upright.com: [new_york]
+      - sfo.37upright.com: [san_francisco]
+
+env:
+  tags:
+    amsterdam:
+      SITE_CODE: ams
+      SITE_CITY: Amsterdam
+      SITE_COUNTRY: NL
+      SITE_GEOHASH: u17982
+      SITE_PROVIDER: digitalocean
+    new_york:
+      SITE_CODE: nyc
+      SITE_CITY: New York City
+      SITE_COUNTRY: US
+      SITE_GEOHASH: dr5reg
+      SITE_PROVIDER: digitalocean
+    san_francisco:
+      SITE_CODE: sfo
+      SITE_CITY: San Francisco
+      SITE_COUNTRY: US
+      SITE_GEOHASH: 9q8yy
+      SITE_PROVIDER: digitalocean

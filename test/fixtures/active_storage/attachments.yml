@@ -1,0 +1,19 @@
+http_artifact:
+  name: artifacts
+  record: http_probe_result (Upright::ProbeResult)
+  blob: http_log
+
+playwright_artifact:
+  name: artifacts
+  record: playwright_probe_result (Upright::ProbeResult)
+  blob: playwright_log
+
+smtp_artifact:
+  name: artifacts
+  record: smtp_probe_result (Upright::ProbeResult)
+  blob: smtp_log
+
+traceroute_artifact:
+  name: artifacts
+  record: traceroute_probe_result (Upright::ProbeResult)
+  blob: traceroute_json

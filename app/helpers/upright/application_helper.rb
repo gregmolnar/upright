@@ -1,4 +1,2 @@
-module Upright
-  module ApplicationHelper
-  end
+module Upright::ApplicationHelper
 end

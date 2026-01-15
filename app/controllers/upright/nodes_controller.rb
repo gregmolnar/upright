@@ -1,7 +1,5 @@
-module Upright
-  class NodesController < ApplicationController
-    def index
-      @nodes = Node.all
-    end
+class Upright::NodesController < Upright::ApplicationController
+  def index
+    @nodes = Upright::Node.all
   end
 end

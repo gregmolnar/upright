@@ -1,4 +1,2 @@
-module Upright
-  class ApplicationJob < ActiveJob::Base
-  end
+class Upright::ApplicationJob < ActiveJob::Base
 end

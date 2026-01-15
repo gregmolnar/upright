@@ -1,0 +1,42 @@
+_fixture:
+  model_class: Upright::ProbeResult
+
+http_probe_result:
+  probe_type: http
+  probe_name: HTTP Probe
+  duration: 0.1
+  status: "ok"
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+playwright_probe_result:
+  probe_type: playwright
+  probe_name: Playwright Probe
+  duration: 2.3
+  status: "ok"
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+smtp_probe_result:
+  probe_type: smtp
+  probe_name: SMTP Probe
+  duration: 0.8
+  status: "ok"
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+traceroute_probe_result:
+  probe_type: traceroute
+  probe_name: Traceroute Probe
+  duration: 5.2
+  status: "ok"
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+http_probe_result_failed:
+  probe_type: http
+  probe_name: HTTP Probe
+  duration: 1.5
+  status: "fail"
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>

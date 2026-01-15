@@ -1,0 +1,39 @@
+http_log:
+  key: http_log_key
+  filename: curl.log
+  content_type: text/plain
+  service_name: local
+  byte_size: 30
+  checksum: <%= Digest::MD5.base64digest("Sample log content for testing") %>
+
+playwright_log:
+  key: playwright_log_key
+  filename: playwright.log
+  content_type: text/plain
+  service_name: local
+  byte_size: 30
+  checksum: <%= Digest::MD5.base64digest("Sample log content for testing") %>
+
+ping_log:
+  key: ping_log_key
+  filename: ping.log
+  content_type: text/plain
+  service_name: local
+  byte_size: 30
+  checksum: <%= Digest::MD5.base64digest("Sample log content for testing") %>
+
+smtp_log:
+  key: smtp_log_key
+  filename: smtp.log
+  content_type: text/plain
+  service_name: local
+  byte_size: 30
+  checksum: <%= Digest::MD5.base64digest("Sample log content for testing") %>
+
+traceroute_json:
+  key: traceroute_json_key
+  filename: traceroute.json
+  content_type: application/json
+  service_name: local
+  byte_size: 14
+  checksum: <%= Digest::MD5.base64digest('{"test": true}') %>

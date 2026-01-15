@@ -2,7 +2,7 @@
   <summary title="<%= attachment.filename %>"><%= artifact_icon(attachment) %></summary>
   <div class="artifact-content">
     <h3 class="artifact-title"><%= artifact_icon(attachment) %> <%= attachment.filename %></h3>
-    <%= turbo_frame_tag dom_id(attachment), src: upright.artifact_path(attachment), loading: :lazy, data: { popover_target: "frame" } %>
+    <%= turbo_frame_tag dom_id(attachment), src: upright.site_artifact_path(attachment), loading: :lazy, data: { popover_target: "frame" } %>
     <button type="button" class="artifact-close" data-action="popover#close">Close</button>
   </div>
 </details>

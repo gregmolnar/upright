@@ -1,3 +1,3 @@
 Rails.application.routes.draw do
-  mount Upright::Engine => "/upright"
+  mount Upright::Engine => "/"
 end

@@ -1,7 +1,5 @@
-module Upright
-  class ArtifactsController < ApplicationController
-    def show
-      @artifact = ActiveStorage::Attachment.find(params[:id])
-    end
+class Upright::ArtifactsController < Upright::ApplicationController
+  def show
+    @artifact = ActiveStorage::Attachment.find(params[:id])
   end
 end

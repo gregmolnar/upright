@@ -1,6 +1,20 @@
 require "frozen_record"
+require "opentelemetry-sdk"
+require "opentelemetry-exporter-otlp"
+require "typhoeus"
+require "solid_queue"
+require "mission_control/jobs"
+require "omniauth"
+require "omniauth_openid_connect"
+require "omniauth/rails_csrf_protection"
+require "propshaft"
+require "importmap-rails"
+require "turbo-rails"
+require "stimulus-rails"
+require "geared_pagination"
 require "upright/version"
 require "upright/configuration"
+require "upright/site"
 require "upright/metrics"
 require "upright/tracing"
 require "upright/engine"
@@ -81,44 +95,4 @@ module Upright
       end
   end
 
-  # Simple site data class
-  class Site
-    attr_reader :code, :city, :country, :geohash, :host, :stagger_index
-
-    def initialize(code:, city: nil, country: nil, geohash: nil, provider: nil, host: nil, primary: false, stagger_index: 0)
-      @code = code.to_sym
-      @city = city
-      @country = country
-      @geohash = geohash
-      @provider = provider
-      @host = host
-      @primary = primary
-      @stagger_index = stagger_index
-    end
-
-    def provider
-      @provider.to_s.inquiry
-    end
-
-    def primary?
-      @primary
-    end
-
-    def default_timeout
-      Upright.configuration.default_timeout
-    end
-
-    def to_h
-      {
-        code: code,
-        city: city,
-        country: country,
-        geohash: geohash,
-        provider: provider,
-        host: host,
-        primary: primary?,
-        stagger_index: stagger_index
-      }
-    end
-  end
 end

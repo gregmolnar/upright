@@ -14,7 +14,7 @@
     <p><%= results_summary(@page) %></p>
 
     <div class="filters">
-      <%= form_with url: main_app.host_root_path, method: :get, data: { controller: "auto-submit" } do |f| %>
+      <%= form_with url: site_root_path, method: :get, data: { controller: "auto-submit" } do |f| %>
         <%= hidden_field_tag :probe_type, params[:probe_type] if params[:probe_type].present? %>
         <label for="status">Status</label>
         <%= select_tag :status,

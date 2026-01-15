@@ -9,5 +9,6 @@ gem "propshaft"
 gem "rubocop-rails-omakase", require: false
 
 group :test do
+  gem "mocha"
   gem "webmock"
 end

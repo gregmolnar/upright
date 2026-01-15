@@ -1,5 +1,3 @@
-module Upright
-  class ApplicationRecord < ActiveRecord::Base
-    self.abstract_class = true
-  end
+class Upright::ApplicationRecord < ActiveRecord::Base
+  self.abstract_class = true
 end

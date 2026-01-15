@@ -27,6 +27,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "turbo-rails"
   spec.add_dependency "stimulus-rails"
   spec.add_dependency "solid_queue"
+  spec.add_dependency "mission_control-jobs"
   spec.add_dependency "geared_pagination"
 
   # Probe infrastructure
@@ -47,5 +48,6 @@ Gem::Specification.new do |spec|
 
   # Authentication
   spec.add_dependency "omniauth"
+  spec.add_dependency "omniauth_openid_connect"
   spec.add_dependency "omniauth-rails_csrf_protection"
 end
