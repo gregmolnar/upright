@@ -1,8 +1,12 @@
-<details class="artifact-popover" data-controller="popover" data-action="toggle->popover#loadFrame">
+<details class="artifact-popover" data-controller="popover" data-action="popover#loadFrame" data-results-table-target="popover">
   <summary title="<%= attachment.filename %>"><%= artifact_icon(attachment) %></summary>
   <div class="artifact-content">
-    <h3 class="artifact-title"><%= artifact_icon(attachment) %> <%= attachment.filename %></h3>
-    <%= turbo_frame_tag dom_id(attachment), src: upright.site_artifact_path(attachment), loading: :lazy, data: { popover_target: "frame" } %>
-    <button type="button" class="artifact-close" data-action="popover#close">Close</button>
+    <header class="artifact-header">
+      <h3 class="artifact-title"><%= artifact_icon(attachment) %> <%= attachment.filename %></h3>
+      <button type="button" class="artifact-close" data-action="popover#close" aria-label="Close">×</button>
+    </header>
+    <div class="artifact-body">
+      <%= turbo_frame_tag dom_id(attachment), src: upright.site_artifact_path(attachment), loading: :lazy, data: { popover_target: "frame" } %>
+    </div>
   </div>
 </details>

@@ -22,7 +22,7 @@ module Upright::ProbeResultsHelper
 
   def artifact_icon(artifact)
     case artifact.filename
-    when ExceptionRecording::EXCEPTION_FILENAME then "💥"
+    when Upright::ExceptionRecording::EXCEPTION_FILENAME then "💥"
     when /\.webm$/        then "🎬"
     when /^request\.log$/ then "📤"
     when /^response\./    then "📥"
@@ -41,7 +41,7 @@ module Upright::ProbeResultsHelper
       [ "Showing #{total} results" ]
     end
 
-    parts << "for #{params[:probe_type]} probes" if params[:probe_type].present?
+    parts << "for #{params[:probe_type].titleize} probes" if params[:probe_type].present?
     parts << "named #{params[:probe_name]}" if params[:probe_name].present?
     parts << "with status #{params[:status]}" if params[:status].present?
     parts.join(" ")

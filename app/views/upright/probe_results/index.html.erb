@@ -16,14 +16,14 @@
     <div class="filters">
       <%= form_with url: site_root_path, method: :get, data: { controller: "auto-submit" } do |f| %>
         <%= hidden_field_tag :probe_type, params[:probe_type] if params[:probe_type].present? %>
-        <label for="status">Status</label>
-        <%= select_tag :status,
-              options_for_select([["All", ""]] + Upright::ProbeResult.statuses.keys.map { |s| [s.titleize, s] }, params[:status]),
-              class: "input--select",
-              data: { action: "change->auto-submit#submit" } %>
         <label for="probe_name">Name</label>
         <%= select_tag :probe_name,
               options_for_select([["All", ""]] + @probe_names, params[:probe_name]),
+              class: "input--select",
+              data: { action: "change->auto-submit#submit" } %>
+        <label for="status">Status</label>
+        <%= select_tag :status,
+              options_for_select([["All", ""]] + Upright::ProbeResult.statuses.keys.map { |s| [s.titleize, s] }, params[:status]),
               class: "input--select",
               data: { action: "change->auto-submit#submit" } %>
       <% end %>
@@ -44,10 +44,18 @@
           <th>Artifacts</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody data-controller="results-table" data-action="click->results-table#openArtifact">
         <% @page.records.each do |result| %>
           <tr>
-            <td><%= probe_type_icon(result.probe_type) %> <%= result.probe_name %></td>
+            <td class="probe-cell">
+              <span class="probe-icon"><%= probe_type_icon(result.probe_type) %></span>
+              <div class="probe-details">
+                <div class="probe-name"><%= result.probe_name %></div>
+                <% if result.probe_target.present? %>
+                  <div class="probe-target"><%= result.probe_target %></div>
+                <% end %>
+              </div>
+            </td>
             <td class="status-<%= result.status %>"><%= result.status.titleize %></td>
             <td><%= result.duration ? "#{sprintf('%.3f', result.duration)}s" : "N/A" %></td>
             <td title="<%= result.created_at.to_fs(:db) %>"><%= time_ago_in_words(result.created_at) %> ago</td>
