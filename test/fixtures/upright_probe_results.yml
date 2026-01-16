@@ -40,3 +40,12 @@ http_probe_result_failed:
   status: "fail"
   created_at: <%= Time.current %>
   updated_at: <%= Time.current %>
+
+http_probe_result_error:
+  probe_type: http
+  probe_name: HTTP Probe
+  probe_target: https://example.com
+  duration: 1.0
+  status: "error"
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>

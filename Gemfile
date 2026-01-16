@@ -9,6 +9,7 @@ gem "puma"
 gem "sqlite3"
 gem "propshaft"
 gem "rubocop-rails-omakase", require: false
+gem "brakeman", require: false
 
 # Forked for Ruby 3.4 compatibility (required by engine, git source not supported in gemspec)
 gem "geohash_ruby", github: "lewispb/geohash_ruby", branch: "fix-ruby-34-warnings"

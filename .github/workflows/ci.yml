@@ -34,15 +34,30 @@ jobs:
       - name: Lint code for consistent style
         run: bin/rubocop -f github
 
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ruby-4.0.0
+          bundler-cache: true
+
+      - name: Run Brakeman security scan
+        run: bin/brakeman --quiet --no-pager --exit-on-warn --exit-on-error
+
   test:
     runs-on: ubuntu-latest
 
-    # services:
-    #  redis:
-    #    image: valkey/valkey:8
-    #    ports:
-    #      - 6379:6379
-    #    options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 5
+    services:
+      upright-playwright:
+        image: jacoblincool/playwright:chromium-server-1.55.0
+        ports:
+          - 53333:53333
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v6

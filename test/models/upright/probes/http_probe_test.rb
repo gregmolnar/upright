@@ -124,20 +124,19 @@ class Upright::Probes::HTTPProbeTest < ActiveSupport::TestCase
     assert_equal "https://example.com/", result.probe_target
   end
 
-  test "check_and_record creates result with error status when check raises" do
+  test "check_and_record creates error result with exception artifact when check raises" do
     stub_request(:get, "https://example.com/").to_return(status: 200)
     set_test_site
     probe = Upright::Probes::HTTPProbe.new(name: "test", url: "https://example.com/")
     probe.logger = null_logger
-    probe.stubs(:check).raises(StandardError.new("unexpected error"))
+    probe.stubs(:check).raises(RuntimeError.new("connection refused"))
     Rails.error.stubs(:report)
 
-    assert_difference -> { Upright::ProbeResult.count } do
-      probe.check_and_record
-    end
+    probe.check_and_record
 
     result = Upright::ProbeResult.last
     assert_equal "error", result.status
+    assert_match(/RuntimeError: connection refused/, result.exception_report)
   end
 
   test "check_and_record attaches curl log and response as artifacts" do

@@ -90,8 +90,10 @@ class Upright::Probes::PlaywrightProbeTest < ActiveSupport::TestCase
       assert_equal "error", probe_result.status
       assert_equal "playwright", probe_result.probe_type
       assert_equal "failing_probe", probe_result.probe_name
-      assert probe_result.artifacts.attached?, "Expected video artifact to be attached"
-      assert_equal "video/webm", probe_result.artifacts.first.content_type
+      assert probe_result.artifacts.attached?, "Expected artifacts to be attached"
+
+      video_artifact = probe_result.artifacts.find { |a| a.content_type == "video/webm" }
+      assert video_artifact, "Expected video artifact to be attached"
     end
   end
 

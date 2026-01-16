@@ -1,0 +1,39 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 4,
+      "fingerprint": "842fc181b52f46f9a26f463b023f2567ff74c2b5b2b79c6004bab29f2e62203c",
+      "check_name": "LinkToHref",
+      "message": "Potentially unsafe model attribute in `link_to` href",
+      "file": "app/views/upright/nodes/index.html.erb",
+      "line": 16,
+      "link": "https://brakemanscanner.org/docs/warning_types/link_to_href",
+      "code": "link_to(Upright::Node.new.hostname, Upright::Node.new.url)",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "Upright::NodesController",
+          "method": "index",
+          "line": 5,
+          "file": "app/controllers/upright/nodes_controller.rb",
+          "rendered": {
+            "name": "upright/nodes/index",
+            "file": "app/views/upright/nodes/index.html.erb"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "upright/nodes/index"
+      },
+      "user_input": "Upright::Node.new.url",
+      "confidence": "Weak",
+      "cwe_id": [
+        79
+      ],
+      "note": "URL is generated from Rails route helpers, not user input"
+    }
+  ],
+  "brakeman_version": "7.1.2"
+}

@@ -18,4 +18,21 @@ class Upright::ProbeResultTest < ActiveSupport::TestCase
 
     assert_equal 0.0, chart_data[:duration]
   end
+
+  test "error attribute attaches exception report on create" do
+    exception = RuntimeError.new("Something went wrong")
+    exception.set_backtrace([ "app/models/foo.rb:10", "app/controllers/bar.rb:5" ])
+
+    result = Upright::ProbeResult.create!(
+      probe_name: "test", probe_type: "http", probe_target: "https://example.com",
+      status: :error, duration: 1.0, error: exception
+    )
+
+    expected = <<~REPORT.chomp
+      RuntimeError: Something went wrong
+        app/models/foo.rb:10
+        app/controllers/bar.rb:5
+    REPORT
+    assert_equal expected, result.exception_report
+  end
 end
