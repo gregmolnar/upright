@@ -50,7 +50,7 @@ module Upright
 
     private
       def coordinates
-        @coordinates ||= Geohash.decode(geohash)
+        @coordinates ||= Geohash.decode(geohash).first
       end
   end
 end

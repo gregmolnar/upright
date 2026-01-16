@@ -17,6 +17,8 @@ export default class extends Controller {
     }).addTo(map)
 
     for (const node of this.nodesValue) {
+      if (!node.lat || !node.lon) continue
+
       L.marker([node.lat, node.lon])
         .addTo(map)
         .bindPopup(`<strong>${node.hostname}</strong><br>${node.city}`)

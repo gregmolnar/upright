@@ -60,7 +60,7 @@
             <td><%= result.duration ? "#{sprintf('%.3f', result.duration)}s" : "N/A" %></td>
             <td title="<%= result.created_at.to_fs(:db) %>"><%= time_ago_in_words(result.created_at) %> ago</td>
             <td>
-              <%= render result.artifacts %>
+              <%= render partial: "upright/active_storage/attachments/attachment", collection: result.artifacts, as: :attachment, locals: { probe_result: result } %>
             </td>
           </tr>
         <% end %>

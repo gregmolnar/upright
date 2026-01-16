@@ -2,7 +2,15 @@
   <summary title="<%= attachment.filename %>"><%= artifact_icon(attachment) %></summary>
   <div class="artifact-content">
     <header class="artifact-header">
-      <h3 class="artifact-title"><%= artifact_icon(attachment) %> <%= attachment.filename %></h3>
+      <div class="artifact-header-text">
+        <% if local_assigns[:probe_result] %>
+          <div class="artifact-probe"><%= probe_type_icon(probe_result.probe_type) %> <%= probe_result.probe_name %></div>
+          <% if probe_result.probe_target.present? %>
+            <div class="artifact-probe-target"><%= probe_result.probe_target %></div>
+          <% end %>
+        <% end %>
+        <h3 class="artifact-title"><%= artifact_icon(attachment) %> <%= attachment.filename %></h3>
+      </div>
       <button type="button" class="artifact-close" data-action="popover#close" aria-label="Close">×</button>
     </header>
     <div class="artifact-body">
