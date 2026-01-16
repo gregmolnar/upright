@@ -18,5 +18,4 @@ class NodesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_equal "nodes", @controller.controller_name
   end
-
 end

@@ -100,5 +100,4 @@ module Upright
         end
       end
   end
-
 end

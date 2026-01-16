@@ -93,5 +93,4 @@ class ProbeResultsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select "details.artifact-popover"
   end
-
 end
