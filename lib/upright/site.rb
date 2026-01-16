@@ -1,3 +1,5 @@
+require "geohash_ruby"
+
 module Upright
   class Site
     attr_reader :code, :city, :country, :geohash, :host, :stagger_index
@@ -25,6 +27,14 @@ module Upright
       Upright.configuration.default_timeout
     end
 
+    def latitude
+      coordinates.first
+    end
+
+    def longitude
+      coordinates.last
+    end
+
     def to_h
       {
         code: code,
@@ -37,5 +47,10 @@ module Upright
         stagger_index: stagger_index
       }
     end
+
+    private
+      def coordinates
+        @coordinates ||= Geohash.decode(geohash)
+      end
   end
 end

@@ -57,7 +57,7 @@ class Upright::Node
   end
 
   def to_leaflet
-    { hostname: hostname, city: site.city, geohash: site.geohash, url: url }
+    { hostname: hostname, city: site.city, lat: site.latitude, lon: site.longitude, url: url }
   end
 
   private
