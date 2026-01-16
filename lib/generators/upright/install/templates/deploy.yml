@@ -1,0 +1,61 @@
+# Upright Kamal Configuration
+# Deploy with: bin/kamal deploy
+
+service: <%= app_name %>
+image: <%= app_name %>
+
+servers:
+  web:
+    hosts:
+      - <%= app_name %>.example.com: [primary]
+  # Uncomment for dedicated job server:
+  # jobs:
+  #   hosts:
+  #     - <%= app_name %>.example.com: [primary]
+  #   cmd: bin/jobs
+
+ssh:
+  user: app
+
+registry:
+  server: ghcr.io
+  username:
+    - KAMAL_REGISTRY_USERNAME
+  password:
+    - KAMAL_REGISTRY_PASSWORD
+
+builder:
+  arch: amd64
+
+proxy:
+  app_port: 3000
+  ssl: true
+  host: <%= app_name %>.example.com
+
+env:
+  clear:
+    RAILS_LOG_TO_STDOUT: true
+    SOLID_QUEUE_IN_PUMA: true
+  secret:
+    - RAILS_MASTER_KEY
+  tags:
+    primary:
+      SITE_CODE: primary
+      SITE_CITY: Primary
+      SITE_COUNTRY: US
+      SITE_GEOHASH: 9q8yy
+      SITE_PROVIDER: digitalocean
+
+volumes:
+  - "<%= app_name %>_storage:/rails/storage"
+
+accessories:
+  playwright:
+    image: jacoblincool/playwright:chromium-server-1.55.0
+    port: "127.0.0.1:53333:53333"
+    roles:
+      - web
+
+aliases:
+  console: app exec -i "bin/rails console"
+  logs: app logs -f

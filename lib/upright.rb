@@ -23,10 +23,13 @@ require "upright/tracing"
 require "upright/engine"
 
 module Upright
+  class ConfigurationError < StandardError; end
+
   class << self
     def configuration
       @configuration ||= Configuration.new
     end
+    alias_method :config, :configuration
 
     def configure
       yield(configuration)

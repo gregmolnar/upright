@@ -25,27 +25,21 @@ bin/rails generate upright:install
 bin/rails db:migrate
 ```
 
-Mount the engine in your routes:
-
-```ruby
-# config/routes.rb
-Rails.application.routes.draw do
-  mount Upright::Engine => "/"
-end
-```
-
 Start the server:
 
 ```bash
 bin/rails server
 ```
 
-Visit http://localhost:3000 to see your Upright instance.
+Visit http://app.my-upright.localhost:3000 to see your Upright instance.
+
+> **Note**: Upright uses subdomain-based routing. The `app` subdomain is the admin interface, while site-specific subdomains (e.g., `nyc`, `ams`) show probe results for each location. The `.localhost` TLD resolves to 127.0.0.1 on most systems.
 
 ### What the Generator Creates
 
 The `upright:install` generator creates:
 
+- `config/initializers/0_url_options.rb` - Subdomain routing configuration
 - `config/initializers/upright.rb` - Engine configuration
 - `config/sites.yml` - Site/location definitions
 - `config/probes/http_probes.yml` - HTTP probe definitions
@@ -53,6 +47,8 @@ The `upright:install` generator creates:
 - `config/prometheus/prometheus.yml` - Prometheus configuration
 - `config/alertmanager/alertmanager.yml` - AlertManager configuration
 - `config/otel_collector.yml` - OpenTelemetry Collector configuration
+
+It also mounts the engine at `/` in your routes.
 
 ## Configuration
 
@@ -63,6 +59,10 @@ The `upright:install` generator creates:
 Upright.configure do |config|
   config.service_name = "my-upright"
   config.sites_config_path = Rails.root.join("config/sites.yml")
+
+  # Production hostname for subdomain routing
+  # Can also be set via UPRIGHT_HOSTNAME environment variable
+  config.hostname = "upright.example.com"
 
   # Probe settings
   config.default_timeout = 10
@@ -82,6 +82,25 @@ Upright.configure do |config|
   config.alert_webhook_url = ENV["ALERT_WEBHOOK_URL"]
 end
 ```
+
+### Hostname Configuration
+
+Upright uses subdomain-based routing. Configure your production hostname using either:
+
+**Option 1: Environment variable (recommended for deployment)**
+```bash
+UPRIGHT_HOSTNAME=upright.example.com
+```
+
+**Option 2: Configuration file**
+```ruby
+# config/initializers/upright.rb
+Upright.configure do |config|
+  config.hostname = "upright.example.com"
+end
+```
+
+For local development, the hostname defaults to `{service_name}.localhost` (e.g., `my-upright.localhost`).
 
 ### Site Configuration
 

@@ -5,6 +5,10 @@ module Upright
 
       desc "Install Upright engine into your application"
 
+      def copy_url_options
+        template "url_options.rb", "config/initializers/0_url_options.rb"
+      end
+
       def copy_initializer
         template "upright.rb", "config/initializers/upright.rb"
       end
@@ -25,8 +29,12 @@ module Upright
         template "otel_collector.yml", "config/otel_collector.yml"
       end
 
+      def copy_deploy_config
+        template "deploy.yml", "config/deploy.yml"
+      end
+
       def add_routes
-        route 'mount Upright::Engine => "/monitoring"'
+        route 'mount Upright::Engine => "/", as: :upright'
       end
 
       def show_post_install_message
@@ -35,11 +43,28 @@ module Upright
         say ""
         say "Next steps:"
         say "  1. Run migrations: bin/rails db:migrate"
-        say "  2. Configure sites in config/sites.yml"
-        say "  3. Add probes in config/probes/*.yml"
-        say "  4. Configure authentication in config/initializers/upright.rb"
+        say "  2. Configure your servers in config/deploy.yml"
+        say "  3. Configure sites in config/sites.yml"
+        say "  4. Add probes in config/probes/*.yml"
+        say "  5. Configure authentication in config/initializers/upright.rb"
+        say ""
+        say "For production, set your hostname via:"
+        say "  - Environment variable: UPRIGHT_HOSTNAME=#{app_name}.example.com"
+        say "  - Or in config/initializers/upright.rb: config.hostname = \"#{app_name}.example.com\""
+        say ""
+        say "For local development, access your app at:"
+        say "  http://app.#{app_name}.localhost:3000"
         say ""
       end
+
+      private
+        def app_name
+          Rails.application.class.module_parent_name.underscore.dasherize
+        end
+
+        def app_domain
+          "#{app_name}.example.com"
+        end
     end
   end
 end
