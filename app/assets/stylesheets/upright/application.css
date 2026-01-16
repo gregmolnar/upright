@@ -594,8 +594,7 @@
     font-weight: 500;
   }
 
-  .status-fail,
-  .status-error {
+  .status-fail {
     color: var(--color-negative);
     font-weight: 600;
   }

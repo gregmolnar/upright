@@ -124,7 +124,7 @@ class Upright::Probes::HTTPProbeTest < ActiveSupport::TestCase
     assert_equal "https://example.com/", result.probe_target
   end
 
-  test "check_and_record creates error result with exception artifact when check raises" do
+  test "check_and_record creates fail result with exception artifact when check raises" do
     stub_request(:get, "https://example.com/").to_return(status: 200)
     set_test_site
     probe = Upright::Probes::HTTPProbe.new(name: "test", url: "https://example.com/")
@@ -135,7 +135,7 @@ class Upright::Probes::HTTPProbeTest < ActiveSupport::TestCase
     probe.check_and_record
 
     result = Upright::ProbeResult.last
-    assert_equal "error", result.status
+    assert_equal "fail", result.status
     assert_match(/RuntimeError: connection refused/, result.exception_report)
   end
 

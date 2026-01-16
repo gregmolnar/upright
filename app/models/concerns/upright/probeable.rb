@@ -76,10 +76,10 @@ module Upright::Probeable
     end
 
     def result_description(result, error = nil)
-      if error
-        :error
+      if error || !result
+        :fail
       else
-        result ? :ok : :fail
+        :ok
       end
     end
 

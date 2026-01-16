@@ -25,7 +25,7 @@ class Upright::ProbeResultTest < ActiveSupport::TestCase
 
     result = Upright::ProbeResult.create!(
       probe_name: "test", probe_type: "http", probe_target: "https://example.com",
-      status: :error, duration: 1.0, error: exception
+      status: :fail, duration: 1.0, error: exception
     )
 
     expected = <<~REPORT.chomp

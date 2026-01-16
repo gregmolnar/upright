@@ -14,7 +14,7 @@ class ProbeResultsControllerTest < ActionDispatch::IntegrationTest
   test "filters by probe type when signed in" do
     get upright.site_root_path(probe_type: "playwright")
     assert_response :success
-    assert_select "p", text: /for playwright probes/
+    assert_select "p", text: /for Playwright probes/
     assert_select "td", text: /#{upright_probe_results(:playwright_probe_result).probe_name}/
     assert_select "td", text: /#{upright_probe_results(:http_probe_result).probe_name}/, count: 0
   end
@@ -60,7 +60,7 @@ class ProbeResultsControllerTest < ActionDispatch::IntegrationTest
     chart_data = JSON.parse(css_select("[data-probe-results-chart-results-value]").first["data-probe-results-chart-results-value"])
 
     assert chart_data.all? { |r| r["status"] == "fail" }
-    assert_equal 1, chart_data.length
+    assert_equal 2, chart_data.length
   end
 
   test "paginates results when there are many" do

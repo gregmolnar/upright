@@ -8,7 +8,7 @@ class Upright::ProbeResult < Upright::ApplicationRecord
   scope :by_name, ->(name) { where(probe_name: name) if name.present? }
   scope :stale, -> { where(created_at: ...24.hours.ago) }
 
-  enum :status, [ :ok, :fail, :error ]
+  enum :status, [ :ok, :fail ]
 
   has_many_attached :artifacts
 

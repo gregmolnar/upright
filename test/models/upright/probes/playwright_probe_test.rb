@@ -87,7 +87,7 @@ class Upright::Probes::PlaywrightProbeTest < ActiveSupport::TestCase
       probe.check_and_record
 
       probe_result = Upright::ProbeResult.last
-      assert_equal "error", probe_result.status
+      assert_equal "fail", probe_result.status
       assert_equal "playwright", probe_result.probe_type
       assert_equal "failing_probe", probe_result.probe_name
       assert probe_result.artifacts.attached?, "Expected artifacts to be attached"
