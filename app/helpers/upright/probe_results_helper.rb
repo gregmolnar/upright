@@ -13,12 +13,11 @@ module Upright::ProbeResultsHelper
   end
 
   def type_filter_link(label, probe_type = nil)
-    current = params[:probe_type].presence
     display_label = probe_type ? safe_join([ probe_type_icon(probe_type), " ", label ]) : label
 
     link_to display_label,
-            site_root_path(probe_type: probe_type.presence, status: params[:status].presence, probe_name: params[:probe_name].presence),
-            class: class_names(active: current == probe_type)
+            site_root_path(probe_type: probe_type.presence, status: params[:status].presence),
+            class: class_names(active: params[:probe_type].presence == probe_type)
   end
 
   def artifact_icon(artifact)
