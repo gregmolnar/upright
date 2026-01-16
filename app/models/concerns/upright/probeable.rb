@@ -28,17 +28,17 @@ module Upright::Probeable
   def check_and_record
     result = failsafe_check
 
-    probe_result = Upright::ProbeResult.create! \
+    Upright::ProbeResult.create!(
       probe_type: probe_type,
       probe_name: probe_name,
       probe_target: probe_target,
       probe_service: probe_service,
       status: result[:status],
-      duration: result[:duration]
-
-    on_check_recorded(probe_result)
-
-    probe_result
+      duration: result[:duration],
+      error: result[:error]
+    ).tap do |probe_result|
+      on_check_recorded(probe_result)
+    end
   end
 
   def probe_name
@@ -54,7 +54,7 @@ module Upright::Probeable
   end
 
   def on_check_recorded(probe_result)
-    # Optional hook for subclasses
+    raise NotImplementedError
   end
 
   def probe_service
@@ -72,7 +72,7 @@ module Upright::Probeable
     ensure
       log_probe_result(result:, error:, duration:)
 
-      return { status: result_description(result, error), duration: }
+      return { status: result_description(result, error), duration:, error: }
     end
 
     def result_description(result, error = nil)

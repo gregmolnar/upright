@@ -1,4 +1,6 @@
 class Upright::ProbeResult < Upright::ApplicationRecord
+  include Upright::ExceptionRecording
+
   self.table_name = "upright_probe_results"
 
   scope :by_type, ->(type) { where(probe_type: type) if type.present? }
