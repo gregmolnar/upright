@@ -1,14 +1,14 @@
 module Upright::ProbeResultsHelper
   PROBE_TYPE_ICONS = {
-    "http" => "🌐",
-    "playwright" => "🎭",
-    "ping" => "📶",
-    "smtp" => "✉️",
-    "traceroute" => "🛤️"
-  }.freeze
+    http: "🌐",
+    playwright: "🎭",
+    ping: "📶",
+    smtp: "✉️",
+    traceroute: "🛤️"
+  }
 
   def probe_type_icon(probe_type)
-    icon = PROBE_TYPE_ICONS.fetch(probe_type.to_s.downcase)
+    icon = PROBE_TYPE_ICONS.fetch(probe_type.to_s.downcase.to_sym)
     content_tag(:span, icon, title: probe_type.titleize)
   end
 
@@ -23,10 +23,11 @@ module Upright::ProbeResultsHelper
 
   def artifact_icon(artifact)
     case artifact.filename
-    when /\.webm$/ then "🎬"
+    when ExceptionRecording::EXCEPTION_FILENAME then "💥"
+    when /\.webm$/        then "🎬"
     when /^request\.log$/ then "📤"
-    when /^response\./ then "📥"
-    when /^smtp\.log$/ then "📧"
+    when /^response\./    then "📥"
+    when /^smtp\.log$/    then "📧"
     else "📎"
     end
   end
