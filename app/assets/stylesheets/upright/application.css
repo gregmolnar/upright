@@ -506,6 +506,11 @@
       font-size: var(--text-x-small);
     }
 
+    .artifact-probe-time {
+      color: var(--color-ink-light);
+      font-size: var(--text-x-small);
+    }
+
     .artifact-title {
       color: var(--color-ink-medium);
       font-size: var(--text-x-small);

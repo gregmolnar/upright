@@ -8,6 +8,7 @@
           <% if probe_result.probe_target.present? %>
             <div class="artifact-probe-target"><%= probe_result.probe_target %></div>
           <% end %>
+          <div class="artifact-probe-time" title="<%= probe_result.created_at.to_fs(:db) %>"><%= time_ago_in_words(probe_result.created_at) %> ago</div>
         <% end %>
         <h3 class="artifact-title"><%= artifact_icon(attachment) %> <%= attachment.filename %></h3>
       </div>
