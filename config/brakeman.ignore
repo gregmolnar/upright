@@ -6,28 +6,28 @@
       "fingerprint": "842fc181b52f46f9a26f463b023f2567ff74c2b5b2b79c6004bab29f2e62203c",
       "check_name": "LinkToHref",
       "message": "Potentially unsafe model attribute in `link_to` href",
-      "file": "app/views/upright/nodes/index.html.erb",
+      "file": "app/views/upright/sites/index.html.erb",
       "line": 16,
       "link": "https://brakemanscanner.org/docs/warning_types/link_to_href",
-      "code": "link_to(Upright::Node.new.hostname, Upright::Node.new.url)",
+      "code": "link_to(Upright::Site.new.host, Upright::Site.new.url)",
       "render_path": [
         {
           "type": "controller",
-          "class": "Upright::NodesController",
+          "class": "Upright::SitesController",
           "method": "index",
           "line": 5,
-          "file": "app/controllers/upright/nodes_controller.rb",
+          "file": "app/controllers/upright/sites_controller.rb",
           "rendered": {
-            "name": "upright/nodes/index",
-            "file": "app/views/upright/nodes/index.html.erb"
+            "name": "upright/sites/index",
+            "file": "app/views/upright/sites/index.html.erb"
           }
         }
       ],
       "location": {
         "type": "template",
-        "template": "upright/nodes/index"
+        "template": "upright/sites/index"
       },
-      "user_input": "Upright::Node.new.url",
+      "user_input": "Upright::Site.new.url",
       "confidence": "Weak",
       "cwe_id": [
         79

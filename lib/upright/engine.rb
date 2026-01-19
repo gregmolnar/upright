@@ -49,7 +49,6 @@ class Upright::Engine < ::Rails::Engine
     app.config.assets.paths << root.join("app/javascript")
   end
 
-  # Configure importmap pins for the engine
   initializer "upright.importmap", before: "importmap" do |app|
     if defined?(Importmap::Engine)
       app.config.importmap.paths << root.join("config/importmap.rb")
@@ -57,19 +56,14 @@ class Upright::Engine < ::Rails::Engine
     end
   end
 
-  # Configure FrozenRecord base path
   initializer "upright.frozen_record" do
-    if defined?(FrozenRecord)
-      FrozenRecord::Base.base_path = Upright.configuration.frozen_record_path
-    end
+    FrozenRecord::Base.base_path = Upright.configuration.frozen_record_path
   end
 
-  # Configure Yabeda metrics
   initializer "upright.yabeda" do
     Upright::Metrics.configure
   end
 
-  # Configure OpenTelemetry
   initializer "upright.opentelemetry" do
     Upright::Tracing.configure
   end
@@ -85,7 +79,6 @@ class Upright::Engine < ::Rails::Engine
     end
   end
 
-  # Add Duration#in_ms helper for Playwright timeouts
   initializer "upright.duration_extension" do
     ActiveSupport::Duration.class_eval do
       def in_ms
@@ -110,11 +103,10 @@ class Upright::Engine < ::Rails::Engine
 
   # Allow host app to override views
   config.to_prepare do
-    Upright::ApplicationController.helper Rails.application.helpers if defined?(Rails.application)
+    Upright::ApplicationController.helper Rails.application.helpers
   end
 
   # Auto-load Playwright probes and authenticators from configured paths
-  # This runs after eager loading so engine classes are available
   config.after_initialize do
     # Define namespaces for app-specific probes and authenticators
     module ::Probes

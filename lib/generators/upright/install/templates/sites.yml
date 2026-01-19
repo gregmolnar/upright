@@ -1,32 +1,29 @@
 # Upright Site Configuration
 # Define the geographic locations where probes run
 
-sites:
-  - code: primary
-    city: "Your City"
-    country: US
-    geohash: ""
-    provider: ""
-    primary: true
-    stagger_index: 0
-    host: localhost
+shared:
+  sites:
+    - code: primary
+      city: "Your City"
+      country: US
+      geohash: ""
+      provider: ""
+      host: localhost
 
 # Multi-site example:
 #
-# sites:
-#   - code: ams
-#     city: Amsterdam
-#     country: NL
-#     geohash: u17982
-#     provider: digitalocean
-#     primary: true
-#     stagger_index: 0
-#     host: ams.example.com
+# shared:
+#   sites:
+#     - code: ams
+#       city: Amsterdam
+#       country: NL
+#       geohash: u17982
+#       provider: digitalocean
+#       host: ams.example.com
 #
-#   - code: nyc
-#     city: New York City
-#     country: US
-#     geohash: dr5reg
-#     provider: digitalocean
-#     stagger_index: 1
-#     host: nyc.example.com
+#     - code: nyc
+#       city: New York City
+#       country: US
+#       geohash: dr5reg
+#       provider: digitalocean
+#       host: nyc.example.com

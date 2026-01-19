@@ -1,0 +1,19 @@
+shared:
+  sites:
+    - code: ams
+      city: Amsterdam
+      country: NL
+      geohash: u17982
+      provider: digitalocean
+
+    - code: nyc
+      city: New York City
+      country: US
+      geohash: dr5reg
+      provider: digitalocean
+
+    - code: sfo
+      city: San Francisco
+      country: US
+      geohash: 9q8yy
+      provider: digitalocean

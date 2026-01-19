@@ -13,7 +13,7 @@ module Upright::SubdomainScoping
 
     def set_current_subdomain
       Upright::Current.subdomain = request.subdomain.presence
-      Upright::Current.site = Upright::Node.find_by_subdomain(Upright::Current.subdomain)&.site
+      Upright::Current.site = Upright.find_site(Upright::Current.subdomain)
     end
 
     def engine_routes

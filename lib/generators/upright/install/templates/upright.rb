@@ -13,9 +13,6 @@ Upright.configure do |config|
   # Default probe timeout in seconds
   config.default_timeout = 10
 
-  # Site configuration file path
-  config.sites_config_path = Rails.root.join("config/sites.yml")
-
   # Playwright browser server URL (production only)
   # config.playwright_server_url = ENV["PLAYWRIGHT_SERVER_URL"]
 

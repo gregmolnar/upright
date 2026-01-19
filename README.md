@@ -60,7 +60,6 @@ It also mounts the engine at `/` in your routes.
 # config/initializers/upright.rb
 Upright.configure do |config|
   config.service_name = "my-upright"
-  config.sites_config_path = Rails.root.join("config/sites.yml")
 
   # Production hostname for subdomain routing
   # Can also be set via UPRIGHT_HOSTNAME environment variable
@@ -109,30 +108,28 @@ For local development, the hostname defaults to `{service_name}.localhost` (e.g.
 Define your monitoring locations in `config/sites.yml`:
 
 ```yaml
-sites:
-  - code: nyc
-    city: New York City
-    country: US
-    geohash: dr5reg
-    provider: digitalocean
-    stagger_index: 0
-    host: nyc.upright.example.com
+shared:
+  sites:
+    - code: nyc
+      city: New York City
+      country: US
+      geohash: dr5reg
+      provider: digitalocean
+      host: nyc.upright.example.com
 
-  - code: ams
-    city: Amsterdam
-    country: NL
-    geohash: u17982
-    provider: digitalocean
-    stagger_index: 1
-    host: ams.upright.example.com
+    - code: ams
+      city: Amsterdam
+      country: NL
+      geohash: u17982
+      provider: digitalocean
+      host: ams.upright.example.com
 
-  - code: sfo
-    city: San Francisco
-    country: US
-    geohash: 9q8yy
-    provider: digitalocean
-    stagger_index: 2
-    host: sfo.upright.example.com
+    - code: sfo
+      city: San Francisco
+      country: US
+      geohash: 9q8yy
+      provider: digitalocean
+      host: sfo.upright.example.com
 ```
 
 Each site node identifies itself via the `SITE_CODE` environment variable.

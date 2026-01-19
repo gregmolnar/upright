@@ -41,10 +41,6 @@ env:
   tags:
     primary:
       SITE_CODE: primary
-      SITE_CITY: Primary
-      SITE_COUNTRY: US
-      SITE_GEOHASH: 9q8yy
-      SITE_PROVIDER: digitalocean
 
 volumes:
   - "<%= app_name %>_storage:/rails/storage"

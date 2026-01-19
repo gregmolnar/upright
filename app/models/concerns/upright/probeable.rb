@@ -108,14 +108,11 @@ module Upright::Probeable
           site_city: current_site.city,
           site_country: current_site.country,
           site_geohash: current_site.geohash,
-          site_provider: current_site.provider
-        }
+          site_provider: current_site.provider,
+          error_class: (error.class.name if error),
+          error_message: (error.message if error)
+        }.compact
       }
-
-      if error
-        log_data[:probe][:error_class] = error.class.name
-        log_data[:probe][:error_message] = error.message
-      end
 
       if logger.respond_to?(:struct)
         logger.struct(log_data)

@@ -7,9 +7,6 @@ class Upright::Configuration
   attr_accessor :user_agent
   attr_accessor :default_timeout
 
-  # Site configuration
-  attr_accessor :sites_config_path
-
   # Storage paths
   attr_accessor :prometheus_dir
   attr_accessor :video_storage_dir
@@ -45,7 +42,6 @@ class Upright::Configuration
     @video_storage_dir = nil
     @storage_state_dir = nil
     @frozen_record_path = nil
-    @sites_config_path = nil
     @probes_path = nil
     @authenticators_path = nil
 
@@ -113,10 +109,6 @@ class Upright::Configuration
 
   def frozen_record_path
     @frozen_record_path || Rails.root.join("config/probes")
-  end
-
-  def sites_config_path
-    @sites_config_path || Rails.root.join("config/sites.yml")
   end
 
   def probes_path

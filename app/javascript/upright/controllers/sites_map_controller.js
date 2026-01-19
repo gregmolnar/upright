@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 import * as L from "leaflet"
 
 export default class extends Controller {
-  static values = { nodes: Array }
+  static values = { sites: Array }
 
   connect() {
     const map = L.map(this.element, { scrollWheelZoom: false }).setView([30, 0], 2)
@@ -16,15 +16,15 @@ export default class extends Controller {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
     }).addTo(map)
 
-    for (const node of this.nodesValue) {
-      if (!node.lat || !node.lon) continue
+    for (const site of this.sitesValue) {
+      if (!site.lat || !site.lon) continue
 
-      L.marker([node.lat, node.lon])
+      L.marker([site.lat, site.lon])
         .addTo(map)
-        .bindPopup(`<strong>${node.hostname}</strong><br>${node.city}`)
+        .bindPopup(`<strong>${site.hostname}</strong><br>${site.city}`)
         .on("mouseover", function() { this.openPopup() })
         .on("mouseout", function() { this.closePopup() })
-        .on("click", () => window.location.href = node.url)
+        .on("click", () => window.location.href = site.url)
     }
   }
 }
