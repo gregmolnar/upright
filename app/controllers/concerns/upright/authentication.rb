@@ -8,7 +8,9 @@ module Upright::Authentication
 
   private
     def authenticate_user
-      if session[:user_info].present?
+      if Upright.configuration.auth_provider.nil?
+        Upright::Current.user = Upright::User.new(email: "anonymous", name: "Anonymous")
+      elsif session[:user_info].present?
         Upright::Current.user = Upright::User.new(session[:user_info])
       else
         redirect_to engine_routes.new_admin_session_url(default_url_options.merge(subdomain: Upright.configuration.admin_subdomain)), allow_other_host: true

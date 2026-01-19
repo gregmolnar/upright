@@ -137,14 +137,9 @@ Each site node identifies itself via the `SITE_SUBDOMAIN` environment variable.
 
 ### Authentication
 
-Upright supports OmniAuth for authentication. Configure your preferred provider:
-
-**Option 1: OpenID Connect (Logto, Keycloak, etc.)**
+Upright supports OpenID Connect for authentication (Logto, Keycloak, Duo, Okta, etc.):
 
 ```ruby
-# Gemfile
-gem "omniauth_openid_connect"
-
 # config/initializers/upright.rb
 Upright.configure do |config|
   config.auth_provider = :openid_connect
@@ -156,20 +151,7 @@ Upright.configure do |config|
 end
 ```
 
-**Option 2: Simple Identity (no external provider)**
-
-```ruby
-# Gemfile
-gem "omniauth-identity"
-
-# config/initializers/upright.rb
-Upright.configure do |config|
-  config.auth_provider = :identity
-  config.auth_options = { model: Upright::User }
-end
-```
-
-**Option 3: Disable authentication**
+To disable authentication (internal networks only):
 
 ```ruby
 Upright.configure do |config|

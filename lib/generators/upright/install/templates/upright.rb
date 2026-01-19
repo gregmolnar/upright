@@ -13,15 +13,13 @@ Upright.configure do |config|
   # Default probe timeout in seconds
   config.default_timeout = 10
 
-  # Playwright browser server URL (production only)
+  # Playwright browser server URL
   # config.playwright_server_url = ENV["PLAYWRIGHT_SERVER_URL"]
 
   # OpenTelemetry endpoint
   # config.otel_endpoint = ENV["OTEL_EXPORTER_OTLP_ENDPOINT"]
 
-  # Authentication (choose one):
-  #
-  # Option 1: OpenID Connect (Logto, Keycloak, etc.)
+  # Authentication via OpenID Connect (Logto, Keycloak, Duo, Okta, etc.)
   # config.auth_provider = :openid_connect
   # config.auth_options = {
   #   issuer: ENV["OIDC_ISSUER"],
@@ -29,9 +27,6 @@ Upright.configure do |config|
   #   client_secret: ENV["OIDC_CLIENT_SECRET"]
   # }
   #
-  # Option 2: Simple username/password
-  # config.auth_provider = :identity
-  #
-  # Option 3: No authentication (internal networks only)
+  # No authentication (internal networks only)
   config.auth_provider = nil
 end

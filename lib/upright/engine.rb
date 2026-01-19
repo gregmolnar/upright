@@ -106,6 +106,23 @@ class Upright::Engine < ::Rails::Engine
     Upright::ApplicationController.helper Rails.application.helpers
   end
 
+  # Print available URLs in development
+  config.after_initialize do
+    if Rails.env.development? && defined?(Rails::Server) && defined?(DEFAULT_URL_OPTIONS)
+      hostname = DEFAULT_URL_OPTIONS[:domain]
+      port = DEFAULT_URL_OPTIONS[:port]
+      protocol = DEFAULT_URL_OPTIONS[:protocol]
+
+      puts ""
+      puts "Upright is running at:"
+      puts "  Admin:  #{protocol}://app.#{hostname}:#{port}"
+      Upright.sites.each do |site|
+        puts "  #{site.city || site.code}:  #{protocol}://#{site.code}.#{hostname}:#{port}"
+      end
+      puts ""
+    end
+  end
+
   # Auto-load Playwright probes and authenticators from configured paths
   config.after_initialize do
     # Define namespaces for app-specific probes and authenticators
