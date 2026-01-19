@@ -29,10 +29,6 @@ class Upright::Configuration
   attr_accessor :prometheus_url
   attr_accessor :alert_webhook_url
 
-  # Production hostname (e.g., "myapp.example.com")
-  # Used to configure subdomain routing and allowed hosts
-  attr_accessor :hostname
-
   def initialize
     @service_name = "upright"
     @user_agent = "Upright/1.0"
@@ -50,8 +46,6 @@ class Upright::Configuration
 
     @auth_provider = nil
     @auth_options = {}
-
-    @hostname = nil
   end
 
   def admin_subdomain
@@ -60,39 +54,6 @@ class Upright::Configuration
 
   def site_subdomains
     Upright.sites.map { |site| site.code.to_s }
-  end
-
-  # Returns the domain portion of the hostname for subdomain routing
-  # Production: configured hostname (e.g., "myapp.example.com")
-  # Development: "{service_name}.localhost"
-  def domain
-    if Rails.env.production?
-      hostname || raise(ConfigurationError, "hostname must be configured for production")
-    else
-      "#{service_name}.localhost"
-    end
-  end
-
-  # Returns default URL options hash for Rails routing
-  # Use in config/initializers/0_url_options.rb:
-  #   Rails.application.configure do
-  #     config.action_controller.default_url_options = Upright.config.default_url_options
-  #   end
-  def default_url_options
-    if Rails.env.production?
-      { protocol: "https", host: "#{admin_subdomain}.#{domain}", domain: domain }
-    else
-      { protocol: "http", host: "#{admin_subdomain}.#{domain}", port: 3000, domain: domain }
-    end
-  end
-
-  # Returns allowed hosts configuration for Rails
-  # Use in config/initializers/0_url_options.rb:
-  #   Rails.application.configure do
-  #     config.hosts = Upright.config.allowed_hosts
-  #   end
-  def allowed_hosts
-    [ /.*\.#{Regexp.escape(domain)}/, domain ]
   end
 
   def prometheus_dir

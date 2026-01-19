@@ -438,7 +438,7 @@
   }
 
   /* Map */
-  #nodes-map {
+  #sites-map {
     border-radius: 0.25rem;
     box-shadow: var(--shadow);
     height: 400px;
@@ -804,7 +804,7 @@
     }
 
     /* Map */
-    #nodes-map {
+    #sites-map {
       height: 300px;
     }
 
@@ -866,7 +866,7 @@
       border-radius: 0;
     }
 
-    #nodes-map {
+    #sites-map {
       height: 250px;
     }
 

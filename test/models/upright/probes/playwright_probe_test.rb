@@ -13,7 +13,7 @@ class Upright::Probes::PlaywrightProbeTest < ActiveSupport::TestCase
 
   test "check_and_record_later enqueues job with stagger delay" do
     with_test_adapter do
-      with_env("SITE_CODE" => "sfo") do
+      with_env("SITE_SUBDOMAIN" => "sfo") do
         assert_enqueued_with job: Upright::ProbeCheckJob, args: [ "Upright::Probes::PlaywrightProbeTest::StaggeredPlaywrightProbe" ] do
           StaggeredPlaywrightProbe.check_and_record_later
         end
@@ -28,7 +28,7 @@ class Upright::Probes::PlaywrightProbeTest < ActiveSupport::TestCase
 
   test "check_and_record_later enqueues job with zero delay for first site" do
     with_test_adapter do
-      with_env("SITE_CODE" => "ams") do
+      with_env("SITE_SUBDOMAIN" => "ams") do
         assert_enqueued_with job: Upright::ProbeCheckJob, args: [ "Upright::Probes::PlaywrightProbeTest::StaggeredPlaywrightProbe" ] do
           StaggeredPlaywrightProbe.check_and_record_later
         end
@@ -60,7 +60,7 @@ class Upright::Probes::PlaywrightProbeTest < ActiveSupport::TestCase
 
   test "running a Playwright probe" do
     skip_unless_playwright_running
-    with_env("SITE_CODE" => "ams") do
+    with_env("SITE_SUBDOMAIN" => "ams") do
       probe = TestPlaywrightProbe.new
 
       result = probe.perform_check
@@ -82,7 +82,7 @@ class Upright::Probes::PlaywrightProbeTest < ActiveSupport::TestCase
 
   test "failing Playwright probe captures video artifact" do
     skip_unless_playwright_running
-    with_env("SITE_CODE" => "ams") do
+    with_env("SITE_SUBDOMAIN" => "ams") do
       probe = FailingPlaywrightProbe.new
       probe.check_and_record
 
@@ -99,7 +99,7 @@ class Upright::Probes::PlaywrightProbeTest < ActiveSupport::TestCase
 
   test "Playwright probe captures log artifact with HTTP responses" do
     skip_unless_playwright_running
-    with_env("SITE_CODE" => "ams") do
+    with_env("SITE_SUBDOMAIN" => "ams") do
       probe = TestPlaywrightProbe.new
       probe.check_and_record
 

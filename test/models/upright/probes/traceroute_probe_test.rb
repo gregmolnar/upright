@@ -18,7 +18,7 @@ class Upright::Probes::TracerouteProbeTest < ActiveSupport::TestCase
   test "running a traceroute probe" do
     WebMock.allow_net_connect!
     stub_ip_api_batch
-    with_env("SITE_CODE" => "ams") do
+    with_env("SITE_SUBDOMAIN" => "ams") do
       probe = Upright::Probes::TracerouteProbe.first
 
       result = probe.check
@@ -30,7 +30,7 @@ class Upright::Probes::TracerouteProbeTest < ActiveSupport::TestCase
   test "check_and_record creates a probe result" do
     WebMock.allow_net_connect!
     stub_ip_api_batch
-    with_env("SITE_CODE" => "ams") do
+    with_env("SITE_SUBDOMAIN" => "ams") do
       probe = Upright::Probes::TracerouteProbe.first
 
       assert_difference "Upright::ProbeResult.count", 1 do
@@ -45,11 +45,11 @@ class Upright::Probes::TracerouteProbeTest < ActiveSupport::TestCase
   end
 
   test "stagger_delay is configured" do
-    with_env("SITE_CODE" => "ams") do
+    with_env("SITE_SUBDOMAIN" => "ams") do
       assert_equal 0.seconds, Upright::Probes::TracerouteProbe.stagger_delay
     end
 
-    with_env("SITE_CODE" => "nyc") do
+    with_env("SITE_SUBDOMAIN" => "nyc") do
       assert_equal 3.seconds, Upright::Probes::TracerouteProbe.stagger_delay
     end
   end

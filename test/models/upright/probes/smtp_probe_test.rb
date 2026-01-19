@@ -68,11 +68,11 @@ class Upright::Probes::SMTPProbeTest < ActiveSupport::TestCase
   end
 
   test "stagger_delay is configured" do
-    with_env("SITE_CODE" => "ams") do
+    with_env("SITE_SUBDOMAIN" => "ams") do
       assert_equal 0.seconds, Upright::Probes::SMTPProbe.stagger_delay
     end
 
-    with_env("SITE_CODE" => "nyc") do
+    with_env("SITE_SUBDOMAIN" => "nyc") do
       assert_equal 3.seconds, Upright::Probes::SMTPProbe.stagger_delay
     end
   end

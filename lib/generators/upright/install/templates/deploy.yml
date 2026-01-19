@@ -40,7 +40,7 @@ env:
     - RAILS_MASTER_KEY
   tags:
     primary:
-      SITE_CODE: primary
+      SITE_SUBDOMAIN: primary
 
 volumes:
   - "<%= app_name %>_storage:/rails/storage"

@@ -45,7 +45,7 @@ module Upright
     end
 
     def current_site
-      find_site(ENV["SITE_CODE"]) || sites.first
+      find_site(ENV["SITE_SUBDOMAIN"]) || sites.first
     end
 
     private

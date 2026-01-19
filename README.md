@@ -132,7 +132,7 @@ shared:
       host: sfo.upright.example.com
 ```
 
-Each site node identifies itself via the `SITE_CODE` environment variable.
+Each site node identifies itself via the `SITE_SUBDOMAIN` environment variable.
 
 ### Authentication
 
@@ -369,19 +369,19 @@ servers:
       - nyc.upright.example.com
     env:
       tags:
-        SITE_CODE: nyc
+        SITE_SUBDOMAIN: nyc
 
     hosts:
       - ams.upright.example.com
     env:
       tags:
-        SITE_CODE: ams
+        SITE_SUBDOMAIN: ams
 
     hosts:
       - sfo.upright.example.com
     env:
       tags:
-        SITE_CODE: sfo
+        SITE_SUBDOMAIN: sfo
 
 registry:
   server: ghcr.io
@@ -423,12 +423,12 @@ servers:
       - monitoring.example.com
     env:
       tags:
-        SITE_CODE: primary
+        SITE_SUBDOMAIN: primary
 
 env:
   clear:
     RAILS_ENV: production
-    SITE_CODE: primary
+    SITE_SUBDOMAIN: primary
 
 accessories:
   playwright:

@@ -15,7 +15,7 @@ class ProbeCheckJobTest < ActiveSupport::TestCase
   end
 
   test "applies stagger delay before enqueue" do
-    with_env("SITE_CODE" => "nyc") do
+    with_env("SITE_SUBDOMAIN" => "nyc") do
       job = Upright::ProbeCheckJob.new("Upright::Probes::HTTPProbe", "Example")
       job.enqueue
 
