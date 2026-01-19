@@ -36,14 +36,14 @@ end
 UPRIGHT_HOSTNAME = if Rails.env.production?
   Upright.configuration.hostname
 else
-  "#{Rails.application.class.module_parent_name.underscore.dasherize}.localhost"
-end.freeze
+  "#{Rails.application.name}.localhost"
+end
 
 DEFAULT_URL_OPTIONS = if Rails.env.production?
   { protocol: "https", host: "app.#{UPRIGHT_HOSTNAME}", domain: UPRIGHT_HOSTNAME }
 else
   { protocol: "http", host: "app.#{UPRIGHT_HOSTNAME}", port: 3000, domain: UPRIGHT_HOSTNAME }
-end.freeze
+end
 
 Rails.application.configure do
   config.action_controller.default_url_options = DEFAULT_URL_OPTIONS
