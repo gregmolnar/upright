@@ -14,7 +14,7 @@ module Upright
     end
 
     def host
-      "#{code}.#{Upright.configuration.hostname}"
+      URI.parse(url).host
     end
 
     def provider

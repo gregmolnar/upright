@@ -6,9 +6,8 @@ Upright.configure do |config|
   config.service_name = "<%= Rails.application.class.module_parent_name.underscore %>"
   config.user_agent = "Upright/1.0"
 
-  # Production hostname for subdomain routing (e.g., "myapp.example.com")
-  # Can also be set via UPRIGHT_HOSTNAME environment variable
-  # config.hostname = "myapp.example.com"
+  # Hostname for subdomain routing
+  config.hostname = "<%= app_name %>.localhost"
 
   # Default probe timeout in seconds
   config.default_timeout = 10
