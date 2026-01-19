@@ -26,8 +26,10 @@ class Upright::Engine < ::Rails::Engine
     app.config.solid_queue.connects_to = { database: { writing: :queue, reading: :queue } }
   end
 
-  # Disable Mission Control HTTP basic auth (engine handles authentication)
+
+  # Configure Mission Control to use engine's authenticated controller
   initializer "upright.mission_control" do
+    MissionControl::Jobs.base_controller_class = "Upright::ApplicationController"
     MissionControl::Jobs.http_basic_auth_enabled = false
   end
 
