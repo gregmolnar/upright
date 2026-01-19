@@ -5,12 +5,8 @@ module Upright
 
       desc "Install Upright engine into your application"
 
-      def copy_url_options
-        template "url_options.rb", "config/initializers/0_url_options.rb"
-      end
-
       def copy_initializer
-        template "upright.rb", "config/initializers/upright.rb"
+        template "upright.rb", "config/initializers/0_upright.rb"
       end
 
       def copy_sites_config
@@ -47,9 +43,9 @@ module Upright
         say "  2. Configure your servers in config/deploy.yml"
         say "  3. Configure sites in config/sites.yml"
         say "  4. Add probes in config/probes/*.yml"
-        say "  5. Configure authentication in config/initializers/upright.rb"
+        say "  5. Configure authentication in config/initializers/0_upright.rb"
         say ""
-        say "For production, review config/initializers/upright.rb and update:"
+        say "For production, review config/initializers/0_upright.rb and update:"
         say "  config.hostname = \"honcho-upright.com\""
         say ""
         say "Start the development server with: bin/dev"

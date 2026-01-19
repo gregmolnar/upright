@@ -34,7 +34,7 @@ bin/dev
 
 Visit http://app.my-upright.localhost:3000 to see your Upright instance.
 
-> **Note**: Upright uses subdomain-based routing. The `app` subdomain is the admin interface, while site-specific subdomains (e.g., `nyc`, `ams`) show probe results for each location. The `.localhost` TLD resolves to 127.0.0.1 on most systems.
+> **Note**: Upright uses subdomain-based routing. The `app` subdomain is the admin interface, while site-specific subdomains (e.g., `nyc`, `lon`) show probe results for each location. The `.localhost` TLD resolves to 127.0.0.1 on most systems.
 
 ### What the Generator Creates
 
