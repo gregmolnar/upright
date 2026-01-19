@@ -50,10 +50,16 @@ module Upright
 
     private
       def load_sites
-        config = Rails.application.config_for(:sites)
+        sites_config_path = Rails.root.join("config/sites.yml")
 
-        config[:sites].map.with_index do |site_config, index|
-          Site.new(stagger_index: index, **site_config)
+        if sites_config_path.exist?
+          config = Rails.application.config_for(:sites)
+
+          config[:sites].map.with_index do |site_config, index|
+            Site.new(stagger_index: index, **site_config)
+          end
+        else
+          []
         end
       end
   end

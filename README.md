@@ -1,12 +1,13 @@
 # Upright
 
-Upright is a self-hosted synthetic monitoring system. It provides a framework for running health check probes from multiple geographic locations and reporting metrics via Prometheus. Alerts can then be configured with AlertManager.
+Upright is a self-hosted synthetic monitoring system. It provides a framework for running health check probes from multiple geographic sites and reporting metrics via Prometheus. Alerts can then be configured with AlertManager.
 
 ## Features
 
 - **Playwright Probes** - Browser-based probes for complex user flows
 - **HTTP Probes** - Simple HTTP health checks with configurable expected status codes
 - **SMTP Probes** - EHLO handshake verification for mail servers
+- **Traceroute Probes** - Network path analysis with hop-by-hop latency tracking
 - **Multi-Site Support** - Run probes from multiple geographic locations with staggered scheduling
 - **Observability** - Built-in Prometheus metrics, OpenTelemetry tracing, and AlertManager support
 - **Configurable Authentication** - OmniAuth integration with support for any OIDC provider
@@ -22,13 +23,13 @@ rails new my-upright --database=sqlite3 --skip-test
 cd my-upright
 bundle add upright --github=basecamp/upright
 bin/rails generate upright:install
-bin/rails db:migrate
+bin/rails db:setup
 ```
 
 Start the server:
 
 ```bash
-bin/rails server
+bin/dev
 ```
 
 Visit http://app.my-upright.localhost:3000 to see your Upright instance.
