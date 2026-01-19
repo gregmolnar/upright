@@ -1,14 +1,13 @@
 # Upright Site Configuration
 # Define the geographic locations where probes run
+# Host is automatically inferred as {code}.{hostname}
 
 shared:
   sites:
-    - code: primary
-      city: "Your City"
-      country: US
-      geohash: ""
-      provider: ""
-      host: localhost
+    - code: lon
+      city: London
+      country: GB
+      geohash: gcpvj0
 
 # Multi-site example:
 #
@@ -19,11 +18,9 @@ shared:
 #       country: NL
 #       geohash: u17982
 #       provider: digitalocean
-#       host: ams.example.com
 #
 #     - code: nyc
 #       city: New York City
 #       country: US
 #       geohash: dr5reg
 #       provider: digitalocean
-#       host: nyc.example.com

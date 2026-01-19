@@ -6,6 +6,7 @@ class Upright::Configuration
   attr_accessor :service_name
   attr_accessor :user_agent
   attr_accessor :default_timeout
+  attr_accessor :hostname
 
   # Storage paths
   attr_accessor :prometheus_dir

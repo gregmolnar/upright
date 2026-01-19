@@ -2,16 +2,19 @@ require "geohash_ruby"
 
 module Upright
   class Site
-    attr_reader :code, :city, :country, :geohash, :host, :stagger_index
+    attr_reader :code, :city, :country, :geohash, :stagger_index
 
-    def initialize(code:, city: nil, country: nil, geohash: nil, provider: nil, host: nil, stagger_index: 0)
+    def initialize(code:, city: nil, country: nil, geohash: nil, provider: nil, stagger_index: 0)
       @code = code.to_sym
       @city = city
       @country = country
       @geohash = geohash
       @provider = provider
-      @host = host
       @stagger_index = stagger_index
+    end
+
+    def host
+      "#{code}.#{Upright.configuration.hostname}"
     end
 
     def provider
