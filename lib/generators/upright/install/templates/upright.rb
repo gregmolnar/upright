@@ -16,9 +16,6 @@ Upright.configure do |config|
   # Site configuration file path
   config.sites_config_path = Rails.root.join("config/sites.yml")
 
-  # Probe definitions path (for FrozenRecord)
-  config.frozen_record_path = Rails.root.join("config/probes")
-
   # Playwright browser server URL (production only)
   # config.playwright_server_url = ENV["PLAYWRIGHT_SERVER_URL"]
 

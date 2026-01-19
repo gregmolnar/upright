@@ -1,17 +1,14 @@
 class Playwright::Authenticator::<%= class_name %> < Upright::Playwright::Authenticator::Base
+  def signin_redirect_url = "https://example.com/dashboard"
+  def signin_path = "/login"
+  def service_name = :<%= file_name %>
+
   def authenticate
     # Your authentication logic here
     # page.goto("https://example.com/login")
-    # page.fill('[name="email"]', credentials[:email])
-    # page.fill('[name="password"]', credentials[:password])
-    # page.click('button[type="submit"]')
-    # page.wait_for_url("**/dashboard**")
+    # page.get_by_label("Email").fill(credentials.<%= file_name %>.email)
+    # page.get_by_label("Password").fill(credentials.<%= file_name %>.password)
+    # page.get_by_role("button", name: "Sign in").click
     raise NotImplementedError, "Implement the authenticate method for <%= class_name %>"
-  end
-
-  private
-
-  def credentials
-    Rails.application.credentials.<%= file_name %>
   end
 end

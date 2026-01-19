@@ -42,11 +42,13 @@ The `upright:install` generator creates:
 - `config/initializers/0_url_options.rb` - Subdomain routing configuration
 - `config/initializers/upright.rb` - Engine configuration
 - `config/sites.yml` - Site/location definitions
-- `config/probes/http_probes.yml` - HTTP probe definitions
-- `config/probes/smtp_probes.yml` - SMTP probe definitions
 - `config/prometheus/prometheus.yml` - Prometheus configuration
 - `config/alertmanager/alertmanager.yml` - AlertManager configuration
 - `config/otel_collector.yml` - OpenTelemetry Collector configuration
+- `probes/` - Directory for all probe files
+- `probes/authenticators/` - Directory for authenticator classes
+- `probes/http_probes.yml` - HTTP probe definitions
+- `probes/smtp_probes.yml` - SMTP probe definitions
 
 It also mounts the engine at `/` in your routes.
 
@@ -181,7 +183,7 @@ end
 
 ### HTTP Probes
 
-Add probes to `config/probes/http_probes.yml`:
+Add probes to `probes/http_probes.yml`:
 
 ```yaml
 - name: Main Website
@@ -199,7 +201,7 @@ Add probes to `config/probes/http_probes.yml`:
 
 ### SMTP Probes
 
-Add probes to `config/probes/smtp_probes.yml`:
+Add probes to `probes/smtp_probes.yml`:
 
 ```yaml
 - name: Primary Mail Server
@@ -220,7 +222,7 @@ bin/rails generate upright:playwright_probe MyServiceAuth
 This creates a probe class:
 
 ```ruby
-# app/models/probes/playwright/my_service_auth_probe.rb
+# probes/my_service_auth_probe.rb
 class Probes::Playwright::MyServiceAuthProbe < Upright::Probes::Playwright::Base
   # Optionally authenticate before running
   # authenticate_with_form :my_service
@@ -239,20 +241,17 @@ end
 For probes that require authentication, create an authenticator:
 
 ```ruby
-# app/models/playwright/authenticator/my_service.rb
+# probes/authenticators/my_service.rb
 class Playwright::Authenticator::MyService < Upright::Playwright::Authenticator::Base
+  def signin_redirect_url = "https://app.example.com/dashboard"
+  def signin_path = "/login"
+  def service_name = :my_service
+
   def authenticate
     page.goto("https://app.example.com/login")
-    page.fill('[name="email"]', credentials[:email])
-    page.fill('[name="password"]', credentials[:password])
-    page.click('button[type="submit"]')
-    page.wait_for_url("**/dashboard**")
-  end
-
-  private
-
-  def credentials
-    Rails.application.credentials.my_service
+    page.get_by_label("Email").fill(credentials.my_service.email)
+    page.get_by_label("Password").fill(credentials.my_service.password)
+    page.get_by_role("button", name: "Sign in").click
   end
 end
 ```

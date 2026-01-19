@@ -7,12 +7,12 @@ module Upright
         desc: "Generate an authenticator class for this probe"
 
       def create_probe_file
-        template "probe.rb.tt", File.join("app/models/probes/playwright", "#{file_name}_probe.rb")
+        template "probe.rb.tt", File.join("probes", "#{file_name}_probe.rb")
       end
 
       def create_authenticator_file
         if options[:with_authenticator]
-          template "authenticator.rb.tt", File.join("app/models/playwright/authenticator", "#{file_name}.rb")
+          template "authenticator.rb.tt", File.join("probes/authenticators", "#{file_name}.rb")
         end
       end
 

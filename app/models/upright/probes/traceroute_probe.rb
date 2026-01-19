@@ -1,10 +1,9 @@
 class Upright::Probes::TracerouteProbe < FrozenRecord::Base
   include Upright::Probeable
+  include Upright::ProbeYamlSource
   include Upright::Traceroute::OtelTracing
 
   stagger_by_site 3.seconds
-
-  # Probes are loaded from config/upright/probes/traceroute_probes.yml
 
   TIMEOUT = 60.seconds
   MAX_HOPS = Upright::Traceroute::Result::MAX_HOPS

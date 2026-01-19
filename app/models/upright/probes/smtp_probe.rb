@@ -2,10 +2,9 @@ require "net/smtp"
 
 class Upright::Probes::SMTPProbe < FrozenRecord::Base
   include Upright::Probeable
+  include Upright::ProbeYamlSource
 
   stagger_by_site 3.seconds
-
-  self.backend = FrozenRecord::Backends::Yaml
 
   attr_accessor :smtp_log
 

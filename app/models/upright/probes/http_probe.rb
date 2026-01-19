@@ -1,11 +1,10 @@
 class Upright::Probes::HTTPProbe < FrozenRecord::Base
   include Upright::Probeable
+  include Upright::ProbeYamlSource
 
   stagger_by_site 3.seconds
 
   DEFAULT_EXPECTED_STATUS = 200..399
-
-  self.backend = FrozenRecord::Backends::Yaml
 
   attr_accessor :last_response
 

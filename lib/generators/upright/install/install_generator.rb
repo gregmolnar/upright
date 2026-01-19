@@ -18,9 +18,10 @@ module Upright
       end
 
       def create_probe_directories
-        empty_directory "config/probes"
-        template "http_probes.yml", "config/probes/http_probes.yml"
-        template "smtp_probes.yml", "config/probes/smtp_probes.yml"
+        empty_directory "probes"
+        empty_directory "probes/authenticators"
+        template "http_probes.yml", "probes/http_probes.yml"
+        template "smtp_probes.yml", "probes/smtp_probes.yml"
       end
 
       def copy_observability_configs

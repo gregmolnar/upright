@@ -16,6 +16,10 @@ class Upright::Configuration
   attr_accessor :storage_state_dir
   attr_accessor :frozen_record_path
 
+  # Probe and authenticator paths (for auto-loading app-specific code)
+  attr_writer :probes_path
+  attr_writer :authenticators_path
+
   # Playwright
   attr_accessor :playwright_server_url
 
@@ -42,6 +46,8 @@ class Upright::Configuration
     @storage_state_dir = nil
     @frozen_record_path = nil
     @sites_config_path = nil
+    @probes_path = nil
+    @authenticators_path = nil
 
     @playwright_server_url = ENV["PLAYWRIGHT_SERVER_URL"]
     @otel_endpoint = ENV["OTEL_EXPORTER_OTLP_ENDPOINT"]
@@ -111,6 +117,14 @@ class Upright::Configuration
 
   def sites_config_path
     @sites_config_path || Rails.root.join("config/sites.yml")
+  end
+
+  def probes_path
+    @probes_path || Rails.root.join("probes")
+  end
+
+  def authenticators_path
+    @authenticators_path || Rails.root.join("probes/authenticators")
   end
 
   private

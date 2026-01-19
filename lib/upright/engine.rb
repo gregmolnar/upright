@@ -4,6 +4,22 @@ class Upright::Engine < ::Rails::Engine
   # Add concerns to autoload paths
   config.autoload_paths << root.join("app/models/concerns")
 
+  # Session store configuration
+  initializer "upright.session_store", before: :load_config_initializers do |app|
+    app.config.session_store :cookie_store,
+      key: "_upright_session",
+      domain: :all,
+      same_site: :lax,
+      secure: Rails.env.production?
+  end
+
+  # Filter sensitive parameters from logs
+  initializer "upright.filter_parameters", before: :load_config_initializers do |app|
+    app.config.filter_parameters += [
+      :passw, :email, :secret, :token, :_key, :crypt, :salt, :certificate, :otp, :ssn
+    ]
+  end
+
   # Configure Solid Queue as the job backend
   initializer "upright.solid_queue", before: :set_configs_for_current_railties do |app|
     app.config.active_job.queue_adapter = :solid_queue
@@ -56,9 +72,61 @@ class Upright::Engine < ::Rails::Engine
     Upright::Tracing.configure
   end
 
+  # Start metrics server when Solid Queue runs standalone (not embedded in Puma)
+  initializer "upright.solid_queue_metrics" do
+    SolidQueue.on_start do
+      unless ENV["SOLID_QUEUE_IN_PUMA"]
+        ENV["PROMETHEUS_EXPORTER_PORT"] ||= "9394"
+        ENV["PROMETHEUS_EXPORTER_LOG_REQUESTS"] = "false"
+        Yabeda::Prometheus::Exporter.start_metrics_server!
+      end
+    end
+  end
+
+  # Add Duration#in_ms helper for Playwright timeouts
+  initializer "upright.duration_extension" do
+    ActiveSupport::Duration.class_eval do
+      def in_ms
+        (to_f * 1000).to_i
+      end
+    end
+  end
+
+  # Silence Ethon's verbose debug output to stdout
+  # By default, Ethon's debug callback prints curl verbose messages which pollutes logs
+  initializer "upright.ethon" do
+    Ethon::Easy::Callbacks.module_eval do
+      def debug_callback
+        @debug_callback ||= proc { |handle, type, data, size, udata|
+          message = data.read_string(size)
+          @debug_info.add(type, message)
+          0
+        }
+      end
+    end
+  end
+
   # Allow host app to override views
   config.to_prepare do
     Upright::ApplicationController.helper Rails.application.helpers if defined?(Rails.application)
+  end
+
+  # Auto-load Playwright probes and authenticators from configured paths
+  # This runs after eager loading so engine classes are available
+  config.after_initialize do
+    # Define namespaces for app-specific probes and authenticators
+    Object.const_set(:Probes, Module.new { const_set(:Playwright, Module.new) }) unless defined?(::Probes)
+    Object.const_set(:Playwright, Module.new { const_set(:Authenticator, Module.new) }) unless defined?(::Playwright)
+
+    probes_path = Upright.configuration.probes_path
+    if probes_path && Dir.exist?(probes_path)
+      Dir[probes_path.join("*_probe.rb")].sort.each { |file| require file }
+    end
+
+    authenticators_path = Upright.configuration.authenticators_path
+    if authenticators_path && Dir.exist?(authenticators_path)
+      Dir[authenticators_path.join("*.rb")].sort.each { |file| require file }
+    end
   end
 
   # Add engine migrations to host app
