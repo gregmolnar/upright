@@ -17,3 +17,8 @@ traceroute_artifact:
   name: artifacts
   record: traceroute_probe_result (Upright::ProbeResult)
   blob: traceroute_json
+
+playwright_video_artifact:
+  name: artifacts
+  record: playwright_probe_result (Upright::ProbeResult)
+  blob: playwright_video

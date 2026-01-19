@@ -37,3 +37,11 @@ traceroute_json:
   service_name: local
   byte_size: 14
   checksum: <%= Digest::MD5.base64digest('{"test": true}') %>
+
+playwright_video:
+  key: playwright_video_key
+  filename: recording.webm
+  content_type: video/webm
+  service_name: local
+  byte_size: 100
+  checksum: <%= Digest::MD5.base64digest("fake video content") %>
