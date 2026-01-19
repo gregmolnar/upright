@@ -117,8 +117,15 @@ class Upright::Engine < ::Rails::Engine
   # This runs after eager loading so engine classes are available
   config.after_initialize do
     # Define namespaces for app-specific probes and authenticators
-    Object.const_set(:Probes, Module.new { const_set(:Playwright, Module.new) }) unless defined?(::Probes)
-    Object.const_set(:Playwright, Module.new { const_set(:Authenticator, Module.new) }) unless defined?(::Playwright)
+    module ::Probes
+      module Playwright
+      end
+    end
+
+    module ::Playwright
+      module Authenticator
+      end
+    end
 
     probes_path = Upright.configuration.probes_path
     if probes_path && Dir.exist?(probes_path)
