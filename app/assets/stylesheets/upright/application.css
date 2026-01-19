@@ -15,10 +15,11 @@
   --text-large: 1.25rem;
   --text-x-large: 1.5rem;
 
-  /* OKLCH colors: Light mode */
+  /* OKLCH colors: Primitives */
   --lch-black: 0% 0 0;
   --lch-white: 100% 0 0;
   --lch-canvas: var(--lch-white);
+  --lch-canvas-deep: var(--lch-white);
   --lch-ink-inverted: var(--lch-white);
 
   --lch-ink-darkest: 26% 0.05 264;
@@ -35,7 +36,7 @@
   --lch-green-dark: 55% 0.162 147;
   --lch-red-dark: 59% 0.19 38;
 
-  /* Colors: Named */
+  /* Colors: Semantic */
   --color-black: oklch(var(--lch-black));
   --color-white: oklch(var(--lch-white));
   --color-canvas: oklch(var(--lch-canvas));
@@ -70,8 +71,11 @@
 
   /* Grain */
   --grain-opacity: 0.04;
+}
 
-  @media (prefers-color-scheme: dark) {
+/* Dark mode: Update primitive values only */
+@media (prefers-color-scheme: dark) {
+  :root {
     --lch-canvas: 18% 0.04 250;
     --lch-canvas-deep: 12% 0.035 255;
     --lch-ink-inverted: var(--lch-black);
@@ -136,8 +140,10 @@
     letter-spacing: -0.01em;
     line-height: 1.5;
     min-height: 100dvh;
+  }
 
-    @media (prefers-color-scheme: dark) {
+  @media (prefers-color-scheme: dark) {
+    body {
       background: linear-gradient(
         180deg,
         oklch(var(--lch-canvas)) 0%,
@@ -601,10 +607,12 @@
 
   /* Select inputs */
   .input--select {
+    --select-arrow: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m12 19.5c-.7 0-1.3-.3-1.7-.8l-9.8-11.1c-.7-.8-.6-1.9.2-2.6.8-.6 1.9-.6 2.5.2l8.6 9.8c0 .1.2.1.4 0l8.6-9.8c.7-.8 1.8-.9 2.6-.2s.9 1.8.2 2.6l-9.8 11.1c-.4.5-1.1.8-1.7.8z' fill='%23000'/%3E%3C/svg%3E");
+
     -webkit-appearance: none;
     appearance: none;
     background-color: var(--color-canvas);
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m12 19.5c-.7 0-1.3-.3-1.7-.8l-9.8-11.1c-.7-.8-.6-1.9.2-2.6.8-.6 1.9-.6 2.5.2l8.6 9.8c0 .1.2.1.4 0l8.6-9.8c.7-.8 1.8-.9 2.6-.2s.9 1.8.2 2.6l-9.8 11.1c-.4.5-1.1.8-1.7.8z' fill='%23000'/%3E%3C/svg%3E");
+    background-image: var(--select-arrow);
     background-position: center right 0.75em;
     background-repeat: no-repeat;
     background-size: 0.5em;
@@ -626,13 +634,15 @@
       outline-offset: 1px;
     }
 
-    @media (prefers-color-scheme: dark) {
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m12 19.5c-.7 0-1.3-.3-1.7-.8l-9.8-11.1c-.7-.8-.6-1.9.2-2.6.8-.6 1.9-.6 2.5.2l8.6 9.8c0 .1.2.1.4 0l8.6-9.8c.7-.8 1.8-.9 2.6-.2s.9 1.8.2 2.6l-9.8 11.1c-.4.5-1.1.8-1.7.8z' fill='%23fff'/%3E%3C/svg%3E");
-    }
-
     option {
       background-color: var(--color-canvas);
       color: var(--color-ink);
+    }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .input--select {
+      --select-arrow: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m12 19.5c-.7 0-1.3-.3-1.7-.8l-9.8-11.1c-.7-.8-.6-1.9.2-2.6.8-.6 1.9-.6 2.5.2l8.6 9.8c0 .1.2.1.4 0l8.6-9.8c.7-.8 1.8-.9 2.6-.2s.9 1.8.2 2.6l-9.8 11.1c-.4.5-1.1.8-1.7.8z' fill='%23fff'/%3E%3C/svg%3E");
     }
   }
 
@@ -710,5 +720,164 @@
   .pagination-info {
     color: var(--color-ink-dark);
     font-size: var(--text-small);
+  }
+
+  /* Responsive: Content breakpoint (~140ch) */
+  @media (max-width: 140ch) {
+    /* Container: Stack sidebar and main vertically */
+    .container {
+      flex-direction: column;
+    }
+
+    aside {
+      min-width: auto;
+      width: 100%;
+    }
+
+    aside ul {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 0.25em;
+    }
+
+    aside li {
+      margin-bottom: 0;
+    }
+
+    aside a {
+      padding: 0.4em 0.6em;
+      font-size: var(--text-x-small);
+    }
+
+    /* Filters: Side by side */
+    .filters form {
+      gap: calc(var(--inline-space) * 0.75);
+    }
+
+    .filters label {
+      display: none;
+    }
+
+    .filters .input--select {
+      flex: 1;
+      min-width: 0;
+    }
+
+    /* Tables: Compact */
+    th, td {
+      padding: calc(var(--block-space) * 0.5) calc(var(--block-space) * 0.5);
+      font-size: var(--text-x-small);
+    }
+
+    /* Hide Duration column (3rd column) */
+    th:nth-child(3),
+    td:nth-child(3) {
+      display: none;
+    }
+
+    /* Hide probe target URL */
+    .probe-target {
+      display: none;
+    }
+
+    .probe-cell {
+      gap: 0.25em;
+    }
+
+    /* Artifact popover: Fuller screen */
+    .artifact-popover .artifact-content {
+      width: calc(100vw - var(--block-space) * 2);
+      height: calc(100vh - var(--block-space) * 2);
+      left: 50%;
+      top: 50%;
+    }
+
+    /* Pagination */
+    .pagination {
+      flex-wrap: wrap;
+      gap: var(--block-space);
+    }
+
+    /* Map */
+    #nodes-map {
+      height: 300px;
+    }
+
+    /* Page content reduced padding */
+    .page-content {
+      padding: var(--block-space);
+    }
+  }
+
+  /* Responsive: Header breakpoint (~85ch) */
+  @media (max-width: 85ch) {
+    .page-header {
+      flex-direction: column;
+      align-items: stretch;
+      gap: var(--block-space);
+      padding: var(--block-space);
+    }
+
+    .header-left {
+      justify-content: space-between;
+    }
+
+    .header-nav {
+      flex-wrap: wrap;
+      gap: calc(var(--inline-space) * 2);
+    }
+
+    .user-info {
+      justify-content: space-between;
+      padding-top: var(--block-space);
+      border-top: var(--border);
+    }
+  }
+
+  /* Responsive: Compact breakpoint (~55ch) */
+  @media (max-width: 55ch) {
+    .page-header {
+      padding: calc(var(--block-space) * 0.75);
+    }
+
+    .header-nav {
+      gap: var(--inline-space);
+    }
+
+    .nav-link {
+      font-size: calc(var(--text-x-small) * 0.9);
+    }
+
+    h1 {
+      font-size: var(--text-large);
+    }
+
+    /* Artifact popover: Full screen */
+    .artifact-popover .artifact-content {
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      transform: none;
+      border-radius: 0;
+    }
+
+    #nodes-map {
+      height: 250px;
+    }
+
+    /* Hide Time column (4th column) */
+    th:nth-child(4),
+    td:nth-child(4) {
+      display: none;
+    }
+
+    /* Tighter table cells */
+    th, td {
+      padding: calc(var(--block-space) * 0.4) calc(var(--block-space) * 0.4);
+    }
+
+    .probe-name {
+      word-break: break-word;
+    }
   }
 }
