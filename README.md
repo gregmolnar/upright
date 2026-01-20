@@ -262,45 +262,16 @@ This is not required for HTTP or Playwright probes.
 
 ## DNS Setup
 
-### Single Site
-
-For a single monitoring node, create an A record pointing to your server:
-
-```
-upright.example.com    A    203.0.113.10
-```
-
-### Multi-Site
-
 For multiple geographic locations, use subdomains for each site. Each subdomain points to a different server:
 
 ```
-; Primary dashboard (optional - can point to any node)
+; Primary dashboard
 app.upright.example.com      A    203.0.113.10
 
 ; Monitoring nodes
 ams.upright.example.com      A    203.0.113.10    ; Amsterdam
 nyc.upright.example.com      A    198.51.100.20   ; New York
 sfo.upright.example.com      A    192.0.2.30      ; San Francisco
-```
-
-Alternatively, use a wildcard record if all sites share the same IP initially:
-
-```
-*.upright.example.com    A    203.0.113.10
-```
-
-### SSL Certificates
-
-Kamal handles SSL automatically via kamal-proxy. For wildcard subdomains, you'll need a wildcard certificate. Configure in `config/deploy.yml`:
-
-```yaml
-proxy:
-  ssl:
-    certificate_pem: CERTIFICATE_PEM
-    private_key_pem: PRIVATE_KEY_PEM
-  hosts:
-    - "*.upright.example.com"
 ```
 
 ## Deployment with Kamal
@@ -355,35 +326,6 @@ accessories:
     env:
       clear:
         DEBUG: pw:api
-```
-
-### Single VM Setup
-
-For a simple single-site deployment:
-
-```yaml
-service: upright
-image: your-org/upright
-
-servers:
-  web:
-    hosts:
-      - monitoring.example.com
-    env:
-      tags:
-        SITE_SUBDOMAIN: primary
-
-env:
-  clear:
-    RAILS_ENV: production
-    SITE_SUBDOMAIN: primary
-
-accessories:
-  playwright:
-    image: mcr.microsoft.com/playwright:v1.55.0-noble
-    cmd: npx -y playwright run-server --port 53333
-    host: monitoring.example.com
-    port: 53333
 ```
 
 ## Observability
@@ -441,18 +383,6 @@ Traces are automatically created for each probe execution. Configure your collec
 Upright.configure do |config|
   config.otel_endpoint = "https://otel.example.com:4318"
 end
-```
-
-## Development
-
-### Running Playwright Probes Locally
-
-```bash
-LOCAL_PLAYWRIGHT=1 bin/rails console
-```
-
-```ruby
-Probes::Playwright::MyServiceAuthProbe.check
 ```
 
 ### Testing
