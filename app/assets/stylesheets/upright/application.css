@@ -146,7 +146,8 @@
   @media (prefers-color-scheme: dark) {
     html,
     body {
-      background: linear-gradient(
+      background-color: var(--color-canvas);
+      background-image: linear-gradient(
         180deg,
         oklch(var(--lch-canvas)) 0%,
         oklch(var(--lch-canvas-deep)) 100%
