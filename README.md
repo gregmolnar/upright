@@ -12,6 +12,12 @@ Upright is a self-hosted synthetic monitoring system. It provides a framework fo
 - **Observability** - Built-in Prometheus metrics, OpenTelemetry tracing, and AlertManager support
 - **Configurable Authentication** - OmniAuth integration with support for any OIDC provider
 
+### Not Included
+
+- **Dashboards** - Instead, Grafana is suggested for monitoring the Prometheus metrics generated here
+- **Notifications** - Instead, Alertmanager is included for alerting and notifications
+- **Hosting** - Instead, you can use a VPS from DigitalOcean, Hetzner, etc.
+
 ## Installation
 
 Upright is designed to be run in it's own Rails app and deployed with Kamal.
