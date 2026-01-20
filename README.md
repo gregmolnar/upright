@@ -9,7 +9,7 @@ Upright is a self-hosted synthetic monitoring system. It provides a framework fo
 - **SMTP Probes** - EHLO handshake verification for mail servers
 - **Traceroute Probes** - Network path analysis with hop-by-hop latency tracking
 - **Multi-Site Support** - Run probes from multiple geographic locations with staggered scheduling
-- **Observability** - Built-in Prometheus metrics, OpenTelemetry tracing, and AlertManager support
+- **Observability** - OTLP compatible, Prometheus metrics, OpenTelemetry tracing, and AlertManager support
 - **Configurable Authentication** - OmniAuth integration with support for any OIDC provider
 
 ### Not Included
@@ -17,6 +17,16 @@ Upright is a self-hosted synthetic monitoring system. It provides a framework fo
 - **Dashboards** - Instead, Grafana is suggested for monitoring the Prometheus metrics generated here
 - **Notifications** - Instead, Alertmanager is included for alerting and notifications
 - **Hosting** - Instead, you can use a VPS from DigitalOcean, Hetzner, etc.
+
+### Components
+
+- Rails engine
+- Solid Queue for background and recurring jobs
+- Mission Control - Jobs to monitor Solid Queue and manually enqueue probes
+- Kamal for deployments
+- Prometheus metrics for uptime queries and alerting
+- AlertManager for notifications
+- Open Telemetry Collector - logs, metrics and traces can be shipped to any OTLP compatible endpoint
 
 ## Installation
 
