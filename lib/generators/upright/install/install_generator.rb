@@ -22,6 +22,7 @@ module Upright
 
       def copy_observability_configs
         template "prometheus.yml", "config/prometheus/prometheus.yml"
+        template "upright.rules.yml", "config/prometheus/rules/upright.rules.yml"
         template "alertmanager.yml", "config/alertmanager/alertmanager.yml"
         template "otel_collector.yml", "config/otel_collector.yml"
       end
@@ -43,9 +44,9 @@ module Upright
         say "  2. Configure your servers in config/deploy.yml"
         say "  3. Configure sites in config/sites.yml"
         say "  4. Add probes in config/probes/*.yml"
-        say "  5. Configure authentication in config/initializers/0_upright.rb"
+        say "  5. Configure authentication in config/initializers/upright.rb"
         say ""
-        say "For production, review config/initializers/0_upright.rb and update:"
+        say "For production, review config/initializers/upright.rb and update:"
         say "  config.hostname = \"honcho-upright.com\""
         say ""
         say "Start the development server with: bin/dev"
