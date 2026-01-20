@@ -6,7 +6,7 @@ module Upright
       desc "Install Upright engine into your application"
 
       def copy_initializer
-        template "upright.rb", "config/initializers/0_upright.rb"
+        template "upright.rb", "config/initializers/upright.rb"
       end
 
       def copy_sites_config

@@ -13,6 +13,12 @@ class Upright::Engine < ::Rails::Engine
       secure: Rails.env.production?
   end
 
+  config.after_initialize do
+    url_options = Upright.configuration.default_url_options
+    Rails.application.routes.default_url_options = url_options
+    Upright::Engine.routes.default_url_options = url_options
+  end
+
   # Filter sensitive parameters from logs
   initializer "upright.filter_parameters", before: :load_config_initializers do |app|
     app.config.filter_parameters += [
@@ -108,14 +114,15 @@ class Upright::Engine < ::Rails::Engine
 
   # Print available URLs in development
   config.after_initialize do
-    if Rails.env.development? && defined?(Rails::Server) && defined?(DEFAULT_URL_OPTIONS)
-      hostname = DEFAULT_URL_OPTIONS[:domain]
-      port = DEFAULT_URL_OPTIONS[:port]
-      protocol = DEFAULT_URL_OPTIONS[:protocol]
+    if Rails.env.development? && defined?(Rails::Server)
+      url_options = Upright.configuration.default_url_options
+      hostname = url_options[:domain]
+      port = url_options[:port]
+      protocol = url_options[:protocol]
 
       puts ""
       puts "Upright is running at:"
-      puts "  Admin:  #{protocol}://app.#{hostname}:#{port}"
+      puts "  Admin:  #{protocol}://#{Upright.configuration.admin_subdomain}.#{hostname}:#{port}"
       Upright.sites.each do |site|
         puts "  #{site.city || site.code}:  #{protocol}://#{site.code}.#{hostname}:#{port}"
       end

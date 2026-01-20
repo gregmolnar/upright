@@ -1,6 +1,6 @@
 # Upright Site Configuration
 # Define the geographic locations where probes run
-# Host is automatically inferred as {code}.{hostname}
+# Domain is automatically inferred as {code}.{hostname}
 
 shared:
   sites:

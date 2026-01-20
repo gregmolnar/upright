@@ -6,7 +6,6 @@ class Upright::Configuration
   attr_accessor :service_name
   attr_accessor :user_agent
   attr_accessor :default_timeout
-  attr_accessor :hostname
 
   # Storage paths
   attr_accessor :prometheus_dir
@@ -33,7 +32,7 @@ class Upright::Configuration
   def initialize
     @service_name = "upright"
     @user_agent = "Upright/1.0"
-    @default_timeout = 10
+    @default_timeout = 10.seconds
 
     @prometheus_dir = nil
     @video_storage_dir = nil
@@ -58,19 +57,19 @@ class Upright::Configuration
   end
 
   def prometheus_dir
-    @prometheus_dir || default_storage_path("prometheus")
+    @prometheus_dir || Rails.root.join("tmp", "prometheus")
   end
 
   def video_storage_dir
-    @video_storage_dir || default_storage_path("playwright_videos")
+    @video_storage_dir || Rails.root.join("storage", "playwright_videos")
   end
 
   def storage_state_dir
-    @storage_state_dir || default_storage_path("playwright_storage_states")
+    @storage_state_dir || Rails.root.join("storage", "playwright_storage_states")
   end
 
   def frozen_record_path
-    @frozen_record_path || Rails.root.join("config/probes")
+    @frozen_record_path || Rails.root.join("config", "probes")
   end
 
   def probes_path
@@ -78,15 +77,34 @@ class Upright::Configuration
   end
 
   def authenticators_path
-    @authenticators_path || Rails.root.join("probes/authenticators")
+    @authenticators_path || Rails.root.join("probes", "authenticators")
+  end
+
+  def hostname=(value)
+    @hostname = value
+    configure_allowed_hosts
+  end
+
+  def hostname
+    if Rails.env.local?
+      @hostname&.sub(/\.[^.]+\z/, ".localhost")
+    else
+      @hostname
+    end
+  end
+
+  def default_url_options
+    if Rails.env.production?
+      { protocol: "https", host: "#{admin_subdomain}.#{hostname}", domain: hostname }
+    else
+      { protocol: "http", host: "#{admin_subdomain}.#{hostname}", port: 3040, domain: hostname }
+    end
   end
 
   private
-    def default_storage_path(subdir)
-      if defined?(Rails) && Rails.root
-        Rails.root.join("storage", subdir)
-      else
-        Pathname.new("storage").join(subdir)
-      end
+    def configure_allowed_hosts
+      Rails.application.config.hosts = [ /.*\.#{Regexp.escape(hostname)}/, hostname ]
+      Rails.application.config.action_controller.default_url_options = default_url_options
+      Rails.application.config.action_dispatch.tld_length = 1
     end
 end

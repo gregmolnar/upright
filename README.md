@@ -4,7 +4,7 @@ Upright is a self-hosted synthetic monitoring system. It provides a framework fo
 
 ## Features
 
-- **Playwright Probes** - Browser-based probes for complex user flows
+- **Playwright Probes** - Browser-based probes for user flows with video recording and logs
 - **HTTP Probes** - Simple HTTP health checks with configurable expected status codes
 - **SMTP Probes** - EHLO handshake verification for mail servers
 - **Traceroute Probes** - Network path analysis with hop-by-hop latency tracking
@@ -13,6 +13,8 @@ Upright is a self-hosted synthetic monitoring system. It provides a framework fo
 - **Configurable Authentication** - OmniAuth integration with support for any OIDC provider
 
 ## Installation
+
+Upright is designed to be run in it's own Rails app and deployed with Kamal.
 
 ### Quick Start (New Project)
 
@@ -40,16 +42,12 @@ Visit http://app.my-upright.localhost:3000 to see your Upright instance.
 
 The `upright:install` generator creates:
 
-- `config/initializers/0_url_options.rb` - Subdomain routing configuration
 - `config/initializers/upright.rb` - Engine configuration
-- `config/sites.yml` - Site/location definitions
+- `config/sites.yml` - Site definitions for each VPS you host Upright on
 - `config/prometheus/prometheus.yml` - Prometheus configuration
 - `config/alertmanager/alertmanager.yml` - AlertManager configuration
 - `config/otel_collector.yml` - OpenTelemetry Collector configuration
-- `probes/` - Directory for all probe files
-- `probes/authenticators/` - Directory for authenticator classes
-- `probes/http_probes.yml` - HTTP probe definitions
-- `probes/smtp_probes.yml` - SMTP probe definitions
+- `probes/` - Directory for all HTTP, SMTP, Traceroute YAML config as well as Playwright probe classes
 
 It also mounts the engine at `/` in your routes.
 
@@ -57,52 +55,20 @@ It also mounts the engine at `/` in your routes.
 
 ### Basic Setup
 
-```ruby
-# config/initializers/upright.rb
-Upright.configure do |config|
-  config.service_name = "my-upright"
-
-  # Production hostname for subdomain routing
-  # Can also be set via UPRIGHT_HOSTNAME environment variable
-  config.hostname = "upright.example.com"
-
-  # Probe settings
-  config.default_timeout = 10
-  config.user_agent = "Upright/1.0"
-
-  # Storage paths
-  config.prometheus_dir = Rails.root.join("tmp/prometheus")
-  config.video_storage_dir = Rails.root.join("storage/videos")
-  config.storage_state_dir = Rails.root.join("storage/auth_state")
-
-  # Playwright (optional)
-  config.playwright_server_url = ENV["PLAYWRIGHT_SERVER_URL"]
-
-  # Observability endpoints
-  config.otel_endpoint = ENV["OTEL_ENDPOINT"]
-  config.prometheus_url = ENV["PROMETHEUS_URL"]
-  config.alert_webhook_url = ENV["ALERT_WEBHOOK_URL"]
-end
-```
+See `config/initializers/upright.rb`
 
 ### Hostname Configuration
 
-Upright uses subdomain-based routing. Configure your production hostname using either:
+Upright uses subdomain-based routing. Configure your production hostname:
 
-**Option 1: Environment variable (recommended for deployment)**
-```bash
-UPRIGHT_HOSTNAME=upright.example.com
-```
-
-**Option 2: Configuration file**
 ```ruby
 # config/initializers/upright.rb
 Upright.configure do |config|
-  config.hostname = "upright.example.com"
+  config.hostname = "upright.com"
 end
 ```
 
-For local development, the hostname defaults to `{service_name}.localhost` (e.g., `my-upright.localhost`).
+For local development, the hostname defaults to `{service_name}.localhost` (e.g., `upright.localhost`).
 
 ### Site Configuration
 
@@ -116,24 +82,21 @@ shared:
       country: US
       geohash: dr5reg
       provider: digitalocean
-      host: nyc.upright.example.com
 
     - code: ams
       city: Amsterdam
       country: NL
       geohash: u17982
       provider: digitalocean
-      host: ams.upright.example.com
 
     - code: sfo
       city: San Francisco
       country: US
       geohash: 9q8yy
-      provider: digitalocean
-      host: sfo.upright.example.com
+      provider: hetzner
 ```
 
-Each site node identifies itself via the `SITE_SUBDOMAIN` environment variable.
+Each site node identifies itself via the `SITE_SUBDOMAIN` environment variable, configured in your Kamal deploy.yml.
 
 ### Authentication
 
@@ -151,7 +114,7 @@ Upright.configure do |config|
 end
 ```
 
-To disable authentication (internal networks only):
+By default authentication is disabled but this is suitable for internal networks only:
 
 ```ruby
 Upright.configure do |config|
@@ -215,6 +178,8 @@ class Probes::Playwright::MyServiceAuthProbe < Upright::Probes::Playwright::Base
   end
 end
 ```
+
+See https://playwright-ruby-client.vercel.app/docs/api/page for how to create Playwright tests.
 
 #### Creating Authenticators
 
