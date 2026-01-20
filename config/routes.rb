@@ -20,6 +20,12 @@ Upright::Engine.routes.draw do
     resource :session, only: [ :new, :create ], as: :admin_session
     get "auth/:provider/callback", to: "sessions#create", as: :auth_callback
 
+    # Dashboards
+    scope :dashboards, as: :dashboard do
+      get "uptime", to: "dashboards#uptime"
+      get "status-codes", to: "dashboards#status_codes"
+    end
+
     # Prometheus proxy
     post "prometheus/api/v1/otlp/v1/metrics", to: "prometheus_proxy#otlp"
     match "prometheus/*path", to: "prometheus_proxy#proxy", via: :all

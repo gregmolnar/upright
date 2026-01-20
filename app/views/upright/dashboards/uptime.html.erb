@@ -1,0 +1,58 @@
+<div class="dashboard uptime-dashboard"
+     data-controller="uptime-dashboard"
+     data-uptime-dashboard-prometheus-url-value="<%= upright.prometheus_path(subdomain: Upright.configuration.admin_subdomain) %>"
+     data-action="time-picker:change@window->uptime-dashboard#onTimeChange">
+
+  <header class="dashboard-header">
+    <h1>Uptime Dashboard</h1>
+    <%= render "time_picker" %>
+  </header>
+
+  <div class="dashboard-filters">
+    <label for="site-filter">Site</label>
+    <select id="site-filter"
+            class="input--select"
+            data-uptime-dashboard-target="siteFilter"
+            data-action="change->uptime-dashboard#onFilterChange">
+      <option value="">All Sites</option>
+      <% @sites.each do |site| %>
+        <option value="<%= site.code %>"><%= site.city %></option>
+      <% end %>
+    </select>
+
+    <label for="type-filter">Probe Type</label>
+    <select id="type-filter"
+            class="input--select"
+            data-uptime-dashboard-target="typeFilter"
+            data-action="change->uptime-dashboard#onFilterChange">
+      <option value="">All Types</option>
+      <% @probe_types.each do |type| %>
+        <option value="<%= type %>"><%= type.titleize %></option>
+      <% end %>
+    </select>
+  </div>
+
+  <div class="dashboard-loading hidden" data-uptime-dashboard-target="loading">
+    <span class="loading-spinner"></span>
+    <span>Loading...</span>
+  </div>
+
+  <section class="dashboard-section">
+    <div class="dashboard-summary" data-uptime-dashboard-target="summary">
+      <div class="uptime-card uptime-no-data">
+        <div class="uptime-value">—</div>
+        <div class="uptime-label">Loading...</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="dashboard-section">
+    <h2>Uptime Over Time</h2>
+    <div class="dashboard-chart" data-uptime-dashboard-target="chart"></div>
+  </section>
+
+  <section class="dashboard-section">
+    <h2>Probes by Uptime</h2>
+    <div class="dashboard-table" data-uptime-dashboard-target="table"></div>
+  </section>
+</div>

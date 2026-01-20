@@ -6,6 +6,8 @@
     <% end %>
   </div>
   <div class="header-nav">
+    <%= link_to "Uptime", upright.dashboard_uptime_url(subdomain: Upright.configuration.admin_subdomain), class: "nav-link" %>
+    <%= link_to "Status", upright.dashboard_status_codes_url(subdomain: Upright.configuration.admin_subdomain), class: "nav-link" %>
     <%= link_to "Prometheus", upright.prometheus_url(subdomain: Upright.configuration.admin_subdomain), target: "_blank", class: "nav-link" %>
     <%= link_to "Alertmanager", upright.alertmanager_url(subdomain: Upright.configuration.admin_subdomain), target: "_blank", class: "nav-link" %>
     <% if Upright::Current.site.present? %>
