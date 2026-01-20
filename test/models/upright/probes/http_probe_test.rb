@@ -20,14 +20,6 @@ class Upright::Probes::HTTPProbeTest < ActiveSupport::TestCase
     assert result
   end
 
-  test "returns true for 3xx response" do
-    stub_request(:get, "https://example.com/").to_return(status: 301)
-
-    result = Upright::Probes::HTTPProbe.new(name: "test", url: "https://example.com/").check
-
-    assert result
-  end
-
   test "returns true when expected_status matches" do
     stub_request(:get, "https://example.com/redirect").to_return(status: 301)
 

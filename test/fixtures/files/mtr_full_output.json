@@ -1,0 +1,16 @@
+{
+  "report": {
+    "mtr": {
+      "src": "test-host",
+      "dst": "8.8.8.8",
+      "tos": 0,
+      "tests": 10,
+      "psize": "64",
+      "bitpattern": "0x00"
+    },
+    "hubs": [
+      { "count": 1, "host": "192.168.1.1", "ASN": "AS???", "Loss%": 0.0, "Snt": 10, "Last": 1.5, "Avg": 1.2, "Best": 0.9, "Wrst": 2.0, "StDev": 0.3 },
+      { "count": 2, "host": "dns.google", "ASN": "AS15169", "Loss%": 0.0, "Snt": 10, "Last": 10.5, "Avg": 10.2, "Best": 9.9, "Wrst": 12.0, "StDev": 0.5 }
+    ]
+  }
+}

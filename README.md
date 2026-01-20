@@ -21,6 +21,7 @@ Upright is a self-hosted synthetic monitoring system. It provides a framework fo
 ### Components
 
 - Rails engine
+- SQLite
 - Solid Queue for background and recurring jobs
 - Mission Control - Jobs to monitor Solid Queue and manually enqueue probes
 - Kamal for deployments

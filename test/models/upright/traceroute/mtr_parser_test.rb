@@ -2,46 +2,7 @@ require "test_helper"
 
 class Upright::Traceroute::MtrParserTest < ActiveSupport::TestCase
   test "parses JSON output from mtr" do
-    json_output = {
-      "report" => {
-        "mtr" => {
-          "src" => "test-host",
-          "dst" => "8.8.8.8",
-          "tos" => 0,
-          "tests" => 10,
-          "psize" => "64",
-          "bitpattern" => "0x00"
-        },
-        "hubs" => [
-          {
-            "count" => 1,
-            "host" => "192.168.1.1",
-            "ASN" => "AS???",
-            "Loss%" => 0.0,
-            "Snt" => 10,
-            "Last" => 1.5,
-            "Avg" => 1.2,
-            "Best" => 0.9,
-            "Wrst" => 2.0,
-            "StDev" => 0.3
-          },
-          {
-            "count" => 2,
-            "host" => "dns.google",
-            "ASN" => "AS15169",
-            "Loss%" => 0.0,
-            "Snt" => 10,
-            "Last" => 10.5,
-            "Avg" => 10.2,
-            "Best" => 9.9,
-            "Wrst" => 12.0,
-            "StDev" => 0.5
-          }
-        ]
-      }
-    }.to_json
-
-    hops = Upright::Traceroute::MtrParser.new(json_output).parse
+    hops = parse_fixture("mtr_full_output")
 
     assert_equal 2, hops.length
 
@@ -63,15 +24,7 @@ class Upright::Traceroute::MtrParserTest < ActiveSupport::TestCase
   end
 
   test "handles missing hubs" do
-    json_output = {
-      "report" => {
-        "mtr" => {}
-      }
-    }.to_json
-
-    hops = Upright::Traceroute::MtrParser.new(json_output).parse
-
-    assert_equal [], hops
+    assert_equal [], parse_fixture("mtr_missing_hubs")
   end
 
   test "raises on invalid JSON" do
@@ -81,35 +34,19 @@ class Upright::Traceroute::MtrParserTest < ActiveSupport::TestCase
   end
 
   test "handles empty JSON" do
-    hops = Upright::Traceroute::MtrParser.new("{}").parse
-
-    assert_equal [], hops
+    assert_equal [], parse_fixture("mtr_empty_hops")
   end
 
   test "handles non-responding hop" do
-    json_output = {
-      "report" => {
-        "hubs" => [
-          {
-            "count" => 1,
-            "host" => "???",
-            "ASN" => "AS???",
-            "Loss%" => 100.0,
-            "Snt" => 10,
-            "Last" => 0.0,
-            "Avg" => 0.0,
-            "Best" => 0.0,
-            "Wrst" => 0.0,
-            "StDev" => 0.0
-          }
-        ]
-      }
-    }.to_json
-
-    hops = Upright::Traceroute::MtrParser.new(json_output).parse
+    hops = parse_fixture("mtr_non_responding_hop")
 
     assert_equal 1, hops.length
     assert_nil hops[0][:ip]
     assert_equal 100.0, hops[0][:loss_percent]
   end
+
+  private
+    def parse_fixture(name)
+      Upright::Traceroute::MtrParser.new(file_fixture("#{name}.json").read).parse
+    end
 end

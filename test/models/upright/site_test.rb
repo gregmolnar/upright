@@ -1,24 +1,42 @@
 require "test_helper"
 
 class Upright::SiteTest < ActiveSupport::TestCase
-  test "provider returns a string inquirer" do
-    site = Upright::Site.new(code: "ams", provider: "digitalocean")
-
-    assert site.provider.digitalocean?
-    assert_not site.provider.hetzner?
+  setup do
+    @site = Upright::Site.new(
+      code: "ams",
+      city: "Amsterdam",
+      country: "NL",
+      geohash: "u173zq"
+    )
   end
 
-  test "provider inquiry works for hetzner" do
-    site = Upright::Site.new(code: "nbg", provider: "hetzner")
-
-    assert site.provider.hetzner?
-    assert_not site.provider.digitalocean?
+  test "host extracts hostname from url" do
+    assert_equal "ams.upright.localhost", @site.host
   end
 
-  test "provider inquiry handles nil" do
-    site = Upright::Site.new(code: "test", provider: nil)
+  test "default_timeout returns configuration value" do
+    assert_equal Upright.configuration.default_timeout, @site.default_timeout
+  end
 
-    assert_not site.provider.digitalocean?
-    assert_not site.provider.hetzner?
+  test "latitude decodes from geohash" do
+    assert_in_delta 52.37, @site.latitude, 0.01
+  end
+
+  test "longitude decodes from geohash" do
+    assert_in_delta 4.89, @site.longitude, 0.01
+  end
+
+  test "url builds subdomain url from code" do
+    assert_equal "http://ams.upright.localhost:3040/", @site.url
+  end
+
+  test "to_leaflet returns map marker data" do
+    result = @site.to_leaflet
+
+    assert_equal "ams.upright.localhost", result[:hostname]
+    assert_equal "Amsterdam", result[:city]
+    assert_in_delta 52.37, result[:lat], 0.01
+    assert_in_delta 4.89, result[:lon], 0.01
+    assert_equal "http://ams.upright.localhost:3040/", result[:url]
   end
 end

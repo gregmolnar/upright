@@ -12,12 +12,8 @@ class Upright::Probes::SMTPProbeTest < ActiveSupport::TestCase
   end
 
   test "returns true when EHLO succeeds" do
-    mock_smtp = mock
-    mock_smtp.stubs(:open_timeout=)
-    mock_smtp.stubs(:read_timeout=)
-    mock_smtp.stubs(:debug_output=)
-    Net::SMTP.expects(:new).with("mail.example.com").returns(mock_smtp)
-    mock_smtp.expects(:start).with("upright").yields(mock_smtp)
+    smtp = stub_smtp_client
+    smtp.expects(:start).with("upright").yields(smtp)
 
     probe = Upright::Probes::SMTPProbe.new(name: "test", host: "mail.example.com")
 
@@ -25,12 +21,8 @@ class Upright::Probes::SMTPProbeTest < ActiveSupport::TestCase
   end
 
   test "returns false when EHLO fails" do
-    mock_smtp = mock
-    mock_smtp.stubs(:open_timeout=)
-    mock_smtp.stubs(:read_timeout=)
-    mock_smtp.stubs(:debug_output=)
-    Net::SMTP.expects(:new).with("mail.example.com").returns(mock_smtp)
-    mock_smtp.expects(:start).with("upright").raises(Net::SMTPFatalError.new("550 Access denied"))
+    smtp = stub_smtp_client
+    smtp.expects(:start).with("upright").raises(Net::SMTPFatalError.new("550 Access denied"))
 
     probe = Upright::Probes::SMTPProbe.new(name: "test", host: "mail.example.com")
 
@@ -38,12 +30,8 @@ class Upright::Probes::SMTPProbeTest < ActiveSupport::TestCase
   end
 
   test "returns false when connection times out" do
-    mock_smtp = mock
-    mock_smtp.stubs(:open_timeout=)
-    mock_smtp.stubs(:read_timeout=)
-    mock_smtp.stubs(:debug_output=)
-    Net::SMTP.expects(:new).with("mail.example.com").returns(mock_smtp)
-    mock_smtp.expects(:start).with("upright").raises(Net::OpenTimeout)
+    smtp = stub_smtp_client
+    smtp.expects(:start).with("upright").raises(Net::OpenTimeout)
 
     probe = Upright::Probes::SMTPProbe.new(name: "test", host: "mail.example.com")
 
@@ -78,6 +66,15 @@ class Upright::Probes::SMTPProbeTest < ActiveSupport::TestCase
   end
 
   private
+    def stub_smtp_client(host: "mail.example.com")
+      mock.tap do |smtp|
+        smtp.stubs(:open_timeout=)
+        smtp.stubs(:read_timeout=)
+        smtp.stubs(:debug_output=)
+        Net::SMTP.expects(:new).with(host).returns(smtp)
+      end
+    end
+
     def null_logger
       Logger.new("/dev/null").tap do |l|
         l.define_singleton_method(:struct) { |_| }

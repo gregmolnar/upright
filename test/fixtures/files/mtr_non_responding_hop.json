@@ -1,0 +1,7 @@
+{
+  "report": {
+    "hubs": [
+      { "count": 1, "host": "???", "ASN": "AS???", "Loss%": 100.0, "Snt": 10, "Last": 0.0, "Avg": 0.0, "Best": 0.0, "Wrst": 0.0, "StDev": 0.0 }
+    ]
+  }
+}

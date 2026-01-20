@@ -12,42 +12,28 @@ class Upright::Probes::PlaywrightProbeTest < ActiveSupport::TestCase
   end
 
   test "check_and_record_later enqueues job with stagger delay" do
-    with_test_adapter do
-      with_env("SITE_SUBDOMAIN" => "sfo") do
-        assert_enqueued_with job: Upright::ProbeCheckJob, args: [ "Upright::Probes::PlaywrightProbeTest::StaggeredPlaywrightProbe" ] do
-          StaggeredPlaywrightProbe.check_and_record_later
-        end
-
-        # Verify the job was enqueued with the correct delay
-        # sfo is index 2, stagger_by_site is 2.minutes, so delay is 4.minutes
-        job = ActiveJob::Base.queue_adapter.enqueued_jobs.last
-        assert_in_delta 4.minutes.from_now.to_f, job[:at], 5
+    with_env("SITE_SUBDOMAIN" => "sfo") do
+      assert_enqueued_with job: Upright::ProbeCheckJob, args: [ "Upright::Probes::PlaywrightProbeTest::StaggeredPlaywrightProbe" ] do
+        StaggeredPlaywrightProbe.check_and_record_later
       end
+
+      # Verify the job was enqueued with the correct delay
+      # sfo is index 2, stagger_by_site is 2.minutes, so delay is 4.minutes
+      job = ActiveJob::Base.queue_adapter.enqueued_jobs.last
+      assert_in_delta 4.minutes.from_now.to_f, job[:at], 5
     end
   end
 
   test "check_and_record_later enqueues job with zero delay for first site" do
-    with_test_adapter do
-      with_env("SITE_SUBDOMAIN" => "ams") do
-        assert_enqueued_with job: Upright::ProbeCheckJob, args: [ "Upright::Probes::PlaywrightProbeTest::StaggeredPlaywrightProbe" ] do
-          StaggeredPlaywrightProbe.check_and_record_later
-        end
-
-        # ams is index 0, so no delay
-        job = ActiveJob::Base.queue_adapter.enqueued_jobs.last
-        assert_in_delta Time.current.to_f, job[:at], 1
+    with_env("SITE_SUBDOMAIN" => "ams") do
+      assert_enqueued_with job: Upright::ProbeCheckJob, args: [ "Upright::Probes::PlaywrightProbeTest::StaggeredPlaywrightProbe" ] do
+        StaggeredPlaywrightProbe.check_and_record_later
       end
+
+      # ams is index 0, so no delay
+      job = ActiveJob::Base.queue_adapter.enqueued_jobs.last
+      assert_in_delta Time.current.to_f, job[:at], 1
     end
-  end
-
-  private
-
-  def with_test_adapter
-    original_adapter = ActiveJob::Base.queue_adapter
-    ActiveJob::Base.queue_adapter = :test
-    yield
-  ensure
-    ActiveJob::Base.queue_adapter = original_adapter
   end
 
   class TestPlaywrightProbe < Upright::Probes::Playwright::Base

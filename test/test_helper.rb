@@ -17,18 +17,17 @@ Dir.glob(File.expand_path("lib/helpers/**/*.rb", __dir__)).each do |helper|
 end
 
 # Load fixtures from the engine
-if ActiveSupport::TestCase.respond_to?(:fixture_paths=)
-  ActiveSupport::TestCase.fixture_paths = [ File.expand_path("fixtures", __dir__) ]
-  ActionDispatch::IntegrationTest.fixture_paths = ActiveSupport::TestCase.fixture_paths
-  ActiveSupport::TestCase.file_fixture_path = File.expand_path("fixtures", __dir__) + "/files"
-  ActiveSupport::TestCase.fixtures :all
-end
+ActiveSupport::TestCase.fixture_paths = [ File.expand_path("fixtures", __dir__) ]
+ActionDispatch::IntegrationTest.fixture_paths = ActiveSupport::TestCase.fixture_paths
+ActiveSupport::TestCase.file_fixture_path = File.expand_path("fixtures", __dir__) + "/files"
+ActiveSupport::TestCase.fixtures :all
 
 module ActiveSupport
   class TestCase
     parallelize(workers: :number_of_processors)
 
     include IpApiHelper
+    include MtrHelper
     include SiteHelper
     include PlaywrightHelper
     include YabedaTestHelper

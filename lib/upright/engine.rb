@@ -19,19 +19,12 @@ class Upright::Engine < ::Rails::Engine
     Upright::Engine.routes.default_url_options = url_options
   end
 
-  # Filter sensitive parameters from logs
-  initializer "upright.filter_parameters", before: :load_config_initializers do |app|
-    app.config.filter_parameters += [
-      :passw, :email, :secret, :token, :_key, :crypt, :salt, :certificate, :otp, :ssn
-    ]
-  end
-
-  # Configure Solid Queue as the job backend
   initializer "upright.solid_queue", before: :set_configs_for_current_railties do |app|
-    app.config.active_job.queue_adapter = :solid_queue
-    app.config.solid_queue.connects_to = { database: { writing: :queue, reading: :queue } }
+    unless Rails.env.test?
+      app.config.active_job.queue_adapter = :solid_queue
+      app.config.solid_queue.connects_to = { database: { writing: :queue, reading: :queue } }
+    end
   end
-
 
   # Configure Mission Control to use engine's authenticated controller
   initializer "upright.mission_control" do

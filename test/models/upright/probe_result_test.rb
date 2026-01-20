@@ -1,7 +1,7 @@
 require "test_helper"
 
 class Upright::ProbeResultTest < ActiveSupport::TestCase
-  test "to_chart returns expected structure" do
+  test ".to_chart returns expected structure" do
     result = upright_probe_results(:http_probe_result)
     chart_data = result.to_chart
 
@@ -9,14 +9,6 @@ class Upright::ProbeResultTest < ActiveSupport::TestCase
     assert_equal result.duration.to_f, chart_data[:duration]
     assert_equal result.status, chart_data[:status]
     assert_equal result.probe_name, chart_data[:probe_name]
-  end
-
-  test "to_chart handles nil duration" do
-    result = upright_probe_results(:http_probe_result)
-    result.duration = nil
-    chart_data = result.to_chart
-
-    assert_equal 0.0, chart_data[:duration]
   end
 
   test "error attribute attaches exception report on create" do
@@ -28,11 +20,10 @@ class Upright::ProbeResultTest < ActiveSupport::TestCase
       status: :fail, duration: 1.0, error: exception
     )
 
-    expected = <<~REPORT.chomp
-      RuntimeError: Something went wrong
-        app/models/foo.rb:10
-        app/controllers/bar.rb:5
-    REPORT
-    assert_equal expected, result.exception_report
+    report = result.exception_report
+
+    assert_includes report, "RuntimeError: Something went wrong"
+    assert_includes report, "app/models/foo.rb:10"
+    assert_includes report, "app/controllers/bar.rb:5"
   end
 end

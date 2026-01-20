@@ -49,3 +49,21 @@ http_probe_result_error:
   status: "fail"
   created_at: <%= Time.current %>
   updated_at: <%= Time.current %>
+
+http_probe_result_without_artifacts:
+  probe_type: http
+  probe_name: HTTP Probe
+  probe_target: https://example.com
+  duration: 0.1
+  status: "ok"
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+playwright_probe_result_without_artifacts:
+  probe_type: playwright
+  probe_name: Playwright Probe
+  probe_target: https://example.com
+  duration: 2.3
+  status: "ok"
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>

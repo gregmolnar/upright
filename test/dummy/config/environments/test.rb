@@ -53,4 +53,7 @@ Rails.application.configure do
 
   # Share session cookies across subdomains for authentication testing
   config.session_store :cookie_store, key: "_upright_test_session", domain: :all
+
+  # Use test adapter for ActiveJob instead of SolidQueue
+  config.active_job.queue_adapter = :test
 end

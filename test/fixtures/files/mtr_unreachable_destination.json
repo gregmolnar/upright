@@ -1,0 +1,8 @@
+{
+  "report": {
+    "hubs": [
+      { "count": 1, "host": "192.168.1.1", "ASN": "AS???", "Loss%": 0.0, "Snt": 10, "Last": 1.5, "Avg": 1.2, "Best": 0.9, "Wrst": 2.0, "StDev": 0.3 },
+      { "count": 2, "host": "???", "ASN": "AS???", "Loss%": 100.0, "Snt": 10, "Last": 0.0, "Avg": 0.0, "Best": 0.0, "Wrst": 0.0, "StDev": 0.0 }
+    ]
+  }
+}
