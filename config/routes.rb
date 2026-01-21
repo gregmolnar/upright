@@ -23,7 +23,6 @@ Upright::Engine.routes.draw do
     # Dashboards
     scope :dashboards, as: :dashboard do
       get "uptime", to: "dashboards#uptime"
-      get "status-codes", to: "dashboards#status_codes"
     end
 
     # Prometheus proxy

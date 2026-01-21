@@ -1,4 +1,18 @@
 module Upright::DashboardsHelper
+  def date_range
+    (29.days.ago.to_date..Date.current).to_a
+  end
+
+  def uptime_bar_class(percentage)
+    case percentage
+    when 100      then "uptime-bar-perfect"
+    when 99..100  then "uptime-bar-good"
+    when 95..99   then "uptime-bar-warning"
+    when 0.01..95 then "uptime-bar-critical"
+    else               "uptime-bar-down"
+    end
+  end
+
   def uptime_color_class(percentage)
     case percentage
     when 99.9..100 then "uptime-excellent"
@@ -8,17 +22,19 @@ module Upright::DashboardsHelper
     end
   end
 
-  def status_color_class(status_code)
-    case status_code.to_i
-    when 200..299 then "status-2xx"
-    when 300..399 then "status-3xx"
-    when 400..499 then "status-4xx"
-    when 500..599 then "status-5xx"
-    else               "status-unknown"
-    end
+  def uptime_bar_tooltip(date, uptime_percent, downtime_minutes)
+    tooltip = "#{date.strftime('%b %-d')}: #{number_with_precision(uptime_percent, precision: 1)}% uptime"
+    tooltip += " (#{format_downtime(downtime_minutes)} down)" if downtime_minutes > 0
+    tooltip
   end
 
-  def format_uptime_percentage(value)
-    number_to_percentage(value, precision: 2)
+  def format_downtime(minutes)
+    if minutes < 60
+      "#{minutes}m"
+    else
+      hours = minutes / 60
+      mins = minutes % 60
+      mins.zero? ? "#{hours}h" : "#{hours}h #{mins}m"
+    end
   end
 end

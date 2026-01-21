@@ -2,6 +2,8 @@ module Upright::Probeable
   extend ActiveSupport::Concern
   include Upright::Staggerable
 
+  TYPES = %w[ http playwright smtp traceroute ]
+
   included do
     attr_writer :logger
 

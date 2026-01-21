@@ -39,6 +39,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "playwright-ruby-client", "~> 1.56"
 
   # Observability
+  spec.add_dependency "prometheus-api-client"
   spec.add_dependency "yabeda"
   spec.add_dependency "yabeda-prometheus"
   spec.add_dependency "yabeda-puma-plugin"
