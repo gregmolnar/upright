@@ -29,7 +29,7 @@
       <% end %>
     </div>
 
-    <div class="probe-results-chart"
+    <div class="probe-results__chart"
          data-controller="probe-results-chart"
          data-probe-results-chart-results-value="<%= @chart_data.to_json %>">
     </div>
@@ -47,16 +47,16 @@
       <tbody data-controller="results-table" data-action="click->results-table#openArtifact">
         <% @page.records.each do |result| %>
           <tr>
-            <td class="probe-cell">
-              <span class="probe-icon"><%= probe_type_icon(result.probe_type) %></span>
-              <div class="probe-details">
-                <div class="probe-name"><%= result.probe_name %></div>
+            <td class="probe__cell">
+              <span class="probe__icon"><%= probe_type_icon(result.probe_type) %></span>
+              <div class="probe__details">
+                <div class="probe__name"><%= result.probe_name %></div>
                 <% if result.probe_target.present? %>
-                  <div class="probe-target"><%= result.probe_target %></div>
+                  <div class="probe__target"><%= result.probe_target %></div>
                 <% end %>
               </div>
             </td>
-            <td class="status-<%= result.status %>"><%= result.status.titleize %></td>
+            <td class="status--<%= result.status %>"><%= result.status.titleize %></td>
             <td><%= result.duration ? "#{sprintf('%.3f', result.duration)}s" : "N/A" %></td>
             <td title="<%= result.created_at.to_fs(:db) %>"><%= time_ago_in_words(result.created_at) %> ago</td>
             <td>

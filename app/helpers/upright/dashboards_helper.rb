@@ -5,11 +5,11 @@ module Upright::DashboardsHelper
 
   def uptime_bar_class(percentage)
     case percentage
-    when 100      then "uptime-bar-perfect"
-    when 99..100  then "uptime-bar-good"
-    when 95..99   then "uptime-bar-warning"
-    when 0.01..95 then "uptime-bar-critical"
-    else               "uptime-bar-down"
+    when 100      then "uptime-bar--perfect"
+    when 99..100  then "uptime-bar--good"
+    when 95..99   then "uptime-bar--warning"
+    when 0.01..95 then "uptime-bar--critical"
+    else               "uptime-bar--down"
     end
   end
 

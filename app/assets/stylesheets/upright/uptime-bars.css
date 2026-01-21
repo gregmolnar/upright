@@ -1,17 +1,10 @@
 @layer components {
-  .uptime-bars-section {
-    background: oklch(var(--lch-ink-lightest) / 85%);
-    border-radius: 0.25rem;
-    box-shadow: var(--shadow);
-    overflow: hidden;
-  }
-
-  .uptime-bars-container {
+  .uptime-bars {
     display: flex;
     flex-direction: column;
   }
 
-  .uptime-bars-header {
+  .uptime-bars__header {
     background: var(--color-ink-lighter);
     display: grid;
     font-size: var(--text-x-small);
@@ -23,22 +16,8 @@
     text-transform: uppercase;
   }
 
-  .uptime-bars-days-header {
-    display: flex;
-    justify-content: center;
-  }
 
-  .uptime-bars-date-label {
-    color: var(--color-ink-dark);
-    font-size: calc(var(--text-x-small) * 0.9);
-  }
-
-  .uptime-bars-uptime-header {
-    text-align: right;
-    width: 7ch;
-  }
-
-  .uptime-bars-row {
+  .uptime-bars__row {
     border-top: 1px solid var(--color-ink-lighter);
     display: grid;
     gap: var(--block-space);
@@ -47,33 +26,47 @@
     transition: background-color 100ms;
   }
 
-  .uptime-bars-row:hover {
+  .uptime-bars__row:hover {
     background: var(--color-canvas);
   }
 
-  .uptime-bars-probe {
+  .uptime-bars__probe {
     align-items: center;
+    color: inherit;
     display: flex;
     gap: 0.75em;
     min-width: 0;
+
+    &:hover {
+      color: var(--color-link);
+      text-decoration: none;
+    }
   }
 
-  .uptime-bars-probe .probe-type-badge {
+  .uptime-bars__probe .probe__badge {
     flex-shrink: 0;
   }
 
-  .uptime-bars-probe .probe-name {
+  .uptime-bars__probe .probe__name {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 
-  .uptime-bars-days {
+  .uptime-bars__days {
     align-items: center;
     display: flex;
     gap: 2px;
   }
 
+  .uptime-bars__uptime {
+    font-size: var(--text-small);
+    font-weight: 500;
+    text-align: right;
+    width: 7ch;
+  }
+
+  /* Individual uptime bar (separate block) */
   .uptime-bar {
     border-radius: 2px;
     cursor: default;
@@ -89,53 +82,46 @@
     transform: scaleY(1.15);
   }
 
-  .uptime-bar-perfect {
+  .uptime-bar--perfect {
     background: var(--color-positive);
   }
 
-  .uptime-bar-good {
+  .uptime-bar--good {
     background: oklch(70% 0.14 145);
   }
 
-  .uptime-bar-warning {
+  .uptime-bar--warning {
     background: oklch(75% 0.15 85);
   }
 
-  .uptime-bar-critical {
+  .uptime-bar--critical {
     background: oklch(65% 0.16 42);
   }
 
-  .uptime-bar-down {
+  .uptime-bar--down {
     background: var(--color-negative);
   }
 
-  .uptime-bar-no-data {
+  .uptime-bar--no-data {
     background: var(--color-ink-light);
     opacity: 0.4;
   }
 
-  .uptime-bars-uptime {
-    font-size: var(--text-small);
-    font-weight: 500;
-    text-align: right;
-    width: 7ch;
-  }
-
   @media (max-width: 85ch) {
-    .uptime-bars-header,
-    .uptime-bars-row {
+    .uptime-bars__header,
+    .uptime-bars__row {
       grid-template-columns: minmax(120px, 150px) 1fr auto;
       gap: calc(var(--block-space) * 0.5);
     }
 
-    .uptime-bars-probe .probe-type-badge {
+    .uptime-bars__probe .probe__badge {
       display: none;
     }
   }
 
   @media (max-width: 55ch) {
-    .uptime-bars-header,
-    .uptime-bars-row {
+    .uptime-bars__header,
+    .uptime-bars__row {
       grid-template-columns: minmax(80px, 120px) 1fr auto;
       padding: calc(var(--block-space) * 0.5);
     }
@@ -144,7 +130,7 @@
       height: 18px;
     }
 
-    .uptime-bars-days-header {
+    .uptime-bars__days .uptime-bar:not(:nth-last-child(-n+7)) {
       display: none;
     }
   }

@@ -70,9 +70,9 @@ class ProbeResultsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_select "nav.pagination"
-    assert_select ".pagination-info", text: /Page 1 of/
-    assert_select ".pagination-prev.disabled"
-    assert_select "a.pagination-next"
+    assert_select ".pagination__info", text: /Page 1 of/
+    assert_select ".pagination__prev--disabled"
+    assert_select "a.pagination__next"
   end
 
   test "pagination preserves filters" do
@@ -81,7 +81,7 @@ class ProbeResultsControllerTest < ActionDispatch::IntegrationTest
     get upright.site_root_path(probe_type: "http")
 
     assert_response :success
-    assert_select "a.pagination-next[href*='probe_type=http']"
+    assert_select "a.pagination__next[href*='probe_type=http']"
   end
 
   test "renders artifacts for probe results with attachments" do
@@ -91,6 +91,6 @@ class ProbeResultsControllerTest < ActionDispatch::IntegrationTest
     get upright.site_root_path
 
     assert_response :success
-    assert_select "details.artifact-popover"
+    assert_select "details.artifact"
   end
 end

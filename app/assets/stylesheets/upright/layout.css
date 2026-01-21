@@ -77,7 +77,7 @@
       font-size: var(--text-x-small);
     }
 
-    .page-content {
+    .main {
       padding: var(--block-space);
     }
   }

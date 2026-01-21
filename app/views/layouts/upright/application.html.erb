@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <title>Upright</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -15,9 +15,9 @@
   <body>
     <% if signed_in? %>
       <%= render "layouts/upright/header" %>
-      <div class="page-content">
+      <main class="main">
         <%= yield %>
-      </div>
+      </main>
     <% else %>
       <%= yield %>
     <% end %>

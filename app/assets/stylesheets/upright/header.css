@@ -1,5 +1,5 @@
 @layer components {
-  .page-header {
+  .header {
     align-items: center;
     background-color: var(--color-ink-lightest);
     border-bottom: var(--border);
@@ -9,13 +9,13 @@
     padding: var(--block-space) calc(var(--inline-space) * 2);
   }
 
-  .header-left {
+  .header__left {
     align-items: center;
     display: flex;
     gap: var(--inline-space);
   }
 
-  .logotype {
+  .header__logo {
     color: var(--color-ink);
     font-size: var(--text-normal);
     font-weight: 600;
@@ -29,7 +29,7 @@
     }
   }
 
-  .site-name {
+  .header__site {
     color: var(--color-positive);
     font-size: var(--text-x-small);
     font-weight: 500;
@@ -38,14 +38,14 @@
     text-transform: uppercase;
   }
 
-  .header-nav {
+  .header__nav {
     align-items: center;
     display: flex;
     flex: 1;
     gap: calc(var(--inline-space) * 3);
   }
 
-  .nav-link {
+  .header__link {
     align-items: center;
     color: var(--color-ink-dark);
     display: flex;
@@ -64,45 +64,40 @@
     }
   }
 
-  .nav-divider {
+  .header__divider {
     background: var(--color-ink-light);
     height: 1em;
     width: 1px;
   }
 
-  .external-icon {
-    font-size: var(--text-x-small);
-    opacity: 0.7;
-  }
-
-  .user-info {
+  .header__user {
     align-items: center;
     display: flex;
     gap: var(--inline-space);
   }
 
-  .page-content {
+  .main {
     padding: calc(var(--block-space) * 2);
   }
 
   @media (max-width: 85ch) {
-    .page-header {
+    .header {
       flex-direction: column;
       align-items: stretch;
       gap: var(--block-space);
       padding: var(--block-space);
     }
 
-    .header-left {
+    .header__left {
       justify-content: space-between;
     }
 
-    .header-nav {
+    .header__nav {
       flex-wrap: wrap;
       gap: calc(var(--inline-space) * 2);
     }
 
-    .user-info {
+    .header__user {
       justify-content: space-between;
       padding-top: var(--block-space);
       border-top: var(--border);
@@ -110,16 +105,20 @@
   }
 
   @media (max-width: 55ch) {
-    .page-header {
+    .header {
       padding: calc(var(--block-space) * 0.75);
     }
 
-    .header-nav {
+    .header__nav {
       gap: var(--inline-space);
     }
 
-    .nav-link {
+    .header__link {
       font-size: calc(var(--text-x-small) * 0.9);
+    }
+
+    .main {
+      padding: var(--block-space);
     }
   }
 }
