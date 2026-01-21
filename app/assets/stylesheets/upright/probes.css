@@ -1,0 +1,72 @@
+@layer components {
+  .probe-cell {
+    display: flex;
+    gap: 0.5em;
+  }
+
+  .probe-icon {
+    flex-shrink: 0;
+  }
+
+  .probe-name {
+    font-weight: 500;
+  }
+
+  .probe-target {
+    color: var(--color-ink-medium);
+    font-size: var(--text-x-small);
+    margin-top: 0.125em;
+  }
+
+  .status-ok {
+    color: var(--color-positive);
+    font-weight: 500;
+  }
+
+  .status-fail {
+    color: var(--color-negative);
+    font-weight: 600;
+  }
+
+  .probe-results-chart {
+    background: oklch(var(--lch-ink-lightest) / 85%);
+    border-radius: 0.25rem;
+    box-shadow: var(--shadow);
+    margin-bottom: calc(var(--block-space) * 1.5);
+    padding: var(--block-space);
+
+    circle {
+      stroke: none;
+    }
+
+    text {
+      font-family: var(--font-mono);
+      font-size: var(--text-x-small);
+    }
+  }
+
+  .probe-type-badge {
+    background: var(--color-ink-lighter);
+    border-radius: 0.125rem;
+    color: var(--color-ink-dark);
+    font-size: var(--text-x-small);
+    padding: 0.25em 0.5em;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 140ch) {
+    .probe-target {
+      display: none;
+    }
+
+    .probe-cell {
+      gap: 0.25em;
+    }
+  }
+
+  @media (max-width: 55ch) {
+    .probe-name {
+      word-break: break-word;
+    }
+  }
+}

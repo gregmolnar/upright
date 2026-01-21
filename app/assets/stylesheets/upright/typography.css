@@ -1,0 +1,27 @@
+@layer base {
+  h1 {
+    font-size: var(--text-x-large);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    margin-bottom: var(--block-space);
+    text-transform: uppercase;
+  }
+
+  h2 {
+    font-size: var(--text-large);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    margin-bottom: var(--block-space);
+  }
+
+  p {
+    color: var(--color-ink-dark);
+    margin-bottom: calc(var(--block-space) * 1.5);
+  }
+
+  @media (max-width: 55ch) {
+    h1 {
+      font-size: var(--text-large);
+    }
+  }
+}

@@ -1,0 +1,44 @@
+@layer components {
+  .pagination {
+    align-items: center;
+    display: flex;
+    gap: calc(var(--inline-space) * 2);
+    justify-content: center;
+    margin-top: calc(var(--block-space) * 2);
+  }
+
+  .pagination-prev,
+  .pagination-next {
+    background: var(--color-ink-lightest);
+    border-radius: 0.125rem;
+    border: var(--border);
+    color: var(--color-ink);
+    font-size: var(--text-x-small);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    padding: 0.5em 1em;
+    text-transform: uppercase;
+
+    &:hover:not(.disabled) {
+      background: var(--color-ink-lighter);
+      text-decoration: none;
+    }
+
+    &.disabled {
+      color: var(--color-ink-medium);
+      cursor: not-allowed;
+    }
+  }
+
+  .pagination-info {
+    color: var(--color-ink-dark);
+    font-size: var(--text-small);
+  }
+
+  @media (max-width: 140ch) {
+    .pagination {
+      flex-wrap: wrap;
+      gap: var(--block-space);
+    }
+  }
+}

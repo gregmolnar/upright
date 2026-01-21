@@ -1,0 +1,151 @@
+@layer components {
+  .uptime-bars-section {
+    background: oklch(var(--lch-ink-lightest) / 85%);
+    border-radius: 0.25rem;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .uptime-bars-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .uptime-bars-header {
+    background: var(--color-ink-lighter);
+    display: grid;
+    font-size: var(--text-x-small);
+    font-weight: 500;
+    gap: var(--block-space);
+    grid-template-columns: minmax(200px, 1fr) 1fr auto;
+    letter-spacing: 0.04em;
+    padding: calc(var(--block-space) * 0.75) var(--block-space);
+    text-transform: uppercase;
+  }
+
+  .uptime-bars-days-header {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .uptime-bars-date-label {
+    color: var(--color-ink-dark);
+    font-size: calc(var(--text-x-small) * 0.9);
+  }
+
+  .uptime-bars-uptime-header {
+    text-align: right;
+    width: 7ch;
+  }
+
+  .uptime-bars-row {
+    border-top: 1px solid var(--color-ink-lighter);
+    display: grid;
+    gap: var(--block-space);
+    grid-template-columns: minmax(200px, 1fr) 1fr auto;
+    padding: calc(var(--block-space) * 0.75) var(--block-space);
+    transition: background-color 100ms;
+  }
+
+  .uptime-bars-row:hover {
+    background: var(--color-canvas);
+  }
+
+  .uptime-bars-probe {
+    align-items: center;
+    display: flex;
+    gap: 0.75em;
+    min-width: 0;
+  }
+
+  .uptime-bars-probe .probe-type-badge {
+    flex-shrink: 0;
+  }
+
+  .uptime-bars-probe .probe-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .uptime-bars-days {
+    align-items: center;
+    display: flex;
+    gap: 2px;
+  }
+
+  .uptime-bar {
+    border-radius: 2px;
+    cursor: default;
+    flex: 1;
+    height: 24px;
+    max-width: 12px;
+    min-width: 4px;
+    transition: transform 100ms, filter 100ms;
+  }
+
+  .uptime-bar:hover {
+    filter: brightness(1.1);
+    transform: scaleY(1.15);
+  }
+
+  .uptime-bar-perfect {
+    background: var(--color-positive);
+  }
+
+  .uptime-bar-good {
+    background: oklch(70% 0.14 145);
+  }
+
+  .uptime-bar-warning {
+    background: oklch(75% 0.15 85);
+  }
+
+  .uptime-bar-critical {
+    background: oklch(65% 0.16 42);
+  }
+
+  .uptime-bar-down {
+    background: var(--color-negative);
+  }
+
+  .uptime-bar-no-data {
+    background: var(--color-ink-light);
+    opacity: 0.4;
+  }
+
+  .uptime-bars-uptime {
+    font-size: var(--text-small);
+    font-weight: 500;
+    text-align: right;
+    width: 7ch;
+  }
+
+  @media (max-width: 85ch) {
+    .uptime-bars-header,
+    .uptime-bars-row {
+      grid-template-columns: minmax(120px, 150px) 1fr auto;
+      gap: calc(var(--block-space) * 0.5);
+    }
+
+    .uptime-bars-probe .probe-type-badge {
+      display: none;
+    }
+  }
+
+  @media (max-width: 55ch) {
+    .uptime-bars-header,
+    .uptime-bars-row {
+      grid-template-columns: minmax(80px, 120px) 1fr auto;
+      padding: calc(var(--block-space) * 0.5);
+    }
+
+    .uptime-bar {
+      height: 18px;
+    }
+
+    .uptime-bars-days-header {
+      display: none;
+    }
+  }
+}
