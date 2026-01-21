@@ -12,6 +12,16 @@ groups:
           /
           count by (name, type, probe_target) (upright_probe_up)
 
+      # Daily uptime percentage (0.0 to 1.0)
+      # Uptime = percentage of time in past day when majority of sites reported UP
+      - record: upright:probe_uptime_daily
+        expr: |
+          avg_over_time((
+            (upright:probe_down_fraction <= bool 0.5)
+            or
+            (max by (name, type, probe_target) (upright_probe_up) * 0 + 1)
+          )[1d:])
+
   - name: upright_alerts
     rules:
       # Mass failure alert - fires when >20% of all probes are failing
