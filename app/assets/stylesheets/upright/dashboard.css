@@ -77,44 +77,6 @@
     to { transform: rotate(360deg); }
   }
 
-  .time-picker {
-    display: flex;
-    gap: 2px;
-  }
-
-  .time-picker-btn {
-    background: var(--color-ink-lightest);
-    border: 1px solid var(--color-ink-light);
-    color: var(--color-ink-dark);
-    cursor: pointer;
-    font-family: inherit;
-    font-size: var(--text-x-small);
-    font-weight: 500;
-    letter-spacing: 0.02em;
-    padding: 0.5em 1em;
-    text-transform: uppercase;
-    transition: background-color 100ms, border-color 100ms;
-  }
-
-  .time-picker-btn:first-child {
-    border-radius: 0.25rem 0 0 0.25rem;
-  }
-
-  .time-picker-btn:last-child {
-    border-radius: 0 0.25rem 0.25rem 0;
-  }
-
-  .time-picker-btn:hover {
-    background: var(--color-ink-lighter);
-    border-color: var(--color-ink-medium);
-  }
-
-  .time-picker-btn.active {
-    background: var(--color-ink);
-    border-color: var(--color-ink);
-    color: var(--color-ink-inverted);
-  }
-
   .uptime-card {
     background: oklch(var(--lch-ink-lightest) / 85%);
     border-radius: 0.25rem;
@@ -340,11 +302,6 @@
   }
 
   @media (max-width: 55ch) {
-    .time-picker-btn {
-      padding: 0.4em 0.6em;
-      font-size: calc(var(--text-x-small) * 0.9);
-    }
-
     .heatmap-table th,
     .heatmap-table td {
       padding: 0.25em 0.5em;

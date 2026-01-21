@@ -25,7 +25,7 @@
 
   .uptime-bars-days-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
   }
 
   .uptime-bars-date-label {

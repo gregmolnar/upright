@@ -23,6 +23,6 @@ class Upright::UptimeProbe
 
   private
     def daily_uptimes
-      @daily_uptimes ||= @result[:values].to_h { |timestamp, value| [Time.at(timestamp).to_date, value.to_f] }
+      @daily_uptimes ||= @result[:values].to_h { |timestamp, value| [ Time.at(timestamp).to_date, value.to_f ] }
     end
 end
