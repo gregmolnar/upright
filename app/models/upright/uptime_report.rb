@@ -28,7 +28,12 @@ class Upright::UptimeReport
       filters << "type=\"#{probe_type}\"" if probe_type.present?
 
       label_selector = filters.any? ? "{#{filters.join(',')}}" : ""
-      "avg by (name, type) (avg_over_time(upright_probe_up#{label_selector}[1d]))"
+
+      if site_code.present?
+        "avg_over_time(upright_probe_up#{label_selector}[1d:])"
+      else
+        "avg_over_time((avg by (name, type) (upright_probe_up#{label_selector}) >= 0.5)[1d:])"
+      end
     end
 
     def prometheus_client
