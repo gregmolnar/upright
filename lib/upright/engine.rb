@@ -10,7 +10,8 @@ class Upright::Engine < ::Rails::Engine
       key: "_upright_session",
       domain: :all,
       same_site: :lax,
-      secure: Rails.env.production?
+      secure: Rails.env.production?,
+      expire_after: 24.hours
   end
 
   config.after_initialize do

@@ -1,0 +1,104 @@
+@layer reset, base, components, utilities;
+
+:root {
+  /* Spacing */
+  --inline-space: 1ch;
+  --block-space: 1rem;
+
+  /* Text */
+  --font-sans: -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "IBM Plex Mono", "JetBrains Mono", ui-monospace, "Cascadia Code", "Fira Code", monospace;
+
+  --text-x-small: 0.7rem;
+  --text-small: 0.8rem;
+  --text-normal: 0.9rem;
+  --text-large: 1.25rem;
+  --text-x-large: 1.5rem;
+
+  /* OKLCH colors: Primitives */
+  --lch-black: 0% 0 0;
+  --lch-white: 100% 0 0;
+  --lch-canvas: var(--lch-white);
+  --lch-canvas-deep: var(--lch-white);
+  --lch-ink-inverted: var(--lch-white);
+
+  --lch-ink-darkest: 26% 0.05 264;
+  --lch-ink-darker: 40% 0.026 262;
+  --lch-ink-dark: 56% 0.014 260;
+  --lch-ink-medium: 66% 0.008 258;
+  --lch-ink-light: 84% 0.005 256;
+  --lch-ink-lighter: 92% 0.003 254;
+  --lch-ink-lightest: 96% 0.002 252;
+
+  --lch-blue-dark: 57.02% 0.1895 260.46;
+  --lch-blue-lighter: 92% 0.026 254;
+
+  --lch-green-dark: 55% 0.162 147;
+  --lch-red-dark: 59% 0.19 38;
+
+  /* Colors: Semantic */
+  --color-black: oklch(var(--lch-black));
+  --color-white: oklch(var(--lch-white));
+  --color-canvas: oklch(var(--lch-canvas));
+  --color-ink: oklch(var(--lch-ink-darkest));
+  --color-ink-dark: oklch(var(--lch-ink-dark));
+  --color-ink-medium: oklch(var(--lch-ink-medium));
+  --color-ink-light: oklch(var(--lch-ink-light));
+  --color-ink-lighter: oklch(var(--lch-ink-lighter));
+  --color-ink-lightest: oklch(var(--lch-ink-lightest));
+  --color-ink-inverted: oklch(var(--lch-ink-inverted));
+
+  /* Colors: Abstractions */
+  --color-link: oklch(var(--lch-blue-dark));
+  --color-positive: oklch(var(--lch-green-dark));
+  --color-negative: oklch(var(--lch-red-dark));
+  --color-selected: oklch(var(--lch-blue-lighter));
+
+  /* Borders & Shadows */
+  --border: 1px solid var(--color-ink-lighter);
+  --shadow: 0 0 0 1px oklch(var(--lch-black) / 5%),
+            0 0.2em 0.2em oklch(var(--lch-black) / 5%),
+            0 0.4em 0.4em oklch(var(--lch-black) / 5%),
+            0 0.8em 0.8em oklch(var(--lch-black) / 5%);
+
+  /* Focus rings */
+  --focus-ring-color: var(--color-link);
+  --focus-ring-size: 2px;
+
+  /* Layout */
+  --main-padding: clamp(var(--inline-space), 3vw, calc(var(--inline-space) * 3));
+  --main-width: 1400px;
+
+  /* Grain */
+  --grain-opacity: 0.04;
+}
+
+/* Dark mode: Update primitive values only */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --lch-canvas: 18% 0.04 250;
+    --lch-canvas-deep: 12% 0.035 255;
+    --lch-ink-inverted: var(--lch-black);
+
+    --lch-ink-darkest: 92% 0.01 250;
+    --lch-ink-darker: 80% 0.015 250;
+    --lch-ink-dark: 65% 0.02 250;
+    --lch-ink-medium: 50% 0.025 250;
+    --lch-ink-light: 35% 0.03 250;
+    --lch-ink-lighter: 24% 0.035 250;
+    --lch-ink-lightest: 20% 0.04 250;
+
+    --lch-blue-dark: 70% 0.14 250;
+    --lch-blue-lighter: 25% 0.05 250;
+
+    --lch-green-dark: 75% 0.15 145;
+    --lch-red-dark: 70% 0.16 42;
+
+    --shadow: 0 0 0 1px oklch(var(--lch-black) / 0.4),
+              0 .2em 1.6em -0.8em oklch(var(--lch-black) / 0.5),
+              0 .4em 2.4em -1em oklch(var(--lch-black) / 0.6),
+              0 .4em .8em -1.2em oklch(var(--lch-black) / 0.7);
+
+    --grain-opacity: 0.1;
+  }
+}

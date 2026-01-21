@@ -1,0 +1,104 @@
+@layer components {
+  .sign-in-container {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    min-height: 100dvh;
+    padding: var(--block-space);
+  }
+
+  .sign-in-box {
+    background-color: var(--color-ink-lightest);
+    border-radius: 0.25rem;
+    border: var(--border);
+    box-shadow: var(--shadow);
+    max-width: min(400px, 100%);
+    padding: calc(var(--block-space) * 3);
+    text-align: center;
+
+    h1 {
+      font-size: var(--text-x-large);
+      margin-bottom: calc(var(--block-space) * 2);
+    }
+
+    form {
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+  .input--select {
+    --select-arrow: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m12 19.5c-.7 0-1.3-.3-1.7-.8l-9.8-11.1c-.7-.8-.6-1.9.2-2.6.8-.6 1.9-.6 2.5.2l8.6 9.8c0 .1.2.1.4 0l8.6-9.8c.7-.8 1.8-.9 2.6-.2s.9 1.8.2 2.6l-9.8 11.1c-.4.5-1.1.8-1.7.8z' fill='%23000'/%3E%3C/svg%3E");
+
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: var(--color-canvas);
+    background-image: var(--select-arrow);
+    background-position: center right 0.75em;
+    background-repeat: no-repeat;
+    background-size: 0.5em;
+    border-radius: 0.25rem;
+    border: 1px solid var(--color-ink-light);
+    color: var(--color-ink);
+    cursor: pointer;
+    font: inherit;
+    font-size: var(--text-x-small);
+    padding: 0.5em 1.75em 0.5em 0.75em;
+    width: 100%;
+
+    &:hover {
+      border-color: var(--color-ink-dark);
+    }
+
+    &:focus-visible {
+      outline: var(--focus-ring-size) solid var(--focus-ring-color);
+      outline-offset: 1px;
+    }
+
+    option {
+      background-color: var(--color-canvas);
+      color: var(--color-ink);
+    }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .input--select {
+      --select-arrow: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m12 19.5c-.7 0-1.3-.3-1.7-.8l-9.8-11.1c-.7-.8-.6-1.9.2-2.6.8-.6 1.9-.6 2.5.2l8.6 9.8c0 .1.2.1.4 0l8.6-9.8c.7-.8 1.8-.9 2.6-.2s.9 1.8.2 2.6l-9.8 11.1c-.4.5-1.1.8-1.7.8z' fill='%23fff'/%3E%3C/svg%3E");
+    }
+  }
+
+  .filters {
+    margin-bottom: calc(var(--block-space) * 1.5);
+
+    form {
+      align-items: center;
+      display: flex;
+      gap: calc(var(--inline-space) * 1.5);
+    }
+
+    label {
+      color: var(--color-ink-dark);
+      font-size: var(--text-small);
+      font-weight: 500;
+    }
+
+    .input--select {
+      width: auto;
+    }
+  }
+
+  @media (max-width: 140ch) {
+    .filters form {
+      gap: calc(var(--inline-space) * 0.75);
+    }
+
+    .filters label {
+      display: none;
+    }
+
+    .filters .input--select {
+      flex: 1;
+      min-width: 0;
+    }
+  }
+}

@@ -1,0 +1,63 @@
+@layer components {
+  table {
+    background: oklch(var(--lch-ink-lightest) / 85%);
+    border-collapse: collapse;
+    border-radius: 0.25rem;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    width: 100%;
+  }
+
+  thead {
+    background: var(--color-ink-lighter);
+  }
+
+  th {
+    font-size: var(--text-x-small);
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    padding: calc(var(--block-space) * 0.75) var(--block-space);
+    text-align: left;
+    text-transform: uppercase;
+  }
+
+  td {
+    border-top: var(--border);
+    font-size: var(--text-small);
+    padding: calc(var(--block-space) * 0.75) var(--block-space);
+  }
+
+  tbody tr {
+    cursor: pointer;
+    transition: background-color 100ms;
+
+    &:hover {
+      background-color: var(--color-canvas);
+    }
+  }
+
+  @media (max-width: 140ch) {
+    th, td {
+      padding: calc(var(--block-space) * 0.5) calc(var(--block-space) * 0.5);
+      font-size: var(--text-x-small);
+    }
+
+    /* Hide Duration column (3rd column) */
+    th:nth-child(3),
+    td:nth-child(3) {
+      display: none;
+    }
+  }
+
+  @media (max-width: 55ch) {
+    /* Hide Time column (4th column) */
+    th:nth-child(4),
+    td:nth-child(4) {
+      display: none;
+    }
+
+    th, td {
+      padding: calc(var(--block-space) * 0.4) calc(var(--block-space) * 0.4);
+    }
+  }
+}

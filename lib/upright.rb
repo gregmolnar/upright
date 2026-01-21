@@ -1,4 +1,5 @@
 require "frozen_record"
+require "prometheus/api_client"
 require "opentelemetry-sdk"
 require "opentelemetry-exporter-otlp"
 require "typhoeus"

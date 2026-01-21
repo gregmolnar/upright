@@ -1,0 +1,68 @@
+@layer base {
+  html {
+    background: var(--color-canvas);
+    min-height: 100dvh;
+  }
+
+  body {
+    -webkit-font-smoothing: antialiased;
+    background: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-mono);
+    font-size: var(--text-normal);
+    letter-spacing: -0.01em;
+    line-height: 1.5;
+    min-height: 100dvh;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    html,
+    body {
+      background-color: var(--color-canvas);
+      background-image: linear-gradient(
+        180deg,
+        oklch(var(--lch-canvas)) 0%,
+        oklch(var(--lch-canvas-deep)) 100%
+      );
+      background-attachment: fixed;
+    }
+  }
+
+  /* Film grain overlay */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)'/%3E%3C/svg%3E");
+    opacity: var(--grain-opacity);
+  }
+
+  a {
+    color: var(--color-link);
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  :is(a, button, input) {
+    transition: 100ms ease-out;
+    transition-property: background-color, border-color, box-shadow, filter;
+
+    &:focus-visible {
+      outline: var(--focus-ring-size) solid var(--focus-ring-color);
+      outline-offset: 1px;
+    }
+  }
+
+  ::selection {
+    background: var(--color-selected);
+  }
+
+  turbo-frame {
+    display: contents;
+  }
+}

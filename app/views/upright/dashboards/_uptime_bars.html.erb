@@ -1,0 +1,19 @@
+<% if probes.empty? %>
+  <div class="no-data-message">
+    No probe data available for the selected filters.
+  </div>
+<% else %>
+  <div class="uptime-bars-container">
+    <div class="uptime-bars-header">
+      <div class="uptime-bars-probe-header">Probe</div>
+      <div class="uptime-bars-days-header">
+        <span class="uptime-bars-date-label">Past 30 days</span>
+      </div>
+      <div class="uptime-bars-uptime-header">Uptime</div>
+    </div>
+
+    <% probes.each do |probe| %>
+      <%= render "uptime_probe_row", probe: probe, dates: date_range %>
+    <% end %>
+  </div>
+<% end %>

@@ -1,0 +1,25 @@
+@layer components {
+  #sites-map {
+    border-radius: 0.25rem;
+    box-shadow: var(--shadow);
+    height: 400px;
+    margin-bottom: calc(var(--block-space) * 2);
+    width: 100%;
+
+    .leaflet-tile-pane img {
+      max-width: none !important;
+    }
+  }
+
+  @media (max-width: 140ch) {
+    #sites-map {
+      height: 300px;
+    }
+  }
+
+  @media (max-width: 55ch) {
+    #sites-map {
+      height: 250px;
+    }
+  }
+}

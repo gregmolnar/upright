@@ -1,0 +1,22 @@
+<div class="dashboard uptime-dashboard">
+  <header class="dashboard-header">
+    <h1>Uptime Dashboard</h1>
+    <div class="dashboard-filters">
+      <%= form_with url: dashboard_uptime_path, method: :get, data: { controller: "form", turbo_frame: "uptime_bars", turbo_action: "replace" } do |f| %>
+        <%= f.select :site_code,
+              options_for_select([["All Sites", ""]] + @sites.map { |s| [s.city, s.code] }, params[:site_code]),
+              {},
+              class: "input--select", data: { action: "change->form#submit" } %>
+
+        <%= f.select :probe_type,
+              options_for_select(Upright::Probeable::TYPES.map { |t| [t.titleize, t] }, @probe_type),
+              {},
+              class: "input--select", data: { action: "change->form#submit" } %>
+      <% end %>
+    </div>
+  </header>
+
+  <%= turbo_frame_tag "uptime_bars" do %>
+    <%= render "uptime_bars", probes: @report.probes %>
+  <% end %>
+</div>

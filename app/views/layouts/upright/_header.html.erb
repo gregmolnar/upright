@@ -5,13 +5,16 @@
       <span class="site-name"><%= Upright::Current.site.city %></span>
     <% end %>
   </div>
-  <div class="header-nav">
+  <nav class="header-nav">
+    <%= link_to "Probes", upright.site_root_url(subdomain: (Upright::Current.site || Upright.sites.first).code), class: "nav-link" %>
+    <%= link_to "Uptime", upright.dashboard_uptime_url(subdomain: Upright.configuration.admin_subdomain), class: "nav-link" %>
+    <span class="nav-divider"></span>
     <%= link_to "Prometheus", upright.prometheus_url(subdomain: Upright.configuration.admin_subdomain), target: "_blank", class: "nav-link" %>
     <%= link_to "Alertmanager", upright.alertmanager_url(subdomain: Upright.configuration.admin_subdomain), target: "_blank", class: "nav-link" %>
     <% if Upright::Current.site.present? %>
       <%= link_to "Jobs", mission_control_jobs_path, target: "_blank", class: "nav-link" %>
     <% end %>
-  </div>
+  </nav>
   <div class="user-info">
     <span><%= Upright::Current.user.name %></span>
     <%= button_to "Sign out", upright.session_path, method: :delete, data: { turbo: false }, class: "btn" %>
