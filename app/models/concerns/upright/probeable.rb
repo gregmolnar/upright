@@ -117,7 +117,7 @@ module Upright::Probeable
       }
 
       if logger.respond_to?(:struct)
-        logger.struct(log_data)
+        logger.struct(**log_data)
       else
         logger.info(log_data.to_json)
       end
