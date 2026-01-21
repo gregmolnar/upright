@@ -1,5 +1,9 @@
 @layer base {
-  html,
+  html {
+    background: var(--color-canvas);
+    min-height: 100dvh;
+  }
+
   body {
     -webkit-font-smoothing: antialiased;
     background: var(--color-canvas);
