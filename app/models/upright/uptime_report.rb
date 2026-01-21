@@ -1,8 +1,7 @@
 class Upright::UptimeReport
-  attr_reader :site_code, :probe_type
+  attr_reader :probe_type
 
-  def initialize(site_code: nil, probe_type: "http")
-    @site_code = site_code
+  def initialize(probe_type: "http")
     @probe_type = probe_type
   end
 
@@ -24,21 +23,27 @@ class Upright::UptimeReport
 
     def query
       filters = []
-      filters << "site_code=\"#{site_code}\"" if site_code.present?
       filters << "type=\"#{probe_type}\"" if probe_type.present?
 
       label_selector = filters.any? ? "{#{filters.join(',')}}" : ""
 
-      if site_code.present?
-        "avg_over_time(upright_probe_up#{label_selector}[1d:])"
-      else
-        "avg_over_time((avg by (name, type) (upright_probe_up#{label_selector}) >= 0.5)[1d:])"
-      end
+      # Uptime = percentage of time per day when majority of sites reported UP.
+      # - down_fraction <= 0.5 means majority says UP, returns 1; otherwise 0
+      # - Fallback to 1 (up) when down_fraction absent (no sites reported down)
+      # - avg_over_time averages these 0/1 values over each day
+      <<~PROMQL.squish
+        avg_over_time((
+          (upright:probe_down_fraction#{label_selector} <= bool 0.5)
+          or
+          (max by (name, type, probe_target) (upright_probe_up#{label_selector}) * 0 + 1)
+        )[1d:])
+      PROMQL
     end
 
     def prometheus_client
       Prometheus::ApiClient.client(
-        url: ENV.fetch("PROMETHEUS_URL", "http://upright-prometheus:9090")
+        url: ENV.fetch("PROMETHEUS_URL", "http://upright-prometheus:9090"),
+        options: { timeout: 30 }
       )
     end
 end
