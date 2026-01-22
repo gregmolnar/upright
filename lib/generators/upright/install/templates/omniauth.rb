@@ -3,6 +3,6 @@
 
 Rails.application.config.middleware.use OmniAuth::Builder do
   provider :static_credentials,
-    title: "Upright Sign In",
+    title: "Sign In",
     credentials: { "admin" => ENV.fetch("ADMIN_PASSWORD", "upright") }
 end

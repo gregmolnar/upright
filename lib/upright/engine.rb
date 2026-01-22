@@ -71,7 +71,7 @@ class Upright::Engine < ::Rails::Engine
   # Start metrics server when Solid Queue runs standalone (not embedded in Puma)
   initializer "upright.solid_queue_metrics" do
     SolidQueue.on_start do
-      unless ENV["SOLID_QUEUE_IN_PUMA"]
+      unless ENV["SOLID_QUEUE_IN_PUMA"] || Rails.env.local?
         ENV["PROMETHEUS_EXPORTER_PORT"] ||= "9394"
         ENV["PROMETHEUS_EXPORTER_LOG_REQUESTS"] = "false"
         Yabeda::Prometheus::Exporter.start_metrics_server!

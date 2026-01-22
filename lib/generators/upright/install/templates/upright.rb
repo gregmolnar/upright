@@ -18,7 +18,4 @@ Upright.configure do |config|
   #   client_id: ENV["OIDC_CLIENT_ID"],
   #   client_secret: ENV["OIDC_CLIENT_SECRET"]
   # }
-  #
-  # No authentication (internal networks only)
-  config.auth_provider = nil
 end

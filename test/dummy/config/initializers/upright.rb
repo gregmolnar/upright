@@ -1,6 +1,5 @@
 Upright.configure do |config|
-  config.probes_path = Rails.root.join("config/upright/probes")
-  config.frozen_record_path = Rails.root.join("config")
+  config.hostname = "upright.localhost"
   config.user_agent = "Upright-Test/1.0"
-  config.auth_provider = :openid_connect
+  config.auth_provider = :static_credentials
 end
