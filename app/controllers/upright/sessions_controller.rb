@@ -1,5 +1,6 @@
 class Upright::SessionsController < Upright::ApplicationController
   skip_before_action :authenticate_user, only: [ :new, :create ]
+  skip_forgery_protection only: :create
 
   before_action :ensure_not_signed_in, only: [ :new, :create ]
 

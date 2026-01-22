@@ -5,8 +5,9 @@ module Upright
 
       desc "Install Upright engine into your application"
 
-      def copy_initializer
+      def copy_initializers
         template "upright.rb", "config/initializers/upright.rb"
+        template "omniauth.rb", "config/initializers/omniauth.rb"
       end
 
       def copy_sites_config
@@ -43,8 +44,8 @@ module Upright
         say "  1. Run migrations: bin/rails db:migrate"
         say "  2. Configure your servers in config/deploy.yml"
         say "  3. Configure sites in config/sites.yml"
-        say "  4. Add probes in config/probes/*.yml"
-        say "  5. Configure authentication in config/initializers/upright.rb"
+        say "  4. Add probes in probes/*.yml"
+        say "  5. Set ADMIN_PASSWORD env var (default: upright)"
         say ""
         say "For production, review config/initializers/upright.rb and update:"
         say "  config.hostname = \"honcho-upright.com\""

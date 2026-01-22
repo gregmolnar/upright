@@ -18,7 +18,7 @@ Upright::Engine.routes.draw do
     root "sites#index", as: :admin_root
 
     resource :session, only: [ :new, :create ], as: :admin_session
-    get "auth/:provider/callback", to: "sessions#create", as: :auth_callback
+    match "auth/:provider/callback", to: "sessions#create", as: :auth_callback, via: [ :get, :post ]
 
     # Dashboards
     scope :dashboards, as: :dashboard do

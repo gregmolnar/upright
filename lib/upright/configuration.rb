@@ -44,7 +44,7 @@ class Upright::Configuration
     @playwright_server_url = ENV["PLAYWRIGHT_SERVER_URL"]
     @otel_endpoint = ENV["OTEL_EXPORTER_OTLP_ENDPOINT"]
 
-    @auth_provider = nil
+    @auth_provider = :static_credentials
     @auth_options = {}
   end
 

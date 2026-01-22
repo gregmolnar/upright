@@ -117,7 +117,17 @@ Each site node identifies itself via the `SITE_SUBDOMAIN` environment variable, 
 
 ### Authentication
 
-Upright supports OpenID Connect for authentication (Logto, Keycloak, Duo, Okta, etc.):
+#### Static Credentials
+
+Upright uses static credentials by default with username `admin` and password `upright`.
+
+> [!WARNING]
+> Change the default password before deploying to production by setting the `ADMIN_PASSWORD` environment variable.
+
+
+#### OpenID Connect
+
+For production environments, Upright supports OpenID Connect (Logto, Keycloak, Duo, Okta, etc.):
 
 ```ruby
 # config/initializers/upright.rb
@@ -128,14 +138,6 @@ Upright.configure do |config|
     client_id: ENV["OIDC_CLIENT_ID"],
     client_secret: ENV["OIDC_CLIENT_SECRET"]
   }
-end
-```
-
-By default authentication is disabled but this is suitable for internal networks only:
-
-```ruby
-Upright.configure do |config|
-  config.auth_provider = nil
 end
 ```
 
@@ -402,7 +404,47 @@ Upright.configure do |config|
 end
 ```
 
-### Testing
+## Local Development
+
+### Setup
+
+```bash
+bin/setup
+```
+
+This installs dependencies, prepares the database, and starts the dev server.
+
+### Running Services
+
+Start supporting Docker services (Playwright server, etc.):
+
+```bash
+bin/services
+```
+
+### Running the Server
+
+```bash
+bin/dev
+```
+
+Visit http://app.upright.localhost:3000 and sign in with:
+- **Username**: `admin`
+- **Password**: `upright` (or value of `ADMIN_PASSWORD` env var)
+
+### Testing Playwright Probes
+
+Run probes with a visible browser window:
+
+```bash
+LOCAL_PLAYWRIGHT=1 bin/rails console
+```
+
+```ruby
+Probes::Playwright::MyServiceAuthProbe.check
+```
+
+### Running Tests
 
 ```bash
 bin/rails test
