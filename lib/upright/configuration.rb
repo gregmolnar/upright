@@ -99,7 +99,8 @@ class Upright::Configuration
 
   private
     def configure_allowed_hosts
-      Rails.application.config.hosts = [ /.*\.#{Regexp.escape(hostname)}/, hostname ]
+      port_suffix = Rails.env.local? ? "(:\\d+)?" : ""
+      Rails.application.config.hosts = [ /.*\.#{Regexp.escape(hostname)}#{port_suffix}/, /#{Regexp.escape(hostname)}#{port_suffix}/ ]
       Rails.application.config.action_dispatch.tld_length = 1
     end
 end
