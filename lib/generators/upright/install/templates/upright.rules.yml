@@ -147,7 +147,7 @@ groups:
           upright: "https://app.<%= app_domain %>/?probe_type={{ $labels.type }}&status=fail&probe_name={{ $labels.name | urlquery }}"
         expr: upright:probe_down_fraction{type="http"} > 0.5
         labels:
-          severity: critical
+          severity: page
           group: upright
 
       - alert: UprightHTTPProbeDegraded
@@ -186,7 +186,7 @@ groups:
           upright: "https://app.<%= app_domain %>/?probe_type={{ $labels.type }}&status=fail&probe_name={{ $labels.name | urlquery }}"
         expr: upright:probe_down_fraction{type="smtp"} > 0.5
         labels:
-          severity: critical
+          severity: page
           group: upright
 
       - alert: UprightSMTPProbeDegraded
@@ -225,7 +225,7 @@ groups:
           upright: "https://app.<%= app_domain %>/?probe_type={{ $labels.type }}&status=fail&probe_name={{ $labels.name | urlquery }}"
         expr: upright:probe_down_fraction{type="playwright"} > 0.5
         labels:
-          severity: critical
+          severity: page
           group: upright
 
       - alert: UprightPlaywrightProbeDegraded
