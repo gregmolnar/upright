@@ -1,9 +1,0 @@
-- name: "Example"
-  url: "https://example.com/"
-
-- name: "Google"
-  url: "https://www.google.com/"
-
-- name: "Expected301"
-  url: "https://example.com/redirect"
-  expected_status: 301

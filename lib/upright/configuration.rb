@@ -86,25 +86,20 @@ class Upright::Configuration
   end
 
   def hostname
-    if Rails.env.local?
-      @hostname&.sub(/\.[^.]+\z/, ".localhost")
-    else
-      @hostname
-    end
+    @hostname
   end
 
   def default_url_options
     if Rails.env.production?
       { protocol: "https", host: "#{admin_subdomain}.#{hostname}", domain: hostname }
     else
-      { protocol: "http", host: "#{admin_subdomain}.#{hostname}", port: 3040, domain: hostname }
+      { protocol: "http", host: "#{admin_subdomain}.#{hostname}", port: ENV.fetch("PORT", 3000).to_i, domain: hostname }
     end
   end
 
   private
     def configure_allowed_hosts
       Rails.application.config.hosts = [ /.*\.#{Regexp.escape(hostname)}/, hostname ]
-      Rails.application.config.action_controller.default_url_options = default_url_options
       Rails.application.config.action_dispatch.tld_length = 1
     end
 end
