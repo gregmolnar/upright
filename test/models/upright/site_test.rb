@@ -27,7 +27,7 @@ class Upright::SiteTest < ActiveSupport::TestCase
   end
 
   test "url builds subdomain url from code" do
-    assert_equal "http://ams.upright.localhost:3040/", @site.url
+    assert_equal "http://ams.upright.localhost:3000/", @site.url
   end
 
   test "to_leaflet returns map marker data" do
@@ -37,6 +37,6 @@ class Upright::SiteTest < ActiveSupport::TestCase
     assert_equal "Amsterdam", result[:city]
     assert_in_delta 52.37, result[:lat], 0.01
     assert_in_delta 4.89, result[:lon], 0.01
-    assert_equal "http://ams.upright.localhost:3040/", result[:url]
+    assert_equal "http://ams.upright.localhost:3000/", result[:url]
   end
 end

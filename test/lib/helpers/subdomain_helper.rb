@@ -1,9 +1,11 @@
 module SubdomainHelper
   def on_subdomain(subdomain)
+    hostname = Upright.configuration.hostname
+
     if subdomain.present?
-      host! "#{subdomain}.#{DEFAULT_URL_OPTIONS[:domain]}"
+      host! "#{subdomain}.#{hostname}"
     else
-      host! DEFAULT_URL_OPTIONS[:domain]
+      host! hostname
     end
   end
 end

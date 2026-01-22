@@ -1,2 +1,6 @@
 - name: "Example"
   url: "https://example.com/"
+
+- name: "Expected301"
+  url: "https://example.com/redirect"
+  expected_status: 301
