@@ -1,10 +1,10 @@
 services:
   prometheus:
     image: prom/prometheus:v3.4.1
-    container_name: upright-prometheus
+    container_name: <%= app_name %>-prometheus
     network_mode: host
     volumes:
-      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./config/prometheus/development/prometheus.yml:/etc/prometheus/prometheus.yml:ro
       - prometheus_data:/prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
@@ -14,11 +14,11 @@ services:
 
   alertmanager:
     image: prom/alertmanager:v0.28.1
-    container_name: upright-alertmanager
+    container_name: <%= app_name %>-alertmanager
     ports:
       - "9093:9093"
     volumes:
-      - ./config/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
+      - ./config/alertmanager/development/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
       - alertmanager_data:/alertmanager
     command:
       - '--config.file=/etc/alertmanager/alertmanager.yml'
@@ -26,7 +26,7 @@ services:
 
   playwright:
     image: jacoblincool/playwright:chromium-server-1.56.1
-    container_name: playwright
+    container_name: <%= app_name %>-playwright
     ports:
       - "53333:53333"
     environment:

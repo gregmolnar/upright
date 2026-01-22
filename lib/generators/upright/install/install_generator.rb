@@ -26,6 +26,12 @@ module Upright
         template "upright.rules.yml", "config/prometheus/rules/upright.rules.yml"
         template "alertmanager.yml", "config/alertmanager/alertmanager.yml"
         template "otel_collector.yml", "config/otel_collector.yml"
+        template "development_prometheus.yml", "config/prometheus/development/prometheus.yml"
+        template "development_alertmanager.yml", "config/alertmanager/development/alertmanager.yml"
+      end
+
+      def copy_dev_services
+        template "docker-compose.yml", "docker-compose.yml"
       end
 
       def copy_deploy_config
@@ -49,6 +55,9 @@ module Upright
         say ""
         say "For production, review config/initializers/upright.rb and update:"
         say "  config.hostname = \"honcho-upright.com\""
+        say ""
+        say "Start dev services (Prometheus, Alertmanager, Playwright):"
+        say "  docker compose up -d"
         say ""
         say "Start the development server with: bin/dev"
         say ""
