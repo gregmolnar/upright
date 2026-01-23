@@ -4,12 +4,11 @@ require "webmock/minitest"
 class PrometheusProxyControllerTest < ActionDispatch::IntegrationTest
   setup do
     on_subdomain :app
-    ENV["PROMETHEUS_URL"] = "http://upright-prometheus:9090"
     ENV["PROMETHEUS_OTLP_TOKEN"] = "test-token"
   end
 
   test "proxies requests when authenticated" do
-    stub_request(:get, "http://upright-prometheus:9090/graph").to_return(status: 200, body: "Prometheus UI")
+    stub_request(:get, "http://localhost:9090/graph").to_return(status: 200, body: "Prometheus UI")
     sign_in
 
     get "/prometheus/graph"
@@ -18,7 +17,7 @@ class PrometheusProxyControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "OTLP endpoint accepts valid token" do
-    stub_request(:post, "http://upright-prometheus:9090/api/v1/otlp/v1/metrics").to_return(status: 200)
+    stub_request(:post, "http://localhost:9090/api/v1/otlp/v1/metrics").to_return(status: 200)
 
     post "/prometheus/api/v1/otlp/v1/metrics",
       headers: { "Authorization" => "Bearer test-token", "Content-Type" => "application/x-protobuf" }
