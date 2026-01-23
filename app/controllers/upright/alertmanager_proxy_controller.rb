@@ -2,7 +2,6 @@ class Upright::AlertmanagerProxyController < Upright::ApplicationController
   skip_forgery_protection
 
   def show
-    @frame_url = alertmanager_path
   end
 
   def proxy

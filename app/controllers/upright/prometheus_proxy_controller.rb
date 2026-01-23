@@ -7,7 +7,6 @@ class Upright::PrometheusProxyController < Upright::ApplicationController
   UNSUPPORTED_PATHS = %w[/api/v1/notifications]
 
   def show
-    @frame_url = prometheus_path
   end
 
   def proxy
