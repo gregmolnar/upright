@@ -6,14 +6,13 @@
     <% end %>
   </div>
   <nav class="header__nav">
-    <%= link_to "Probes", upright.site_root_url(subdomain: (Upright::Current.site || Upright.sites.first).code), class: "header__link" %>
+    <%= link_to "Probes", upright.site_root_url(subdomain: current_or_default_site.code), class: "header__link" %>
     <%= link_to "Uptime", upright.dashboards_uptime_url(subdomain: Upright.configuration.admin_subdomain), class: "header__link" %>
+    <span class="header__divider"></span>
+    <%= link_to "Jobs", mission_control_jobs.root_url(subdomain: current_or_default_site.code), target: "_blank", class: "header__link" %>
     <span class="header__divider"></span>
     <%= link_to "Prometheus", upright.prometheus_url(subdomain: Upright.configuration.admin_subdomain), target: "_blank", class: "header__link" %>
     <%= link_to "Alertmanager", upright.alertmanager_url(subdomain: Upright.configuration.admin_subdomain), target: "_blank", class: "header__link" %>
-    <% if Upright::Current.site.present? %>
-      <%= link_to "Jobs", mission_control_jobs_path, target: "_blank", class: "header__link" %>
-    <% end %>
   </nav>
   <div class="header__user">
     <span><%= Upright::Current.user.name %></span>

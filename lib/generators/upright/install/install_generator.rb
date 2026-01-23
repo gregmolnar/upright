@@ -38,6 +38,10 @@ module Upright
         template "deploy.yml", "config/deploy.yml"
       end
 
+      def copy_puma_config
+        template "puma.rb", "config/puma.rb"
+      end
+
       def add_routes
         route 'mount Upright::Engine => "/", as: :upright'
       end
