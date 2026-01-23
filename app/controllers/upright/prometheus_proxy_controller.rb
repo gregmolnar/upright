@@ -4,8 +4,16 @@ class Upright::PrometheusProxyController < Upright::ApplicationController
   skip_before_action :authenticate_user, only: :otlp
   before_action :authenticate_otlp_token, only: :otlp
 
+  UNSUPPORTED_PATHS = %w[/api/v1/notifications]
+
   def proxy
-    proxy_to_prometheus(request.fullpath.sub(%r{^/prometheus}, ""))
+    path = request.fullpath.sub(%r{^/prometheus}, "")
+
+    if path.start_with?(*UNSUPPORTED_PATHS)
+      head :not_found
+    else
+      proxy_to_prometheus(path)
+    end
   end
 
   def otlp
