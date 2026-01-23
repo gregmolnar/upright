@@ -43,6 +43,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "prometheus-api-client"
   spec.add_dependency "yabeda"
   spec.add_dependency "yabeda-prometheus"
+  spec.add_dependency "webrick"
   spec.add_dependency "yabeda-puma-plugin"
   spec.add_dependency "prometheus-client"
   spec.add_dependency "opentelemetry-sdk"

@@ -1,6 +1,9 @@
 class Upright::AlertmanagerProxyController < Upright::ApplicationController
   skip_forgery_protection
 
+  def show
+  end
+
   def proxy
     proxy_to_alertmanager request.fullpath.delete_prefix("/alertmanager")
   end

@@ -17,12 +17,15 @@ Upright::Engine.routes.draw do
       get :uptime
     end
 
-    # Prometheus proxy
+    namespace :tools do
+      get "prometheus", to: "/upright/prometheus_proxy#show"
+      get "alertmanager", to: "/upright/alertmanager_proxy#show"
+    end
+
     post "prometheus/api/v1/otlp/v1/metrics", to: "prometheus_proxy#otlp"
     match "prometheus/*path", to: "prometheus_proxy#proxy", via: :all
     get "prometheus", to: "prometheus_proxy#proxy", as: :prometheus
 
-    # Alertmanager proxy
     match "alertmanager/*path", to: "alertmanager_proxy#proxy", via: :all
     get "alertmanager", to: "alertmanager_proxy#proxy", as: :alertmanager
   end
@@ -30,6 +33,11 @@ Upright::Engine.routes.draw do
   constraints site_subdomain do
     root "probe_results#index", as: :site_root
     resources :artifacts, only: :show, as: :site_artifacts
+
+    namespace :tools do
+      get "jobs", to: "/upright/jobs#show"
+    end
+
     mount MissionControl::Jobs::Engine, at: "/jobs"
   end
 

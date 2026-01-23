@@ -1,4 +1,20 @@
 @layer components {
+  .service-frame {
+    border: none;
+    display: block;
+    height: calc(100dvh - 3.5rem);
+    width: 100%;
+  }
+
+  .main:has(.service-frame) {
+    overflow: hidden;
+    padding: 0;
+  }
+
+  body:has(.service-frame) {
+    overflow: hidden;
+  }
+
   .container {
     display: flex;
     gap: calc(var(--inline-space) * 2);

@@ -9,10 +9,10 @@
     <%= link_to "Probes", upright.site_root_url(subdomain: current_or_default_site.code), class: "header__link" %>
     <%= link_to "Uptime", upright.dashboards_uptime_url(subdomain: Upright.configuration.admin_subdomain), class: "header__link" %>
     <span class="header__divider"></span>
-    <%= link_to "Jobs", mission_control_jobs.root_url(subdomain: current_or_default_site.code), target: "_blank", class: "header__link" %>
+    <%= link_to "Jobs", upright.tools_jobs_url(subdomain: current_or_default_site.code), class: "header__link" %>
     <span class="header__divider"></span>
-    <%= link_to "Prometheus", upright.prometheus_url(subdomain: Upright.configuration.admin_subdomain), target: "_blank", class: "header__link" %>
-    <%= link_to "Alertmanager", upright.alertmanager_url(subdomain: Upright.configuration.admin_subdomain), target: "_blank", class: "header__link" %>
+    <%= link_to "Prometheus", upright.tools_prometheus_url(subdomain: Upright.configuration.admin_subdomain), class: "header__link" %>
+    <%= link_to "Alertmanager", upright.tools_alertmanager_url(subdomain: Upright.configuration.admin_subdomain), class: "header__link" %>
   </nav>
   <div class="header__user">
     <span><%= Upright::Current.user.name %></span>
