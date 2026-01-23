@@ -27,7 +27,7 @@ class Upright::UptimeReportTest < ActiveSupport::TestCase
     def stub_prometheus_query_range(result)
       response = { status: "success", data: { resultType: "matrix", result: result } }
 
-      stub_request(:get, /prometheus.*query_range/)
+      stub_request(:get, /localhost:9090.*query_range/)
         .to_return(status: 200, body: response.to_json, headers: { "Content-Type" => "application/json" })
     end
 end
