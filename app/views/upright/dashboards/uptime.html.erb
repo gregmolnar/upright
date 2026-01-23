@@ -2,7 +2,7 @@
   <header class="dashboard-header">
     <h1>Uptime Dashboard</h1>
     <div class="dashboard-filters">
-      <%= form_with url: dashboard_uptime_path, method: :get, data: { controller: "form", turbo_frame: "uptime_bars", turbo_action: "replace" } do |f| %>
+      <%= form_with url: dashboards_uptime_path, method: :get, data: { controller: "form", turbo_frame: "uptime_bars", turbo_action: "replace" } do |f| %>
         <%= f.select :probe_type,
               options_for_select(Upright::Probeable::TYPES.map { |t| [t.titleize, t] }, @probe_type),
               {},
