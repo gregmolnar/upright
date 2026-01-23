@@ -4,6 +4,7 @@ require "webmock/minitest"
 class PrometheusProxyControllerTest < ActionDispatch::IntegrationTest
   setup do
     on_subdomain :app
+    ENV["PROMETHEUS_URL"] = "http://upright-prometheus:9090"
     ENV["PROMETHEUS_OTLP_TOKEN"] = "test-token"
   end
 

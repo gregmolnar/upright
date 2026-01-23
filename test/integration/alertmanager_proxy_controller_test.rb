@@ -4,6 +4,7 @@ require "webmock/minitest"
 class AlertmanagerProxyControllerTest < ActionDispatch::IntegrationTest
   setup do
     on_subdomain :app
+    ENV["ALERTMANAGER_URL"] = "http://upright-alertmanager:9093"
   end
 
   test "proxies requests when authenticated" do
