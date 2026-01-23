@@ -42,7 +42,7 @@ class Upright::UptimeReport
 
     def prometheus_client
       Prometheus::ApiClient.client(
-        url: ENV.fetch("PROMETHEUS_URL", "http://upright-prometheus:9090"),
+        url: ENV.fetch("PROMETHEUS_URL", "http://localhost:9090"),
         options: { timeout: 30 }
       )
     end

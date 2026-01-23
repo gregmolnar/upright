@@ -15,8 +15,7 @@ services:
   alertmanager:
     image: prom/alertmanager:v0.28.1
     container_name: upright-alertmanager
-    ports:
-      - "9093:9093"
+    network_mode: host
     volumes:
       - ./config/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
       - alertmanager_data:/alertmanager
@@ -26,7 +25,7 @@ services:
 
   playwright:
     image: jacoblincool/playwright:chromium-server-1.56.1
-    container_name: playwright
+    container_name: upright-playwright
     ports:
       - "53333:53333"
     environment:

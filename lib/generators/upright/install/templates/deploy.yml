@@ -43,6 +43,8 @@ proxy:
 env:
   clear:
     OTEL_EXPORTER_OTLP_ENDPOINT: http://<%= app_name %>-otel_collector:4318/v1/traces
+    PROMETHEUS_URL: http://<%= app_name %>-prometheus:9090
+    ALERTMANAGER_URL: http://<%= app_name %>-alertmanager:9093
   secret:
     - RAILS_MASTER_KEY
     - PROMETHEUS_OTLP_TOKEN

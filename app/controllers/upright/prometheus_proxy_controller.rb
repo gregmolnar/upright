@@ -40,7 +40,7 @@ class Upright::PrometheusProxyController < Upright::ApplicationController
     end
 
     def prometheus_url
-      ENV.fetch("PROMETHEUS_URL", "http://upright-prometheus:9090")
+      ENV.fetch("PROMETHEUS_URL", "http://localhost:9090")
     end
 
     def authenticate_otlp_token

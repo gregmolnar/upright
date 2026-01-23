@@ -13,6 +13,6 @@ class Upright::AlertmanagerProxyController < Upright::ApplicationController
     end
 
     def alertmanager_url
-      ENV.fetch("ALERTMANAGER_URL", "http://upright-alertmanager:9093")
+      ENV.fetch("ALERTMANAGER_URL", "http://localhost:9093")
     end
 end
