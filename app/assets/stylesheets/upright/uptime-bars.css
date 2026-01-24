@@ -66,6 +66,23 @@
     width: 7ch;
   }
 
+  .uptime-bars__uptime--excellent {
+    color: var(--color-positive);
+  }
+
+  .uptime-bars__uptime--good {
+    color: oklch(70% 0.12 145);
+  }
+
+  .uptime-bars__uptime--warning {
+    color: oklch(75% 0.15 85);
+  }
+
+  .uptime-bars__uptime--critical,
+  .uptime-bars__uptime--down {
+    color: var(--color-negative);
+  }
+
   /* Individual uptime bar (separate block) */
   .uptime-bar {
     border-radius: 2px;
@@ -82,7 +99,7 @@
     transform: scaleY(1.15);
   }
 
-  .uptime-bar--perfect {
+  .uptime-bar--excellent {
     background: var(--color-positive);
   }
 

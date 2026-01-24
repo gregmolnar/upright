@@ -3,22 +3,13 @@ module Upright::DashboardsHelper
     (29.days.ago.to_date..Date.current).to_a
   end
 
-  def uptime_bar_class(percentage)
+  def uptime_label(percentage)
     case percentage
-    when 100      then "uptime-bar--perfect"
-    when 99..100  then "uptime-bar--good"
-    when 95..99   then "uptime-bar--warning"
-    when 0.01..95 then "uptime-bar--critical"
-    else               "uptime-bar--down"
-    end
-  end
-
-  def uptime_color_class(percentage)
-    case percentage
-    when 99.9..100 then "uptime-excellent"
-    when 99..99.9  then "uptime-good"
-    when 95..99    then "uptime-warning"
-    else                "uptime-critical"
+    when 100      then "excellent"
+    when 99..100  then "good"
+    when 95..99   then "warning"
+    when 0.01..95 then "critical"
+    else               "down"
     end
   end
 

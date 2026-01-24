@@ -107,30 +107,6 @@
     margin-top: 0.25rem;
   }
 
-  .uptime-excellent .uptime-value,
-  .uptime-excellent {
-    color: var(--color-positive);
-  }
-
-  .uptime-good .uptime-value,
-  .uptime-good {
-    color: oklch(70% 0.12 145);
-  }
-
-  .uptime-warning .uptime-value,
-  .uptime-warning {
-    color: oklch(75% 0.15 85);
-  }
-
-  .uptime-critical .uptime-value,
-  .uptime-critical {
-    color: var(--color-negative);
-  }
-
-  .uptime-no-data .uptime-value {
-    color: var(--color-ink-medium);
-  }
-
   .dashboard-chart {
     background: oklch(var(--lch-ink-lightest) / 85%);
     border-radius: 0.25rem;
