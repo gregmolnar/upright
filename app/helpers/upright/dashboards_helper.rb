@@ -14,7 +14,7 @@ module Upright::DashboardsHelper
   end
 
   def uptime_bar_tooltip(date, uptime_percent, downtime_minutes)
-    tooltip = "#{date.strftime('%b %-d')}: #{number_with_precision(uptime_percent, precision: 1)}% uptime"
+    tooltip = "#{date.to_fs(:short)}: #{number_with_precision(uptime_percent, precision: 1)}% uptime"
     tooltip += " (#{format_downtime(downtime_minutes)} down)" if downtime_minutes > 0
     tooltip
   end

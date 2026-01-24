@@ -26,7 +26,7 @@ class Upright::Artifact
 
   def timestamped_filename
     current_site = Upright.current_site
-    [ Time.current.strftime("%Y%m%d_%H%M%S"), current_site.code, safe_name ].join("_") + ".#{extension}"
+    [ Time.current.to_fs(:number), current_site.code, safe_name ].join("_") + ".#{extension}"
   end
 
   def content_type

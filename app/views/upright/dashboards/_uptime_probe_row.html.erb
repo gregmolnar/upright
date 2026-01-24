@@ -7,7 +7,7 @@
     <% dates.each do |date| %>
       <% uptime = probe.uptime_for_date(date) %>
       <% if uptime.nil? %>
-        <div class="uptime-bar uptime-bar--no-data" title="<%= date.strftime("%b %-d") %>: No data"></div>
+        <div class="uptime-bar uptime-bar--no-data" title="<%= date.to_fs(:short) %>: No data"></div>
       <% else %>
         <% uptime_percent = uptime * 100 %>
         <% downtime_minutes = ((1 - uptime) * 24 * 60).round %>

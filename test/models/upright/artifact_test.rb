@@ -24,7 +24,7 @@ class Upright::ArtifactTest < ActiveSupport::TestCase
     travel_to Time.utc(2024, 6, 15, 10, 30, 45) do
       artifact = build_artifact(name: "My Check Name.webm")
 
-      assert_equal "20240615_103045_ams_my_check_name.webm", artifact.timestamped_filename
+      assert_equal "20240615103045_ams_my_check_name.webm", artifact.timestamped_filename
     end
   end
 
@@ -69,7 +69,7 @@ class Upright::ArtifactTest < ActiveSupport::TestCase
 
       build_artifact(name: "my_check.log", content: "logs").attach_to(probe_result, timestamped: true)
 
-      assert_equal "20240615_103045_ams_my_check.log", probe_result.artifacts.first.filename.to_s
+      assert_equal "20240615103045_ams_my_check.log", probe_result.artifacts.first.filename.to_s
     end
   end
 
