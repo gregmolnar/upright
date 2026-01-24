@@ -14,18 +14,18 @@
     <p><%= results_summary(@page) %></p>
 
     <div class="filters">
-      <%= form_with url: site_root_path, method: :get, data: { controller: "auto-submit" } do |f| %>
+      <%= form_with url: site_root_path, method: :get, data: { controller: "form" } do |f| %>
         <%= hidden_field_tag :probe_type, params[:probe_type] if params[:probe_type].present? %>
         <label for="probe_name">Name</label>
         <%= select_tag :probe_name,
               options_for_select([["All", ""]] + @probe_names, params[:probe_name]),
               class: "input--select",
-              data: { action: "change->auto-submit#submit" } %>
+              data: { action: "change->form#submit" } %>
         <label for="status">Status</label>
         <%= select_tag :status,
               options_for_select([["All", ""]] + Upright::ProbeResult.statuses.keys.map { |s| [s.titleize, s] }, params[:status]),
               class: "input--select",
-              data: { action: "change->auto-submit#submit" } %>
+              data: { action: "change->form#submit" } %>
       <% end %>
     </div>
 

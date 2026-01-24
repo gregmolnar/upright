@@ -1,47 +1,41 @@
 Upright::Engine.routes.draw do
-  admin_subdomain = ->(request) {
-    Upright.configuration.admin_subdomain == request.subdomain
-  }
-
-  site_subdomain = ->(request) {
-    Upright.configuration.site_subdomains.include? request.subdomain
-  }
+  admin_subdomain = ->(req) { Upright.configuration.admin_subdomain == req.subdomain }
+  site_subdomain  = ->(req) { Upright.configuration.site_subdomains.include?(req.subdomain) }
 
   constraints admin_subdomain do
     root "sites#index", as: :admin_root
 
     resource :session, only: [ :new, :create ], as: :admin_session
-    match "auth/:provider/callback", to: "sessions#create", as: :auth_callback, via: [ :get, :post ]
+    match "auth/:provider/callback", to: "sessions#create", as: :auth_callback, via: [ :get,  :post ]
 
     namespace :dashboards do
-      get :uptime
+      resource :uptime, only: :show
     end
 
-    namespace :tools do
-      get "prometheus", to: "/upright/prometheus_proxy#show"
-      get "alertmanager", to: "/upright/alertmanager_proxy#show"
+    scope :framed do
+      resource :prometheus,   only: :show, controller: :prometheus_proxy
+      resource :alertmanager, only: :show, controller: :alertmanager_proxy
     end
 
     post "prometheus/api/v1/otlp/v1/metrics", to: "prometheus_proxy#otlp"
-    match "prometheus/*path", to: "prometheus_proxy#proxy", via: :all
-    get "prometheus", to: "prometheus_proxy#proxy", as: :prometheus
 
-    match "alertmanager/*path", to: "alertmanager_proxy#proxy", via: :all
-    get "alertmanager", to: "alertmanager_proxy#proxy", as: :alertmanager
+    match "prometheus(/*path)",   to: "prometheus_proxy#proxy",   via: :all, as: :prometheus_proxy
+    match "alertmanager(/*path)", to: "alertmanager_proxy#proxy", via: :all, as: :alertmanager_proxy
   end
 
   constraints site_subdomain do
     root "probe_results#index", as: :site_root
+
     resources :artifacts, only: :show, as: :site_artifacts
 
-    namespace :tools do
-      get "jobs", to: "/upright/jobs#show"
+    scope :framed do
+      resource :jobs, only: :show
     end
 
     mount MissionControl::Jobs::Engine, at: "/jobs"
   end
 
   # Global routes (no subdomain constraint)
-  resource :session, only: [ :destroy ]
+  resource :session, only: :destroy
   root "sites#index"
 end
