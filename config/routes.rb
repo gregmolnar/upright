@@ -1,8 +1,8 @@
 Upright::Engine.routes.draw do
-  admin_subdomain = ->(req) { Upright.configuration.admin_subdomain == req.subdomain }
-  site_subdomain  = ->(req) { Upright.configuration.site_subdomains.include?(req.subdomain) }
+  global_subdomain = ->(req) { Upright.configuration.global_subdomain == req.subdomain }
+  site_subdomain   = ->(req) { Upright.configuration.site_subdomains.include?(req.subdomain) }
 
-  constraints admin_subdomain do
+  constraints global_subdomain do
     root "sites#index", as: :admin_root
 
     resource :session, only: [ :new, :create ], as: :admin_session
@@ -35,7 +35,7 @@ Upright::Engine.routes.draw do
     mount MissionControl::Jobs::Engine, at: "/jobs"
   end
 
-  # Global routes (no subdomain constraint)
+  # Base routes (no subdomain constraint)
   resource :session, only: :destroy
   root "sites#index"
 end

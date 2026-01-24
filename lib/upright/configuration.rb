@@ -1,6 +1,6 @@
 class Upright::Configuration
-  # Admin subdomain is always "app" - this is documented behavior
-  ADMIN_SUBDOMAIN = "app"
+  # Global subdomain is always "app" - this is documented behavior
+  GLOBAL_SUBDOMAIN = "app"
 
   # Core settings
   attr_accessor :service_name
@@ -48,8 +48,8 @@ class Upright::Configuration
     @auth_options = {}
   end
 
-  def admin_subdomain
-    ADMIN_SUBDOMAIN
+  def global_subdomain
+    GLOBAL_SUBDOMAIN
   end
 
   def site_subdomains
@@ -91,9 +91,9 @@ class Upright::Configuration
 
   def default_url_options
     if Rails.env.production?
-      { protocol: "https", host: "#{admin_subdomain}.#{hostname}", domain: hostname }
+      { protocol: "https", host: "#{global_subdomain}.#{hostname}", domain: hostname }
     else
-      { protocol: "http", host: "#{admin_subdomain}.#{hostname}", port: ENV.fetch("PORT", 3000).to_i, domain: hostname }
+      { protocol: "http", host: "#{global_subdomain}.#{hostname}", port: ENV.fetch("PORT", 3000).to_i, domain: hostname }
     end
   end
 

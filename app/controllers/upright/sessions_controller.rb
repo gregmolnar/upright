@@ -15,7 +15,7 @@ class Upright::SessionsController < Upright::ApplicationController
 
   def destroy
     reset_session
-    redirect_to upright.root_path(subdomain: Upright.configuration.admin_subdomain), allow_other_host: true
+    redirect_to upright.root_path(subdomain: Upright.configuration.global_subdomain), allow_other_host: true
   end
 
   private

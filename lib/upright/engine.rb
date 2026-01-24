@@ -114,7 +114,7 @@ class Upright::Engine < ::Rails::Engine
 
       puts ""
       puts "Upright is running at:"
-      puts "  Admin:  #{protocol}://#{Upright.configuration.admin_subdomain}.#{hostname}:#{port}"
+      puts "  Global: #{protocol}://#{Upright.configuration.global_subdomain}.#{hostname}:#{port}"
       Upright.sites.each do |site|
         puts "  #{site.city || site.code}:  #{protocol}://#{site.code}.#{hostname}:#{port}"
       end
