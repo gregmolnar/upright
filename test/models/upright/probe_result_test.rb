@@ -16,7 +16,7 @@ class Upright::ProbeResultTest < ActiveSupport::TestCase
     exception.set_backtrace([ "app/models/foo.rb:10", "app/controllers/bar.rb:5" ])
 
     result = Upright::ProbeResult.create!(
-      probe_name: "test", probe_type: "http", probe_target: "https://example.com",
+      probe_name: "test", probe_type: :http, probe_target: "https://example.com",
       status: :fail, duration: 1.0, error: exception
     )
 

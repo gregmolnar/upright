@@ -11,7 +11,7 @@
     </div>
 
     <% probes.each do |probe| %>
-      <%= render "uptime_probe_row", probe: probe, dates: date_range %>
+      <%= render "upright/dashboards/uptime_probe_row", probe: probe, dates: date_range %>
     <% end %>
   </div>
 <% end %>

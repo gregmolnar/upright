@@ -1,4 +1,6 @@
-class Upright::UptimeProbe
+class Upright::Probes::Uptime::Summary
+  include Comparable
+
   def initialize(result)
     @result = result
   end
@@ -12,13 +14,19 @@ class Upright::UptimeProbe
   end
 
   def overall_uptime
-    return 0 if daily_uptimes.empty?
-
-    (daily_uptimes.values.sum / daily_uptimes.size) * 100
+    if daily_uptimes.empty?
+      0
+    else
+      (daily_uptimes.values.sum / daily_uptimes.size) * 100
+    end
   end
 
   def uptime_for_date(date)
     daily_uptimes[date.to_date]
+  end
+
+  def <=>(other)
+    [ type, name ] <=> [ other.type, other.name ]
   end
 
   private

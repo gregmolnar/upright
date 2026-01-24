@@ -1,0 +1,23 @@
+# Upright Prometheus Rules (Development)
+
+groups:
+  - name: upright_recording
+    interval: 30s
+    rules:
+      # Fraction of regions reporting DOWN (0.0 to 1.0)
+      - record: upright:probe_down_fraction
+        expr: |
+          count by (name, type, probe_target) (upright_probe_up == 0)
+          /
+          count by (name, type, probe_target) (upright_probe_up)
+
+      # Daily uptime percentage (0.0 to 1.0)
+      # Uptime = percentage of time in past day when majority of sites reported UP
+      - record: upright:probe_uptime_daily
+        expr: |
+          avg_over_time((
+            sum by (name, type, probe_target) (upright_probe_up)
+            /
+            count by (name, type, probe_target) (upright_probe_up)
+            > bool 0.5
+          )[1d:])

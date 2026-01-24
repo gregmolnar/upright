@@ -1,26 +1,33 @@
 require "test_helper"
 
-class Upright::UptimeReportTest < ActiveSupport::TestCase
-  test "probes returns sorted UptimeProbe objects" do
+class Upright::Probes::UptimeTest < ActiveSupport::TestCase
+  test ".for_type returns sorted Summary objects" do
     stub_prometheus_query_range([
       { "metric" => { "name" => "zebra.com", "type" => "http" }, "values" => [] },
       { "metric" => { "name" => "alpha.com", "type" => "http" }, "values" => [] },
       { "metric" => { "name" => "beta.com", "type" => "smtp" }, "values" => [] }
     ])
 
-    report = Upright::UptimeReport.new(probe_type: "http")
-    probes = report.probes
+    summaries = Upright::Probes::Uptime.for_type(:http)
 
-    assert_equal 3, probes.size
-    assert_equal %w[ alpha.com zebra.com beta.com ], probes.map(&:name)
+    assert_equal 3, summaries.size
+    assert_equal %w[ alpha.com zebra.com beta.com ], summaries.map(&:name)
   end
 
-  test "probes returns empty array when no results" do
+  test ".for_type returns empty array when no results" do
     stub_prometheus_query_range([])
 
-    report = Upright::UptimeReport.new(probe_type: "http")
+    assert_equal [], Upright::Probes::Uptime.for_type(:http)
+  end
 
-    assert_equal [], report.probes
+  test ".all returns all probe types" do
+    stub_prometheus_query_range([
+      { "metric" => { "name" => "example.com", "type" => "http" }, "values" => [] }
+    ])
+
+    summaries = Upright::Probes::Uptime.all
+
+    assert_equal 1, summaries.size
   end
 
   private

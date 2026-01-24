@@ -17,9 +17,10 @@ groups:
       - record: upright:probe_uptime_daily
         expr: |
           avg_over_time((
-            (upright:probe_down_fraction <= bool 0.5)
-            or
-            (max by (name, type, probe_target) (upright_probe_up) * 0 + 1)
+            sum by (name, type, probe_target) (upright_probe_up)
+            /
+            count by (name, type, probe_target) (upright_probe_up)
+            > bool 0.5
           )[1d:])
 
   - name: upright_alerts
