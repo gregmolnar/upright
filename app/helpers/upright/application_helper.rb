@@ -4,10 +4,8 @@ module Upright::ApplicationHelper
   end
 
   def upright_stylesheet_link_tag(**options)
-    stylesheets = Dir[Upright::Engine.root.join("app/assets/stylesheets/upright/*.css")]
-      .sort
-      .map { |f| "upright/#{File.basename(f, '.css')}" }
-
-    stylesheet_link_tag(*stylesheets, **options)
+    Upright::Engine.root.join("app/assets/stylesheets/upright").glob("*.css")
+      .map { |f| "upright/#{f.basename('.css')}" }.sort
+      .then { |stylesheets| stylesheet_link_tag(*stylesheets, **options) }
   end
 end

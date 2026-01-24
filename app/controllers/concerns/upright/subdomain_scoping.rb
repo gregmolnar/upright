@@ -8,15 +8,11 @@ module Upright::SubdomainScoping
 
   private
     def redirect_to_app_subdomain
-      redirect_to engine_routes.root_url(default_url_options.merge(subdomain: Upright.configuration.admin_subdomain)), allow_other_host: true
+      redirect_to root_url(default_url_options.merge(subdomain: Upright.configuration.admin_subdomain)), allow_other_host: true
     end
 
     def set_current_subdomain
       Upright::Current.subdomain = request.subdomain.presence
       Upright::Current.site = Upright.find_site(Upright::Current.subdomain)
-    end
-
-    def engine_routes
-      Upright::Engine.routes.url_helpers
     end
 end
