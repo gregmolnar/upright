@@ -66,7 +66,7 @@ gem build "$GEMSPEC"
 gem_file="upright-$new_version.gem"
 
 echo "Getting OTP from 1Password..."
-otp=$(op item get "RubyGems.org" --otp)
+otp=$(op item get "RubyGems.org" --account my.1password.com --otp)
 
 echo "Pushing gem..."
 gem push "$gem_file" --otp "$otp"
