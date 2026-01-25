@@ -94,7 +94,7 @@ class Upright::Probes::PlaywrightProbeTest < ActiveSupport::TestCase
 
       assert log_artifact, "Expected log artifact to be attached"
       assert_equal "text/x-log", log_artifact.content_type
-      assert_match(/^\d{8}_\d{6}_ams_test_playwright\.log$/, log_artifact.filename.to_s)
+      assert_match(/^\d{14}_ams_test_playwright\.log$/, log_artifact.filename.to_s)
 
       log_content = log_artifact.download
       assert_match(/200 DOCUMENT/, log_content)

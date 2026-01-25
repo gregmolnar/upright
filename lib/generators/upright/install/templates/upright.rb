@@ -3,7 +3,7 @@
 Upright.configure do |config|
   config.service_name = "<%= Rails.application.class.module_parent_name.underscore %>"
   config.user_agent   = "<%= Rails.application.class.module_parent_name.underscore %>/1.0"
-  config.hostname     = "<%= Rails.application.class.module_parent_name.downcase %>.<%= Rails.env.local? ? "localhost" : "com" %>"
+  config.hostname     = Rails.env.local? ? "<%= Rails.application.class.module_parent_name.downcase %>.localhost" : "<%= Rails.application.class.module_parent_name.downcase %>.com"
 
   # Playwright browser server URL
   # config.playwright_server_url = ENV["PLAYWRIGHT_SERVER_URL"]
