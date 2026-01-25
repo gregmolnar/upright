@@ -7,7 +7,7 @@ class Upright::ProbeCheckJob < Upright::ApplicationJob
   around_perform { |job, block| Timeout.timeout(3.minutes, &block) }
 
   def perform(klass, name = nil)
-    result = probe.check_and_record
+    result = resolve_probe(klass, name).check_and_record
 
     if !result.ok? && executions < MAX_ATTEMPTS
       retry_job(wait: RETRY_DELAY)
@@ -26,11 +26,11 @@ class Upright::ProbeCheckJob < Upright::ApplicationJob
       end
     end
 
-    def probe
-      klass = self.arguments[0].constantize
+    def resolve_probe(klass, name)
+      klass = klass.safe_constantize
 
       instance = if klass < FrozenRecord::Base
-        klass.find_by(name: self.arguments[1])
+        klass.find_by(name: name)
       else
         klass.new
       end
