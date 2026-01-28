@@ -47,6 +47,14 @@ module Upright
         route 'mount Upright::Engine => "/", as: :upright'
       end
 
+      def install_active_storage
+        rails_command "active_storage:install"
+      end
+
+      def configure_javascript
+        append_to_file "app/javascript/application.js", 'import "upright/application"'
+      end
+
       def show_post_install_message
         say ""
         say "Upright has been installed!", :green
