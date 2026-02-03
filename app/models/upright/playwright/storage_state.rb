@@ -8,12 +8,16 @@ class Upright::Playwright::StorageState
   end
 
   def load
-    JSON.parse(path.read) if exists?
+    if exists?
+      decrypted_json = encryptor.decrypt_and_verify(path.read)
+      JSON.parse(decrypted_json)
+    end
   end
 
   def save(state)
     FileUtils.mkdir_p(storage_dir)
-    path.write(JSON.pretty_generate(state))
+    encrypted_data = encryptor.encrypt_and_sign(JSON.generate(state))
+    path.write(encrypted_data)
   end
 
   def clear
@@ -26,6 +30,11 @@ class Upright::Playwright::StorageState
     end
 
     def path
-      storage_dir.join("#{@service}.json")
+      storage_dir.join("#{@service}.enc")
+    end
+
+    def encryptor
+      key = Rails.application.key_generator.generate_key("playwright_storage_state", 32)
+      ActiveSupport::MessageEncryptor.new(key)
     end
 end
