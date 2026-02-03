@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.homepage    = "https://github.com/basecamp/upright"
   spec.summary     = "Synthetic monitoring engine with Playwright and Prometheus metrics"
   spec.description = "A Rails engine for browser-based health probes and uptime monitoring via Prometheus metrics"
-  spec.license     = "O'Saasy"
+  spec.license     = "MIT"
 
   spec.metadata["homepage_uri"]    = spec.homepage
   spec.metadata["source_code_uri"] = "https://github.com/basecamp/upright"
