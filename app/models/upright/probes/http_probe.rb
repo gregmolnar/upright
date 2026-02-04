@@ -74,9 +74,13 @@ class Upright::Probes::HTTPProbe < FrozenRecord::Base
     end
 
     def proxy_credentials
-      if try(:proxy)
-        Rails.application.credentials.dig(:proxies, proxy.to_sym)
+      if selected_proxy
+        Rails.application.credentials.dig(:proxies, selected_proxy.to_sym)
       end
+    end
+
+    def selected_proxy
+      Array(try(:proxies) || try(:proxy)).sample
     end
 
     def record_response_status

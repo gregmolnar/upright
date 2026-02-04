@@ -4,3 +4,10 @@
 - name: "Expected301"
   url: "https://example.com/redirect"
   expected_status: 301
+
+- name: "MultiProxy"
+  url: "https://example.com/multi"
+  proxies:
+    - proxy_a
+    - proxy_b
+    - proxy_c
