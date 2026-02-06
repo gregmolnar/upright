@@ -91,6 +91,20 @@ class Upright::Probes::HTTPProbeTest < ActiveSupport::TestCase
     probe.check
   end
 
+  test "uses one of the proxies from proxies array" do
+    probe = Upright::Probes::HTTPProbe.find_by(name: "MultiProxy")
+    Rails.application.credentials.stubs(:dig).with(:proxies, :proxy_a).returns({ url: "http://a.example.com" })
+    Rails.application.credentials.stubs(:dig).with(:proxies, :proxy_b).returns({ url: "http://b.example.com" })
+    Rails.application.credentials.stubs(:dig).with(:proxies, :proxy_c).returns({ url: "http://c.example.com" })
+
+    Typhoeus.expects(:get).with(
+      "https://example.com/multi",
+      has_entry(:proxy, any_of("http://a.example.com", "http://b.example.com", "http://c.example.com"))
+    ).returns(Typhoeus::Response.new(code: 200))
+
+    probe.check
+  end
+
   test "records http response status metric" do
     stub_request(:get, "https://example.com/").to_return(status: 201)
 
