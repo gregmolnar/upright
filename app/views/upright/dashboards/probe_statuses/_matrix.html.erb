@@ -9,7 +9,7 @@
         <tr>
           <th class="probe-status-probe-header">Probe</th>
           <% sites.each do |site| %>
-            <th class="probe-status-site-header"><%= site.city %></th>
+            <th class="probe-status-site-header"><%= site_name(site) %></th>
           <% end %>
         </tr>
       </thead>
