@@ -17,8 +17,10 @@
         <% probes.each do |probe| %>
           <tr class="<%= "probe-status-row--down" if probe.any_down? %>">
             <td class="probe-status-probe">
-              <%= probe_type_icon(probe.type) %>
-              <span><%= probe.name %></span>
+              <%= link_to upright.site_root_url(subdomain: Upright.sites.first.code, probe_type: probe.type, probe_name: probe.name), class: "probe-status-probe-link" do %>
+                <%= probe_type_icon(probe.type) %>
+                <span><%= probe.name %></span>
+              <% end %>
             </td>
             <% sites.each do |site| %>
               <% status = probe.status_for_site(site.code) %>

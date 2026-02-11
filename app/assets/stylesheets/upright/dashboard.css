@@ -295,6 +295,18 @@
     gap: 0.5em;
   }
 
+  .probe-status-probe-link {
+    align-items: center;
+    color: inherit;
+    display: flex;
+    gap: 0.5em;
+    text-decoration: none;
+  }
+
+  .probe-status-probe-link:hover {
+    text-decoration: underline;
+  }
+
   .probe-status-row--down {
     background: oklch(var(--lch-red-dark) / 8%);
   }
