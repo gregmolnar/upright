@@ -25,16 +25,18 @@
             <% sites.each do |site| %>
               <% status = probe.status_for_site(site.code) %>
               <td class="probe-status-cell <%= probe_status_css_class(status) %>">
-                <% if status.nil? %>
-                  <span class="probe-status-indicator probe-status-indicator--unknown">—</span>
-                <% elsif status.stale? %>
-                  <span class="probe-status-indicator probe-status-indicator--stale">STALE</span>
-                <% elsif status.up? %>
-                  <span class="probe-status-indicator probe-status-indicator--up">UP</span>
-                <% else %>
-                  <span class="probe-status-indicator probe-status-indicator--down">DOWN</span>
-                  <% if status.down_since %>
-                    <span class="probe-status-down-since"><%= time_ago_in_words(status.down_since) %> ago</span>
+                <%= link_to upright.site_root_url(subdomain: site.code, probe_type: probe.type, probe_name: probe.name), class: "probe-status-cell-link" do %>
+                  <% if status.nil? %>
+                    <span class="probe-status-indicator probe-status-indicator--unknown">—</span>
+                  <% elsif status.stale? %>
+                    <span class="probe-status-indicator probe-status-indicator--stale">STALE</span>
+                  <% elsif status.up? %>
+                    <span class="probe-status-indicator probe-status-indicator--up">UP</span>
+                  <% else %>
+                    <span class="probe-status-indicator probe-status-indicator--down">DOWN</span>
+                    <% if status.down_since %>
+                      <span class="probe-status-down-since"><%= time_ago_in_words(status.down_since) %> ago</span>
+                    <% end %>
                   <% end %>
                 <% end %>
               </td>
