@@ -18,34 +18,37 @@ class Upright::Probes::Status::SiteStatus
   end
 
   def stale?
-    return true if @values.empty?
-    Time.at(latest_timestamp) < STALE_THRESHOLD.ago
+    if @values.empty?
+      true
+    else
+      Time.at(latest_timestamp) < STALE_THRESHOLD.ago
+    end
   end
 
   def down_since
-    return nil unless down?
-    return nil if @values.empty?
+    if down? && @values.any?
+      sorted = @values.sort_by(&:first)
+      down_start = sorted.last.first
 
-    # Walk backwards to find when the continuous run of 0s started
-    sorted = @values.sort_by(&:first)
-    down_start = sorted.last.first
+      sorted.reverse_each do |timestamp, value|
+        break if value.to_f == 1
+        down_start = timestamp
+      end
 
-    sorted.reverse_each do |timestamp, value|
-      break if value.to_f == 1
-      down_start = timestamp
+      Time.at(down_start)
     end
-
-    Time.at(down_start)
   end
 
   private
     def latest_value
-      return nil if @values.empty?
-      @values.max_by(&:first).last.to_f
+      if @values.any?
+        @values.max_by(&:first).last.to_f
+      end
     end
 
     def latest_timestamp
-      return nil if @values.empty?
-      @values.max_by(&:first).first
+      if @values.any?
+        @values.max_by(&:first).first
+      end
     end
 end
