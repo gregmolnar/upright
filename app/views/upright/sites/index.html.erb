@@ -14,7 +14,7 @@
       <% @sites.each do |site| %>
         <tr>
           <td><%= link_to site.host, site.url %></td>
-          <td><%= site.city %></td>
+          <td><%= site_name(site) %></td>
         </tr>
       <% end %>
     </tbody>
