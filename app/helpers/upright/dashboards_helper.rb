@@ -28,4 +28,16 @@ module Upright::DashboardsHelper
       mins.zero? ? "#{hours}h" : "#{hours}h #{mins}m"
     end
   end
+
+  def probe_status_css_class(status)
+    if status.nil?
+      "probe-status-cell--unknown"
+    elsif status.stale?
+      "probe-status-cell--stale"
+    elsif status.up?
+      "probe-status-cell--up"
+    else
+      "probe-status-cell--down"
+    end
+  end
 end

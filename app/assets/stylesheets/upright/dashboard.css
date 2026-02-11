@@ -257,6 +257,89 @@
     text-align: center;
   }
 
+  /* Probe Status Matrix */
+  .probe-status-wrapper {
+    background: oklch(var(--lch-ink-lightest) / 85%);
+    border-radius: 0.25rem;
+    box-shadow: var(--shadow);
+    overflow-x: auto;
+  }
+
+  .probe-status-table {
+    border-collapse: collapse;
+    box-shadow: none;
+    min-width: 100%;
+  }
+
+  .probe-status-table th,
+  .probe-status-table td {
+    border: 1px solid var(--color-ink-lighter);
+    font-size: var(--text-x-small);
+    padding: 0.5em 0.75em;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .probe-status-probe-header,
+  .probe-status-probe {
+    background: var(--color-ink-lighter);
+    font-weight: 500;
+    left: 0;
+    position: sticky;
+    text-align: left;
+  }
+
+  .probe-status-probe {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+  }
+
+  .probe-status-row--down {
+    background: oklch(var(--lch-red-dark) / 8%);
+  }
+
+  .probe-status-cell--up {
+    background: oklch(var(--lch-green-dark) / 10%);
+  }
+
+  .probe-status-cell--down {
+    background: oklch(var(--lch-red-dark) / 15%);
+  }
+
+  .probe-status-cell--stale {
+    background: oklch(75% 0.1 85 / 15%);
+  }
+
+  .probe-status-indicator {
+    font-weight: 600;
+    display: block;
+  }
+
+  .probe-status-indicator--up {
+    color: var(--color-positive);
+  }
+
+  .probe-status-indicator--down {
+    color: var(--color-negative);
+  }
+
+  .probe-status-indicator--stale {
+    color: oklch(75% 0.15 85);
+  }
+
+  .probe-status-indicator--unknown {
+    color: var(--color-ink-medium);
+  }
+
+  .probe-status-down-since {
+    color: var(--color-negative);
+    display: block;
+    font-size: calc(var(--text-x-small) * 0.85);
+    font-weight: 400;
+    margin-top: 0.15em;
+  }
+
   @media (max-width: 85ch) {
     .dashboard {
       padding: var(--block-space);

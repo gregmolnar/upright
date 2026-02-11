@@ -10,6 +10,7 @@ Upright::Engine.routes.draw do
 
     namespace :dashboards do
       resource :uptime, only: :show
+      resource :probe_status, only: :show
     end
 
     scope :framed do
