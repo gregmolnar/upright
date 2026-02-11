@@ -27,28 +27,45 @@ class Upright::Probes::Status::SiteStatus
 
   def down_since
     if down? && @values.any?
-      sorted = @values.sort_by(&:first)
-      down_start = sorted.last.first
+      Time.at(down_start_timestamp)
+    end
+  end
 
-      sorted.reverse_each do |timestamp, value|
-        break if value.to_f == 1
-        down_start = timestamp
-      end
-
-      Time.at(down_start)
+  def down_since_known?
+    if down? && @values.any?
+      down_start_timestamp != sorted_values.first.first
+    else
+      false
     end
   end
 
   private
+    def sorted_values
+      @sorted_values ||= @values.sort_by(&:first)
+    end
+
+    def down_start_timestamp
+      @down_start_timestamp ||= begin
+        result = sorted_values.last.first
+
+        sorted_values.reverse_each do |timestamp, value|
+          break if value.to_f == 1
+          result = timestamp
+        end
+
+        result
+      end
+    end
+
     def latest_value
       if @values.any?
-        @values.max_by(&:first).last.to_f
+        sorted_values.last.last.to_f
       end
     end
 
     def latest_timestamp
       if @values.any?
-        @values.max_by(&:first).first
+        sorted_values.last.first
       end
     end
 end

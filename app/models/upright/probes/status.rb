@@ -3,7 +3,7 @@ class Upright::Probes::Status
     def for_type(probe_type)
       results = prometheus_client.query_range(
         query: query(probe_type),
-        start: 15.minutes.ago.iso8601,
+        start: 30.minutes.ago.iso8601,
         end:   Time.current.iso8601,
         step:  "30s"
       ).deep_symbolize_keys
