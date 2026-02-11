@@ -24,7 +24,9 @@ ActiveSupport::TestCase.fixtures :all
 
 module ActiveSupport
   class TestCase
-    parallelize(workers: :number_of_processors)
+    # Small test suite, no need for parallelization. Also avoids needing
+    # multiple Playwright containers for browser-based probes.
+    parallelize(workers: 1)
 
     include IpApiHelper
     include MtrHelper
