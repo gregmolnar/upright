@@ -354,14 +354,6 @@
     color: var(--color-ink-medium);
   }
 
-  .probe-status-down-since {
-    color: var(--color-negative);
-    display: block;
-    font-size: calc(var(--text-x-small) * 0.85);
-    font-weight: 400;
-    margin-top: 0.15em;
-  }
-
   @media (max-width: 85ch) {
     .dashboard {
       padding: var(--block-space);

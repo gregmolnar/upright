@@ -33,10 +33,7 @@
                   <% elsif status.up? %>
                     <span class="probe-status-indicator probe-status-indicator--up">UP</span>
                   <% else %>
-                    <span class="probe-status-indicator probe-status-indicator--down">DOWN</span>
-                    <% if status.down_since %>
-                      <span class="probe-status-down-since"><%= time_ago_in_words(status.down_since) %> ago</span>
-                    <% end %>
+                    <span class="probe-status-indicator probe-status-indicator--down">DOWN for <%= time_ago_in_words(status.down_since) %></span>
                   <% end %>
                 <% end %>
               </td>
