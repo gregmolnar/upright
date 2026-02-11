@@ -227,18 +227,15 @@ Configure probe scheduling with Solid Queue in `config/recurring.yml`:
 ```yaml
 production:
   http_probes:
-    class: Upright::ProbeCheckJob
-    args: [http]
+    command: "Upright::Probes::HTTPProbe.check_and_record_all_later"
     schedule: every 30 seconds
 
   smtp_probes:
-    class: Upright::ProbeCheckJob
-    args: [smtp]
+    command: "Upright::Probes::SMTPProbe.check_and_record_all_later"
     schedule: every 30 seconds
 
   my_service_auth:
-    class: Upright::ProbeCheckJob
-    args: [playwright, MyServiceAuth]
+    command: "Probes::Playwright::MyServiceAuthProbe.check_and_record_later"
     schedule: every 15 minutes
 ```
 
