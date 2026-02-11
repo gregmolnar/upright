@@ -36,8 +36,8 @@ class Upright::Probes::Status
         grouped.map do |(_name, _type, _target), series|
           site_statuses = series.map do |s|
             SiteStatus.new(
-              site_code: s[:metric][:site],
-              site_city: site_city(s[:metric][:site]),
+              site_code: s[:metric][:site_code],
+              site_city: s[:metric][:site_city],
               values: s[:values]
             )
           end
@@ -49,10 +49,6 @@ class Upright::Probes::Status
             site_statuses: site_statuses
           )
         end.sort
-      end
-
-      def site_city(code)
-        Upright.find_site(code)&.city || code.to_s
       end
   end
 end

@@ -3,19 +3,19 @@ require "test_helper"
 class Upright::Probes::StatusTest < ActiveSupport::TestCase
   test ".for_type returns sorted Probe objects grouped by probe identity" do
     stub_prometheus_query_range([
-      { "metric" => { "name" => "zebra.com", "type" => "http", "probe_target" => "https://zebra.com", "site" => "iad" },
+      { "metric" => { "name" => "beta.example.com", "type" => "http", "probe_target" => "https://beta.example.com", "site_code" => "iad" },
         "values" => [ [ 2.minutes.ago.to_i, "1" ] ] },
-      { "metric" => { "name" => "zebra.com", "type" => "http", "probe_target" => "https://zebra.com", "site" => "ams" },
+      { "metric" => { "name" => "beta.example.com", "type" => "http", "probe_target" => "https://beta.example.com", "site_code" => "ams" },
         "values" => [ [ 2.minutes.ago.to_i, "1" ] ] },
-      { "metric" => { "name" => "alpha.com", "type" => "http", "probe_target" => "https://alpha.com", "site" => "iad" },
+      { "metric" => { "name" => "alpha.example.com", "type" => "http", "probe_target" => "https://alpha.example.com", "site_code" => "iad" },
         "values" => [ [ 2.minutes.ago.to_i, "0" ] ] }
     ])
 
     probes = Upright::Probes::Status.for_type(:http)
 
     assert_equal 2, probes.size
-    assert_equal "alpha.com", probes.first.name
-    assert_equal "zebra.com", probes.last.name
+    assert_equal "alpha.example.com", probes.first.name
+    assert_equal "beta.example.com", probes.last.name
     assert_equal 2, probes.last.site_statuses.size
   end
 
@@ -27,9 +27,9 @@ class Upright::Probes::StatusTest < ActiveSupport::TestCase
 
   test "probe exposes site statuses with up/down state" do
     stub_prometheus_query_range([
-      { "metric" => { "name" => "example.com", "type" => "http", "probe_target" => "https://example.com", "site" => "iad" },
+      { "metric" => { "name" => "example.com", "type" => "http", "probe_target" => "https://example.com", "site_code" => "iad" },
         "values" => [ [ 2.minutes.ago.to_i, "1" ] ] },
-      { "metric" => { "name" => "example.com", "type" => "http", "probe_target" => "https://example.com", "site" => "ams" },
+      { "metric" => { "name" => "example.com", "type" => "http", "probe_target" => "https://example.com", "site_code" => "ams" },
         "values" => [ [ 2.minutes.ago.to_i, "0" ] ] }
     ])
 
