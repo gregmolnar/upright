@@ -19,6 +19,6 @@ class Upright::Probes::Status::Probe
   end
 
   def <=>(other)
-    [ type, name ] <=> [ other.type, other.name ]
+    [ any_down? ? 0 : 1, type, name ] <=> [ other.any_down? ? 0 : 1, other.type, other.name ]
   end
 end
