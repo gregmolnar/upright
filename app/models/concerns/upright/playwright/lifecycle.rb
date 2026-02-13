@@ -33,8 +33,9 @@ module Upright::Playwright::Lifecycle
       run_callbacks :page_ready
       yield
     ensure
-      page&.close
-      context&.close
+      # Rescue each step independently so a failed close doesn't prevent video capture
+      page&.close rescue Rails.error.report($!)
+      context&.close rescue Rails.error.report($!)
       run_callbacks :page_close
     end
 
