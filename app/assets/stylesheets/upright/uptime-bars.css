@@ -1,56 +1,10 @@
 @layer components {
-  .uptime-bars {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .uptime-bars__header {
-    background: var(--color-ink-lighter);
-    display: grid;
-    font-size: var(--text-x-small);
-    font-weight: 500;
-    gap: var(--block-space);
-    grid-template-columns: minmax(200px, 1fr) 1fr auto;
-    letter-spacing: 0.04em;
-    padding: calc(var(--block-space) * 0.75) var(--block-space);
-    text-transform: uppercase;
-  }
-
-
+  .uptime-bars__header,
   .uptime-bars__row {
-    border-top: 1px solid var(--color-ink-lighter);
     display: grid;
     gap: var(--block-space);
     grid-template-columns: minmax(200px, 1fr) 1fr auto;
     padding: calc(var(--block-space) * 0.75) var(--block-space);
-    transition: background-color 100ms;
-  }
-
-  .uptime-bars__row:hover {
-    background: var(--color-canvas);
-  }
-
-  .uptime-bars__probe {
-    align-items: center;
-    color: inherit;
-    display: flex;
-    gap: 0.75em;
-    min-width: 0;
-
-    &:hover {
-      color: var(--color-link);
-      text-decoration: none;
-    }
-  }
-
-  .uptime-bars__probe .probe__badge {
-    flex-shrink: 0;
-  }
-
-  .uptime-bars__probe .probe__name {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
   }
 
   .uptime-bars__days {
@@ -83,7 +37,7 @@
     color: var(--color-negative);
   }
 
-  /* Individual uptime bar (separate block) */
+  /* Individual uptime bar */
   .uptime-bar {
     border-radius: 2px;
     cursor: default;
@@ -131,7 +85,7 @@
       gap: calc(var(--block-space) * 0.5);
     }
 
-    .uptime-bars__probe .probe__badge {
+    .data-table__probe .probe__badge {
       display: none;
     }
   }

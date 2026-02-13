@@ -1,0 +1,114 @@
+#!/usr/bin/env bash
+# Seeds Prometheus with synthetic uptime data for development.
+# Generates 30 days of daily uptime and 2 hours of raw probe status data.
+#
+# Prerequisites: docker with the upright-prometheus container running.
+#
+# Usage: bin/seed-prometheus
+
+set -euo pipefail
+
+CONTAINER="upright-prometheus"
+TMPFILE=$(mktemp /tmp/upright-seed-XXXXXX.om)
+trap 'rm -f "$TMPFILE"' EXIT
+
+NOW=$(date +%s)
+
+# Probes: name|type|target (must match test/dummy/probes/*.yml)
+PROBES=(
+  "Example|http|https://example.com/"
+  "Expected301|http|https://example.com/redirect"
+  "MultiProxy|http|https://example.com/multi"
+  "Gmail|smtp|smtp.gmail.com"
+  "Google DNS|traceroute|8.8.8.8"
+  "Cloudflare DNS|traceroute|1.1.1.1"
+)
+
+# Sites: code|city|country|geohash|provider (must match config/sites.yml)
+SITES=(
+  "ams|Amsterdam|NL|u17982|digitalocean"
+  "nyc|New York City|US|dr5reg|digitalocean"
+  "sfo|San Francisco|US|9q8yy|digitalocean"
+)
+
+echo "Generating seed data..."
+
+{
+  # === upright:probe_uptime_daily ===
+  # Used by the Uptime Dashboard (30-day view, 1-day resolution).
+  # This is normally computed by a recording rule, but rules don't backfill,
+  # so we write it directly.
+  echo '# TYPE upright:probe_uptime_daily gauge'
+  echo '# HELP upright:probe_uptime_daily Daily uptime percentage'
+
+  for ((day = 30; day >= 0; day--)); do
+    ts=$((NOW - day * 86400))
+    for probe in "${PROBES[@]}"; do
+      IFS='|' read -r pname ptype ptarget <<< "$probe"
+
+      r=$((RANDOM % 100))
+      case "$pname" in
+        MultiProxy)
+          # Flakier: occasional dips make the bars interesting
+          if   (( r < 60 )); then uptime="1.0"
+          elif (( r < 80 )); then uptime="0.99"
+          elif (( r < 95 )); then uptime="0.96"
+          else                     uptime="0.92"
+          fi ;;
+        Gmail)
+          if   (( r < 75 )); then uptime="1.0"
+          elif (( r < 95 )); then uptime="0.99"
+          else                     uptime="0.97"
+          fi ;;
+        *)
+          # Most probes are very reliable
+          if   (( r < 90 )); then uptime="1.0"
+          elif (( r < 98 )); then uptime="0.99"
+          else                     uptime="0.98"
+          fi ;;
+      esac
+
+      echo "upright:probe_uptime_daily{name=\"${pname}\",type=\"${ptype}\",probe_target=\"${ptarget}\"} ${uptime} ${ts}.0"
+    done
+  done
+
+  # === upright_probe_up ===
+  # Used by the Probe Status Dashboard (30-min view, 30s resolution).
+  # We generate 2 hours so there's data even if the app hasn't been running.
+  echo '# TYPE upright_probe_up gauge'
+  echo '# HELP upright_probe_up Probe status (1 = up, 0 = down)'
+
+  for ((ts = NOW - 7200; ts <= NOW; ts += 30)); do
+    for probe in "${PROBES[@]}"; do
+      IFS='|' read -r pname ptype ptarget <<< "$probe"
+      for site in "${SITES[@]}"; do
+        IFS='|' read -r scode scity scountry sgeohash sprovider <<< "$site"
+
+        val=1
+        # MultiProxy is flaky at ams to give the status matrix something to show
+        if [[ "$pname" == "MultiProxy" && "$scode" == "ams" ]]; then
+          if (( RANDOM % 100 < 8 )); then val=0; fi
+        elif (( RANDOM % 100 < 2 )); then
+          val=0
+        fi
+
+        echo "upright_probe_up{name=\"${pname}\",type=\"${ptype}\",probe_target=\"${ptarget}\",probe_service=\"\",site_code=\"${scode}\",site_city=\"${scity}\",site_country=\"${scountry}\",site_geohash=\"${sgeohash}\",site_provider=\"${sprovider}\"} ${val}.0 ${ts}.0"
+      done
+    done
+  done
+
+  echo '# EOF'
+} > "$TMPFILE"
+
+lines=$(wc -l < "$TMPFILE")
+echo "Generated ${lines} lines of metric data."
+
+echo "Importing into Prometheus..."
+chmod 644 "$TMPFILE"
+docker cp "$TMPFILE" "${CONTAINER}:/tmp/seed-data.om"
+docker exec "$CONTAINER" promtool tsdb create-blocks-from openmetrics /tmp/seed-data.om /tmp/seed-blocks
+docker exec "$CONTAINER" sh -c 'cp -r /tmp/seed-blocks/* /prometheus/'
+docker exec --user root "$CONTAINER" rm -rf /tmp/seed-blocks /tmp/seed-data.om
+curl -sf -X POST http://localhost:9090/-/reload
+
+echo "Done! Seeded 30 days of uptime data for ${#PROBES[@]} probes across ${#SITES[@]} sites."

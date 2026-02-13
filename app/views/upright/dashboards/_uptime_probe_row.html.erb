@@ -1,7 +1,7 @@
-<div class="uptime-bars__row">
-  <%= link_to upright.site_root_url(subdomain: Upright.sites.first.code, probe_type: probe.type, probe_name: probe.name), class: "uptime-bars__probe" do %>
+<div class="data-table__row uptime-bars__row">
+  <%= link_to upright.site_root_url(subdomain: Upright.sites.first.code, probe_type: probe.type, probe_name: probe.name), class: "data-table__probe" do %>
     <%= probe_type_icon(probe.type) %>
-    <span class="probe__name"><%= probe.name %></span>
+    <span class="data-table__probe-name"><%= probe.name %></span>
   <% end %>
   <div class="uptime-bars__days">
     <% dates.each do |date| %>
