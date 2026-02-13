@@ -42,7 +42,7 @@ rails new my-upright --database=sqlite3 --skip-test
 cd my-upright
 bundle add upright --github=basecamp/upright
 bin/rails generate upright:install
-bin/rails db:setup
+bin/rails db:migrate
 ```
 
 Start the server:

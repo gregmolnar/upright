@@ -34,7 +34,6 @@ Gem::Specification.new do |spec|
   # Probe infrastructure
   spec.add_dependency "frozen_record"
   spec.add_dependency "typhoeus"
-  spec.add_dependency "geohash_ruby"
 
   # Playwright (browser automation)
   spec.add_dependency "playwright-ruby-client", "~> 1.56"

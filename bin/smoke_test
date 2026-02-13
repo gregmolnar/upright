@@ -1,0 +1,207 @@
+#!/usr/bin/env bash
+#
+# Smoke test for Upright installation.
+#
+# Verifies that a fresh Rails app can:
+#   1. Install the Upright gem from the local path
+#   2. Run the upright:install generator
+#   3. Run db:setup
+#   4. Boot the dev server and respond to HTTP requests
+#
+# Usage:
+#   bin/smoke_test
+#
+set -euo pipefail
+
+UPRIGHT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+APP_NAME="smoke_test_app"
+WORK_DIR=$(mktemp -d)
+APP_DIR="$WORK_DIR/$APP_NAME"
+SERVER_PID=""
+PORT=3999
+
+cleanup() {
+  echo ""
+  echo "=> Cleaning up..."
+
+  if [ -n "$SERVER_PID" ]; then
+    kill "$SERVER_PID" 2>/dev/null || true
+    wait "$SERVER_PID" 2>/dev/null || true
+  fi
+
+  rm -rf "$WORK_DIR"
+  echo "=> Done."
+}
+trap cleanup EXIT
+
+echo "========================================"
+echo " Upright Smoke Test"
+echo "========================================"
+echo ""
+echo "Upright source: $UPRIGHT_ROOT"
+echo "Working dir:    $WORK_DIR"
+echo ""
+
+# -------------------------------------------------------------------
+# Step 1: Create a new Rails app
+# -------------------------------------------------------------------
+echo "=> Creating new Rails app: $APP_NAME"
+# Strip the upright bin/ from PATH so we use the system `rails` binary
+CLEAN_PATH=$(echo "$PATH" | tr ':' '\n' | grep -v "$UPRIGHT_ROOT/bin" | paste -sd ':')
+(cd "$WORK_DIR" && env -u BUNDLE_GEMFILE -u BUNDLE_BIN_PATH -u RUBYOPT -u RUBYLIB PATH="$CLEAN_PATH" rails new "$APP_NAME" --database=sqlite3 --skip-test --skip-git --skip-docker --quiet)
+echo "   OK"
+
+cd "$APP_DIR"
+
+# -------------------------------------------------------------------
+# Step 2: Add the Upright gem (local path)
+# -------------------------------------------------------------------
+echo "=> Adding upright gem from local path"
+cat >> Gemfile <<GEMFILE
+
+# Upright (local smoke test)
+gem "upright", path: "$UPRIGHT_ROOT"
+GEMFILE
+
+bundle install --quiet
+echo "   OK"
+
+# -------------------------------------------------------------------
+# Step 3: Run the install generator
+# -------------------------------------------------------------------
+echo "=> Running upright:install generator"
+bin/rails generate upright:install --force --quiet
+echo "   OK"
+
+# -------------------------------------------------------------------
+# Step 4: Set up the database
+# -------------------------------------------------------------------
+echo "=> Running db:create db:migrate"
+bin/rails db:create db:migrate --quiet 2>&1
+echo "   OK"
+
+# -------------------------------------------------------------------
+# Step 5: Verify generated files exist
+# -------------------------------------------------------------------
+echo "=> Verifying generated files"
+missing=0
+for f in \
+  config/initializers/upright.rb \
+  config/initializers/omniauth.rb \
+  config/sites.yml \
+  config/prometheus/prometheus.yml \
+  config/prometheus/rules/upright.rules.yml \
+  config/alertmanager/alertmanager.yml \
+  config/otel_collector.yml \
+  config/deploy.yml \
+  docker-compose.yml \
+  probes/http_probes.yml \
+  probes/smtp_probes.yml \
+  probes/traceroute_probes.yml; do
+  if [ ! -f "$f" ]; then
+    echo "   MISSING: $f"
+    missing=1
+  fi
+done
+
+if [ "$missing" -eq 1 ]; then
+  echo "   FAIL: Some generated files are missing"
+  exit 1
+fi
+echo "   OK"
+
+# -------------------------------------------------------------------
+# Step 6: Verify routes are mounted
+# -------------------------------------------------------------------
+echo "=> Verifying engine is mounted in routes"
+if ! grep -q 'mount Upright::Engine' config/routes.rb; then
+  echo "   FAIL: Upright engine not mounted in routes"
+  exit 1
+fi
+echo "   OK"
+
+# -------------------------------------------------------------------
+# Step 7: Verify database tables exist
+# -------------------------------------------------------------------
+echo "=> Verifying database tables"
+tables=$(bin/rails runner "puts ActiveRecord::Base.connection.tables.sort.join(',')")
+for table in upright_probe_results active_storage_blobs; do
+  if [[ "$tables" != *"$table"* ]]; then
+    echo "   FAIL: Table '$table' not found in database"
+    exit 1
+  fi
+done
+echo "   OK"
+
+# -------------------------------------------------------------------
+# Step 8: Boot the server and verify HTTP responses
+# -------------------------------------------------------------------
+echo "=> Booting Rails server on port $PORT"
+
+# The generated hostname is based on the Rails app module name (e.g. "smoketestapp.localhost")
+APP_HOST=$(bin/rails runner "puts Upright.configuration.hostname")
+APP_URL="http://app.${APP_HOST}:${PORT}"
+
+PROMETHEUS_EXPORTER_PORT=9499 bin/rails server -b 127.0.0.1 -p "$PORT" -e development &>"$WORK_DIR/server.log" &
+SERVER_PID=$!
+
+# Wait for the server to start (use --resolve to route the .localhost domain to 127.0.0.1)
+RESOLVE="--resolve app.${APP_HOST}:${PORT}:127.0.0.1"
+echo -n "   Waiting for server"
+for i in $(seq 1 30); do
+  if curl -sf -o /dev/null $RESOLVE "$APP_URL/up" 2>/dev/null; then
+    echo " ready"
+    break
+  fi
+  echo -n "."
+  sleep 1
+  if [ "$i" -eq 30 ]; then
+    echo ""
+    echo "   FAIL: Server did not start within 30 seconds"
+    echo "   Server log:"
+    cat "$WORK_DIR/server.log"
+    exit 1
+  fi
+done
+
+# Check the app subdomain responds (login page)
+echo "=> Checking app subdomain (login page)"
+status=$(curl -s -o /dev/null -w "%{http_code}" $RESOLVE "$APP_URL/" 2>/dev/null || true)
+
+if [[ "$status" == "200" || "$status" == "302" ]]; then
+  echo "   OK (HTTP $status)"
+else
+  echo "   FAIL: Expected 200 or 302, got HTTP $status"
+  echo "   Server log:"
+  tail -50 "$WORK_DIR/server.log"
+  exit 1
+fi
+
+# Check the metrics endpoint responds
+echo "=> Checking /metrics endpoint"
+status=$(curl -s -o /dev/null -w "%{http_code}" $RESOLVE "$APP_URL/metrics" 2>/dev/null || true)
+
+if [[ "$status" == "200" ]]; then
+  echo "   OK (HTTP $status)"
+else
+  echo "   WARN: /metrics returned HTTP $status (may need Prometheus exporter running)"
+fi
+
+# Check the /up health check
+echo "=> Checking /up health check"
+status=$(curl -s -o /dev/null -w "%{http_code}" $RESOLVE "$APP_URL/up" 2>/dev/null || true)
+
+if [[ "$status" == "200" ]]; then
+  echo "   OK (HTTP $status)"
+else
+  echo "   FAIL: /up returned HTTP $status"
+  exit 1
+fi
+
+# -------------------------------------------------------------------
+# Done
+# -------------------------------------------------------------------
+echo ""
+echo "========================================"
+echo " All checks passed!"
+echo "========================================"

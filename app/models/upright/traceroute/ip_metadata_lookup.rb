@@ -1,7 +1,6 @@
 require "net/http"
 require "json"
 require "resolv"
-require "geohash_ruby"
 
 class Upright::Traceroute::IpMetadataLookup
   API_URL = "http://ip-api.com/batch"
@@ -84,7 +83,7 @@ class Upright::Traceroute::IpMetadataLookup
 
       def encode_geohash(latitude, longitude)
         if latitude && longitude
-          Geohash.encode(latitude, longitude, GEOHASH_PRECISION)
+          Upright::Geohash.encode(latitude, longitude, GEOHASH_PRECISION)
         end
       end
 

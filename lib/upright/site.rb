@@ -1,5 +1,3 @@
-require "geohash_ruby"
-
 module Upright
   class Site
     attr_reader :code, :city, :country, :geohash, :stagger_index
@@ -43,7 +41,7 @@ module Upright
 
     private
       def coordinates
-        @coordinates ||= Geohash.decode(geohash).first
+        @coordinates ||= Upright::Geohash.decode(geohash).first
       end
   end
 end
