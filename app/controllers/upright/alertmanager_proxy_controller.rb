@@ -5,7 +5,7 @@ class Upright::AlertmanagerProxyController < Upright::ApplicationController
   end
 
   def proxy
-    proxy_to_alertmanager request.fullpath.delete_prefix("/alertmanager")
+    proxy_to_alertmanager request.fullpath.delete_prefix("/alertmanager"), body: request.body&.read
   end
 
   private
