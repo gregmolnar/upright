@@ -15,4 +15,18 @@ class AlertmanagerProxyControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
   end
+
+  test "proxies POST body to alertmanager" do
+    silence_json = { matchers: [ { name: "alertname", value: "TestAlert", isRegex: false, isEqual: true } ], comment: "test" }.to_json
+
+    stub = stub_request(:post, "http://localhost:9093/api/v2/silences")
+      .with(body: silence_json)
+      .to_return(status: 200, body: '{"silenceID":"abc-123"}', headers: { "Content-Type" => "application/json" })
+
+    sign_in
+    post "/alertmanager/api/v2/silences", params: silence_json, headers: { "Content-Type" => "application/json" }
+
+    assert_response :success
+    assert_requested stub
+  end
 end
