@@ -60,6 +60,9 @@ fi
 echo "Updating version..."
 sed -i "s/VERSION = \"$current_version\"/VERSION = \"$new_version\"/" "$VERSION_FILE"
 
+echo "Updating Gemfile.lock..."
+bundle install --quiet
+
 echo "Building gem..."
 gem build "$GEMSPEC"
 
@@ -75,7 +78,7 @@ echo "Cleaning up gem file..."
 rm "$gem_file"
 
 echo "Committing version bump..."
-git add "$VERSION_FILE"
+git add "$VERSION_FILE" Gemfile.lock
 git commit -m "Bump version to $new_version"
 
 echo "Creating GitHub release..."
