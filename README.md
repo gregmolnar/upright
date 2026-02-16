@@ -404,12 +404,12 @@ groups:
   - name: upright
     rules:
       - alert: ProbeDown
-        expr: upright_probe_success == 0
+        expr: upright_probe_up == 0
         for: 5m
         labels:
           severity: critical
         annotations:
-          summary: "Probe {{ $labels.probe_name }} is down"
+          summary: "Probe {{ $labels.name }} is down"
 
       - alert: ProbeSlow
         expr: upright_probe_duration_seconds > 10
@@ -417,7 +417,7 @@ groups:
         labels:
           severity: warning
         annotations:
-          summary: "Probe {{ $labels.probe_name }} is slow"
+          summary: "Probe {{ $labels.name }} is slow"
 ```
 
 ### OpenTelemetry
