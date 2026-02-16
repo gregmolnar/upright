@@ -67,7 +67,7 @@ module Upright
         say "  5. Set ADMIN_PASSWORD env var (default: upright)"
         say ""
         say "For production, review config/initializers/upright.rb and update:"
-        say "  config.hostname = \"#{app_name}.example.com\""
+        say "  config.hostname = \"example.com\""
         say ""
         say "Start dev services (Prometheus, Alertmanager, Playwright):"
         say "  docker compose up -d"

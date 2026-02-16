@@ -410,14 +410,6 @@ groups:
           severity: critical
         annotations:
           summary: "Probe {{ $labels.name }} is down"
-
-      - alert: ProbeSlow
-        expr: upright_probe_duration_seconds > 10
-        for: 5m
-        labels:
-          severity: warning
-        annotations:
-          summary: "Probe {{ $labels.name }} is slow"
 ```
 
 ### OpenTelemetry
