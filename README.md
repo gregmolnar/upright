@@ -40,7 +40,7 @@ Create a new Rails application and install Upright:
 ```bash
 rails new my-upright --database=sqlite3 --skip-test
 cd my-upright
-bundle add upright --github=basecamp/upright
+bundle add upright
 bin/rails generate upright:install
 bin/rails db:migrate
 ```
@@ -449,4 +449,4 @@ bin/rails test
 
 ## License
 
-The gem is available under the terms of the [O'Saasy License](LICENSE.md).
+The gem is available under the terms of the [MIT License](LICENSE.md).
