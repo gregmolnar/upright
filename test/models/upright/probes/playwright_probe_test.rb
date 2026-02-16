@@ -38,9 +38,9 @@ class Upright::Probes::PlaywrightProbeTest < ActiveSupport::TestCase
 
   class TestPlaywrightProbe < Upright::Probes::Playwright::Base
     def check
-      page.goto("https://launchpad.37signals.com")
+      page.goto("https://example.com")
       wait_for_network_idle
-      page.get_by_text("Log in to Basecamp").visible?
+      page.get_by_text("Example Domain").visible?
     end
   end
 

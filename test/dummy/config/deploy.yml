@@ -4,9 +4,9 @@ image: upright/upright
 servers:
   web:
     hosts:
-      - ams.37upright.com: [amsterdam]
-      - nyc.37upright.com: [new_york]
-      - sfo.37upright.com: [san_francisco]
+      - ams.example.com: [amsterdam]
+      - nyc.example.com: [new_york]
+      - sfo.example.com: [san_francisco]
 
 env:
   tags:
