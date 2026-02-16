@@ -5,7 +5,7 @@ module Upright
     module_function
 
     def decode(geohash)
-      bounds = [[-90.0, +90.0], [-180.0, +180.0]]
+      bounds = [ [ -90.0, +90.0 ], [ -180.0, +180.0 ] ]
 
       geohash.downcase.each_char.with_index do |c, i|
         d = BASE32.index c
@@ -21,8 +21,8 @@ module Upright
     end
 
     def encode(latitude, longitude, precision = 12)
-      mids = [latitude, longitude]
-      bounds = [[-90.0, +90.0], [-180.0, +180.0]]
+      mids = [ latitude, longitude ]
+      bounds = [ [ -90.0, +90.0 ], [ -180.0, +180.0 ] ]
 
       geohash = +""
 
