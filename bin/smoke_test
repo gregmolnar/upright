@@ -177,14 +177,16 @@ else
   exit 1
 fi
 
-# Check the metrics endpoint responds
-echo "=> Checking /metrics endpoint"
-status=$(curl -s -o /dev/null -w "%{http_code}" $RESOLVE "$APP_URL/metrics" 2>/dev/null || true)
+# Check the metrics endpoint responds (served by Puma plugin, port set at server boot)
+METRICS_PORT=9499
+echo "=> Checking metrics endpoint on port $METRICS_PORT"
+status=$(curl -s -o /dev/null -w "%{http_code}" "http://127.0.0.1:${METRICS_PORT}/metrics" 2>/dev/null || true)
 
 if [[ "$status" == "200" ]]; then
   echo "   OK (HTTP $status)"
 else
-  echo "   WARN: /metrics returned HTTP $status (may need Prometheus exporter running)"
+  echo "   FAIL: metrics returned HTTP $status"
+  exit 1
 fi
 
 # Check the /up health check
