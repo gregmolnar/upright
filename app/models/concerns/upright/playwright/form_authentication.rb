@@ -19,9 +19,6 @@ module Upright::Playwright::FormAuthentication
     end
 
     def authenticator_for(service)
-      # First try the host app's authenticator, then fall back to engine's
       "::Playwright::Authenticator::#{service.to_s.camelize}".constantize
-    rescue NameError
-      "Upright::Playwright::Authenticator::#{service.to_s.camelize}".constantize
     end
 end
