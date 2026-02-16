@@ -47,7 +47,8 @@ Upright is a self-hosted synthetic monitoring system. It provides a framework fo
 
 ## Installation
 
-Upright is designed to be run in it's own Rails app and deployed with Kamal.
+> [!NOTE]
+> Upright is designed to be run in its own Rails app and deployed with Kamal.
 
 ### Quick Start (New Project)
 
@@ -317,70 +318,82 @@ image: your-org/upright
 servers:
   web:
     hosts:
-      - nyc.upright.example.com
-    env:
-      tags:
-        SITE_SUBDOMAIN: nyc
-
+      - ams.upright.example.com: [amsterdam]
+      - nyc.upright.example.com: [new_york]
+      - sfo.upright.example.com: [san_francisco]
+  jobs:
     hosts:
-      - ams.upright.example.com
-    env:
-      tags:
-        SITE_SUBDOMAIN: ams
+      - ams.upright.example.com: [amsterdam]
+      - nyc.upright.example.com: [new_york]
+      - sfo.upright.example.com: [san_francisco]
+    cmd: bin/jobs
 
-    hosts:
-      - sfo.upright.example.com
-    env:
-      tags:
-        SITE_SUBDOMAIN: sfo
-
-registry:
-  server: ghcr.io
-  username: your-org
-  password:
-    - KAMAL_REGISTRY_PASSWORD
+proxy:
+  app_port: 3000
+  ssl: true
+  hosts:
+    - "*.upright.example.com"
 
 env:
-  clear:
-    RAILS_ENV: production
-    RAILS_LOG_TO_STDOUT: true
   secret:
     - RAILS_MASTER_KEY
-    - OIDC_CLIENT_ID
-    - OIDC_CLIENT_SECRET
+  tags:
+    amsterdam:
+      SITE_SUBDOMAIN: ams
+    new_york:
+      SITE_SUBDOMAIN: nyc
+    san_francisco:
+      SITE_SUBDOMAIN: sfo
 
 accessories:
   playwright:
-    image: mcr.microsoft.com/playwright:v1.55.0-noble
-    cmd: npx -y playwright run-server --port 53333
-    host: nyc.upright.example.com
-    port: 53333
-    env:
-      clear:
-        DEBUG: pw:api
+    image: jacoblincool/playwright:chromium-server-1.55.0
+    port: "127.0.0.1:53333:53333"
+    roles:
+      - jobs
+
+  prometheus:
+    image: prom/prometheus:v3.2.1
+    hosts:
+      - ams.upright.example.com
+    cmd: >-
+      --config.file=/etc/prometheus/prometheus.yml
+      --storage.tsdb.path=/prometheus
+      --storage.tsdb.retention.time=30d
+      --web.enable-otlp-receiver
+    files:
+      - config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - config/prometheus/rules/upright.rules.yml:/etc/prometheus/rules/upright.rules.yml
+
+  alertmanager:
+    image: prom/alertmanager:v0.28.1
+    hosts:
+      - ams.upright.example.com
+    cmd: --config.file=/etc/alertmanager/alertmanager.yml
+    files:
+      - config/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
 ```
 
 ## Observability
 
 ### Prometheus
 
-The engine exposes metrics at `/metrics`. Configure Prometheus to scrape:
+Metrics are exposed via a Puma plugin at `http://0.0.0.0:9394/metrics`. Configure Prometheus to scrape:
 
 ```yaml
 scrape_configs:
   - job_name: upright
     static_configs:
-      - targets: ['localhost:3000']
-    metrics_path: /metrics
+      - targets: ['localhost:9394']
 ```
 
 ### Metrics Exposed
 
 - `upright_probe_duration_seconds` - Probe execution duration
-- `upright_probe_success` - Probe success/failure (1/0)
-- `upright_probe_status_code` - HTTP status code for HTTP probes
+- `upright_probe_up` - Probe status (1 = up, 0 = down)
+- `upright_http_response_status` - HTTP response status code
 
-Labels include: `probe_name`, `probe_type`, `site_code`, `site_city`, `site_country`
+Labels include: `type`, `name`, `site_code`, `site_city`, `site_country`
 
 ### AlertManager
 
