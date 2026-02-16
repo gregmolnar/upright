@@ -2,6 +2,23 @@
 
 Upright is a self-hosted synthetic monitoring system. It provides a framework for running health check probes from multiple geographic sites and reporting metrics via Prometheus. Alerts can then be configured with AlertManager.
 
+<table>
+  <tr>
+    <td><img src="docs/screenshots/dashboard.png" alt="Dashboard" width="100%"></td>
+    <td><img src="docs/screenshots/uptime.png" alt="Uptime" width="100%"></td>
+  </tr>
+  <tr>
+    <td><em>Site overview with world map</em></td>
+    <td><em>30-day uptime history</em></td>
+  </tr>
+  <tr>
+    <td colspan="2"><img src="docs/screenshots/probe-status.png" alt="Probe status" width="100%"></td>
+  </tr>
+  <tr>
+    <td colspan="2"><em>Probe status across all sites</em></td>
+  </tr>
+</table>
+
 ## Features
 
 - **Playwright Probes** - Browser-based probes for user flows with video recording and logs
@@ -14,7 +31,6 @@ Upright is a self-hosted synthetic monitoring system. It provides a framework fo
 
 ### Not Included
 
-- **Dashboards** - Instead, Grafana is suggested for monitoring the Prometheus metrics generated here
 - **Notifications** - Instead, Alertmanager is included for alerting and notifications
 - **Hosting** - Instead, you can use a VPS from DigitalOcean, Hetzner, etc.
 
